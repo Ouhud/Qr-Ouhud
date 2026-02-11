@@ -1,18 +1,47 @@
 {% extends "base.html" %}
-{% block title %}Feedback{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Feedback' %}
+  {% set t_default_question = 'How satisfied are you?' %}
+  {% set t_success = 'Thank you for your feedback.' %}
+  {% set t_score = 'Score (1-10)' %}
+  {% set t_comment = 'Comment (optional)' %}
+  {% set t_submit = 'Send feedback' %}
+  {% set t_low = 'Low' %}
+  {% set t_high = 'High' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'التغذية الراجعة' %}
+  {% set t_default_question = 'ما مدى رضاك؟' %}
+  {% set t_success = 'شكرًا على ملاحظاتك.' %}
+  {% set t_score = 'التقييم (1-10)' %}
+  {% set t_comment = 'تعليق (اختياري)' %}
+  {% set t_submit = 'إرسال الملاحظات' %}
+  {% set t_low = 'منخفض' %}
+  {% set t_high = 'مرتفع' %}
+{% else %}
+  {% set t_title = 'Feedback' %}
+  {% set t_default_question = 'Wie zufrieden sind Sie?' %}
+  {% set t_success = 'Danke für Ihr Feedback.' %}
+  {% set t_score = 'Score (1-10)' %}
+  {% set t_comment = 'Kommentar (optional)' %}
+  {% set t_submit = 'Feedback senden' %}
+  {% set t_low = 'Niedrig' %}
+  {% set t_high = 'Hoch' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="max-width:760px;">
-  <h1>{{ data.question or "Wie zufrieden sind Sie?" }}</h1>
+  <h1>{{ data.question or t_default_question }}</h1>
   {% if request.query_params.get("submitted") == "1" %}
-    <div class="alert success">Danke für Ihr Feedback.</div>
+    <div class="alert success">{{ t_success }}</div>
   {% endif %}
   <form method="post" action="/qr/feedback/submit/{{ qr.slug }}" class="qr-form">
-    <label>Score (1-10)</label>
+    <label>{{ t_score }}</label>
     <input type="number" name="score" min="1" max="10" required>
-    <label>Kommentar (optional)</label>
+    <label>{{ t_comment }}</label>
     <textarea name="comment" rows="4"></textarea>
-    <button class="btn-primary" type="submit">Feedback senden</button>
+    <button class="btn-primary" type="submit">{{ t_submit }}</button>
   </form>
-  <p style="color:#64748b;">{{ data.low_label or "Niedrig" }} - {{ data.high_label or "Hoch" }}</p>
+  <p style="color:#64748b;">{{ data.low_label or t_low }} - {{ data.high_label or t_high }}</p>
 </section>
 {% endblock %}

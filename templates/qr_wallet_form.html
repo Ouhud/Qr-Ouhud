@@ -1,15 +1,41 @@
 {% extends "base.html" %}
-{% block title %}Wallet Pass QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Wallet Pass QR' %}
+  {% set t_h1 = '🎫 Apple/Google Wallet Pass QR' %}
+  {% set t_fallback = 'Fallback URL *' %}
+  {% set t_note = 'iPhone prefers Apple Wallet, Android prefers Google Wallet. Fallback is used for all other devices.' %}
+  {% set t_type = 'Type' %}
+  {% set t_form_title = 'Title' %}
+  {% set t_placeholder = 'e.g. Loyalty Pass 2026' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Wallet Pass QR' %}
+  {% set t_h1 = '🎫 رمز QR لبطاقة Apple/Google Wallet' %}
+  {% set t_fallback = 'رابط احتياطي *' %}
+  {% set t_note = 'في iPhone يتم تفضيل Apple Wallet، وفي Android يتم تفضيل Google Wallet. الرابط الاحتياطي يُستخدم لباقي الأجهزة.' %}
+  {% set t_type = 'النوع' %}
+  {% set t_form_title = 'العنوان' %}
+  {% set t_placeholder = 'مثال: Loyalty Pass 2026' %}
+{% else %}
+  {% set t_title = 'Wallet Pass QR' %}
+  {% set t_h1 = '🎫 Apple/Google Wallet Pass QR' %}
+  {% set t_fallback = 'Fallback URL *' %}
+  {% set t_note = 'Bei iPhone wird bevorzugt Apple Wallet genutzt, bei Android Google Wallet. Fallback greift bei allen anderen Geräten.' %}
+  {% set t_type = 'Typ' %}
+  {% set t_form_title = 'Titel' %}
+  {% set t_placeholder = 'z. B. Loyalty Pass 2026' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>🎫 Apple/Google Wallet Pass QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/wallet/generate" enctype="multipart/form-data" class="qr-form">
     <label>Apple Wallet URL</label><input type="url" name="apple_pass_url" placeholder="https://...">
     <label>Google Wallet URL</label><input type="url" name="google_pass_url" placeholder="https://...">
-    <label>Fallback URL *</label><input type="url" name="pass_url" placeholder="https://..." required>
-    <small style="display:block;margin-top:-0.4rem;margin-bottom:0.8rem;color:#475569;">Bei iPhone wird bevorzugt Apple Wallet genutzt, bei Android Google Wallet. Fallback greift bei allen anderen Geräten.</small>
-    <label>Typ</label><input type="text" name="wallet_type" placeholder="ticket, loyalty, membership, coupon">
-    <label>Titel</label><input type="text" name="title" placeholder="z. B. Loyalty Pass 2026">
+    <label>{{ t_fallback }}</label><input type="url" name="pass_url" placeholder="https://..." required>
+    <small style="display:block;margin-top:-0.4rem;margin-bottom:0.8rem;color:#475569;">{{ t_note }}</small>
+    <label>{{ t_type }}</label><input type="text" name="wallet_type" placeholder="ticket, loyalty, membership, coupon">
+    <label>{{ t_form_title }}</label><input type="text" name="title" placeholder="{{ t_placeholder }}">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

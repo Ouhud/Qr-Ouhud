@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Booking QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Booking QR' %}
+  {% set t_h1 = '📅 Booking QR' %}
+  {% set t_provider = 'Provider' %}
+  {% set t_url = 'Booking URL *' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Booking QR' %}
+  {% set t_h1 = '📅 رمز QR للحجز' %}
+  {% set t_provider = 'المزوّد' %}
+  {% set t_url = 'رابط الحجز *' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'Booking QR' %}
+  {% set t_h1 = '📅 Terminbuchung-QR' %}
+  {% set t_provider = 'Provider' %}
+  {% set t_url = 'Booking URL *' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>📅 Terminbuchung-QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/booking/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Provider</label><input type="text" name="provider" placeholder="Calendly, Booking ...">
-    <label>Booking URL *</label><input type="url" name="booking_url" required>
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_provider }}</label><input type="text" name="provider" placeholder="Calendly, Booking ...">
+    <label>{{ t_url }}</label><input type="url" name="booking_url" required>
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

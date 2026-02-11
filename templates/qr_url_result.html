@@ -1,88 +1,70 @@
 {% extends "base.html" %}
-{% block title %}✅ URL-QR-Code erstellt – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ URL QR code created – Ouhud QR' %}
+  {% set t_h1 = '✅ URL QR code created successfully!' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_target = 'Target URL:' %}
+  {% set t_print = '🖨️ Print' %}
+  {% set t_download = '⬇️ Download' %}
+  {% set t_new = '➕ Create new QR code' %}
+  {% set t_edit = '✏️ Edit' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ تم إنشاء URL QR – Ouhud QR' %}
+  {% set t_h1 = '✅ تم إنشاء URL QR بنجاح!' %}
+  {% set t_dyn = 'الرابط الديناميكي:' %}
+  {% set t_target = 'الرابط المستهدف:' %}
+  {% set t_print = '🖨️ طباعة' %}
+  {% set t_download = '⬇️ تنزيل' %}
+  {% set t_new = '➕ إنشاء رمز QR جديد' %}
+  {% set t_edit = '✏️ تعديل' %}
+{% else %}
+  {% set t_title = '✅ URL-QR-Code erstellt – Ouhud QR' %}
+  {% set t_h1 = '✅ URL-QR-Code erfolgreich erstellt!' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_target = 'Ziel-URL:' %}
+  {% set t_print = '🖨️ Drucken' %}
+  {% set t_download = '⬇️ Herunterladen' %}
+  {% set t_new = '➕ Neuen QR-Code erstellen' %}
+  {% set t_edit = '✏️ Bearbeiten' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-
 <section class="qr-generator url-generator" style="max-width:850px;margin:2rem auto;text-align:center;">
+    <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">{{ t_h1 }}</h1>
 
-    <!-- ✅ Überschrift -->
-    <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">
-        ✅ URL-QR-Code erfolgreich erstellt!
-    </h1>
-
-    <!-- ✅ QR-Bild -->
     {% if qr and qr.image_path %}
     <div style="margin:2rem 0;">
-        <img src="/{{ qr.image_path }}"
-             alt="QR-Code"
-             style="width:320px;height:320px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.12);">
+        <img src="/{{ qr.image_path }}" alt="QR-Code" style="width:320px;height:320px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.12);">
     </div>
     {% endif %}
 
-    <!-- ✅ Dynamischer Link -->
     {% if dynamic_url %}
     <p style="font-size:1.1rem;color:#1e293b;margin-bottom:2rem;">
-        📎 <strong>Dynamischer Link:</strong><br>
-        <a href="{{ dynamic_url }}" target="_blank"
-           style="color:var(--accent);font-weight:600;">
-           {{ dynamic_url }}
-        </a>
+        📎 <strong>{{ t_dyn }}</strong><br>
+        <a href="{{ dynamic_url }}" target="_blank" style="color:var(--accent);font-weight:600;">{{ dynamic_url }}</a>
     </p>
     {% endif %}
 
-    <!-- ✅ Ziel-URL -->
     {% if target_url %}
     <p style="font-size:1rem;color:#64748b;margin-bottom:2rem;">
-        🔗 <strong>Ziel-URL:</strong><br>
-        <a href="{{ target_url }}" target="_blank"
-           style="color:var(--accent);font-weight:500;">
-           {{ target_url }}
-        </a>
+        🔗 <strong>{{ t_target }}</strong><br>
+        <a href="{{ target_url }}" target="_blank" style="color:var(--accent);font-weight:500;">{{ target_url }}</a>
     </p>
     {% endif %}
 
-    <!-- ✅ Aktionen -->
     <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
-
-        <!-- 🖨️ Drucken -->
-        <button onclick="window.print()" 
-                class="btn secondary"
-                style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           🖨️ Drucken
-        </button>
-
-        <!-- ⬇️ Download -->
+        <button onclick="window.print()" class="btn secondary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
         {% if qr and qr.image_path %}
-        <a href="/{{ qr.image_path }}" download
-           class="btn primary"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           ⬇️ Herunterladen
-        </a>
+        <a href="/{{ qr.image_path }}" download class="btn primary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_download }}</a>
         {% endif %}
 
-        <!-- ➕ Neuen erstellen -->
-        <a href="/qr/url/"
-           class="btn"
-           style="background:#e2e8f0;padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;color:#1e293b;">
-           ➕ Neuen QR-Code erstellen
-        </a>
+        <a href="/qr/url/" class="btn" style="background:#e2e8f0;padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;color:#1e293b;">{{ t_new }}</a>
 
         {% if qr %}
-        <a href="/qr/edit/{{ qr.slug }}"
-           class="btn secondary"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           ✏️ Bearbeiten
-        </a>
+        <a href="/qr/edit/{{ qr.slug }}" class="btn secondary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_edit }}</a>
         {% endif %}
-
     </div>
-
 </section>
-
-<script>
-function printQR() {
-    window.print();
-}
-</script>
-
 {% endblock %}

@@ -1,18 +1,47 @@
 {% extends "base.html" %}
-{% block title %}Lead Formular{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Lead form' %}
+  {% set t_default_headline = 'Get in touch' %}
+  {% set t_success = 'Thanks for your request.' %}
+  {% set t_name = 'Name' %}
+  {% set t_email = 'Email' %}
+  {% set t_phone = 'Phone' %}
+  {% set t_message = 'Message' %}
+  {% set t_submit = 'Send request' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'نموذج العملاء المحتملين' %}
+  {% set t_default_headline = 'تواصل معنا' %}
+  {% set t_success = 'شكرًا على طلبك.' %}
+  {% set t_name = 'الاسم' %}
+  {% set t_email = 'البريد الإلكتروني' %}
+  {% set t_phone = 'الهاتف' %}
+  {% set t_message = 'الرسالة' %}
+  {% set t_submit = 'إرسال الطلب' %}
+{% else %}
+  {% set t_title = 'Lead Formular' %}
+  {% set t_default_headline = 'Kontakt aufnehmen' %}
+  {% set t_success = 'Danke für Ihre Anfrage.' %}
+  {% set t_name = 'Name' %}
+  {% set t_email = 'E-Mail' %}
+  {% set t_phone = 'Telefon' %}
+  {% set t_message = 'Nachricht' %}
+  {% set t_submit = 'Anfrage senden' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="max-width:760px;">
-  <h1>{{ data.headline or "Kontakt aufnehmen" }}</h1>
+  <h1>{{ data.headline or t_default_headline }}</h1>
   <p class="subtitle">{{ data.description or "" }}</p>
   {% if request.query_params.get("submitted") == "1" %}
-    <div class="alert success">{{ data.success_message or "Danke für Ihre Anfrage." }}</div>
+    <div class="alert success">{{ data.success_message or t_success }}</div>
   {% endif %}
   <form method="post" action="/qr/lead/submit/{{ qr.slug }}" class="qr-form">
-    <label>Name</label><input type="text" name="name" required>
-    <label>E-Mail</label><input type="email" name="email" required>
-    <label>Telefon</label><input type="text" name="phone">
-    <label>Nachricht</label><textarea name="message" rows="4"></textarea>
-    <button class="btn-primary" type="submit">Anfrage senden</button>
+    <label>{{ t_name }}</label><input type="text" name="name" required>
+    <label>{{ t_email }}</label><input type="email" name="email" required>
+    <label>{{ t_phone }}</label><input type="text" name="phone">
+    <label>{{ t_message }}</label><textarea name="message" rows="4"></textarea>
+    <button class="btn-primary" type="submit">{{ t_submit }}</button>
   </form>
 </section>
 {% endblock %}

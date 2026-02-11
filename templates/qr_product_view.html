@@ -1,5 +1,16 @@
 {% extends "base.html" %}
-{% block title %}{{ product.name }} – Produktansicht{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_suffix = 'Product view' %}
+  {% set t_open = '🔗 View product' %}
+{% elif lang == 'ar' %}
+  {% set t_suffix = 'عرض المنتج' %}
+  {% set t_open = '🔗 عرض المنتج' %}
+{% else %}
+  {% set t_suffix = 'Produktansicht' %}
+  {% set t_open = '🔗 Zum Produkt' %}
+{% endif %}
+{% block title %}{{ product.name }} – {{ t_suffix }}{% endblock %}
 
 {% block content %}
 <section class="product-view text-center">
@@ -11,7 +22,7 @@
     <p class="price"><strong>{{ product.price }} €</strong></p>
     <p class="description">{{ product.description }}</p>
     {% if product.link %}
-      <p><a href="{{ product.link }}" target="_blank" class="btn primary">🔗 Zum Produkt</a></p>
+      <p><a href="{{ product.link }}" target="_blank" class="btn primary">{{ t_open }}</a></p>
     {% endif %}
   </div>
 </section>

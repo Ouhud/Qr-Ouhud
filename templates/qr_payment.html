@@ -1,34 +1,70 @@
 {% extends "base.html" %}
-{% block title %}💳 Zahlungs-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '💳 Payment QR Code – Ouhud QR' %}
+  {% set t_h1 = '💳 Payment QR Code Generator' %}
+  {% set t_sub = 'Create a SEPA payment QR code (EPC QR) to enable transfers with one scan.' %}
+  {% set t_rec = '👤 Recipient' %}
+  {% set t_iban = '🏦 IBAN' %}
+  {% set t_amount = '💶 Amount (EUR)' %}
+  {% set t_purpose = '📝 Payment reference' %}
+  {% set p_rec = 'e.g. Ouhud GmbH' %}
+  {% set p_iban = 'e.g. CH93 0076 2011 6238 5295 7' %}
+  {% set p_amount = 'e.g. 59.90' %}
+  {% set p_purpose = 'e.g. Annual plan Ouhud QR Pro' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '💳 رمز QR للدفع – Ouhud QR' %}
+  {% set t_h1 = '💳 مولد QR للدفع' %}
+  {% set t_sub = 'أنشئ رمز QR للدفع عبر SEPA (EPC QR) لتسهيل التحويل عبر المسح.' %}
+  {% set t_rec = '👤 المستفيد' %}
+  {% set t_iban = '🏦 IBAN' %}
+  {% set t_amount = '💶 المبلغ (EUR)' %}
+  {% set t_purpose = '📝 سبب الدفع' %}
+  {% set p_rec = 'مثال: Ouhud GmbH' %}
+  {% set p_iban = 'مثال: CH93 0076 2011 6238 5295 7' %}
+  {% set p_amount = 'مثال: 59.90' %}
+  {% set p_purpose = 'مثال: اشتراك سنوي Ouhud QR Pro' %}
+{% else %}
+  {% set t_title = '💳 Zahlungs-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '💳 Zahlungs-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen SEPA-Zahlungs-QR-Code (EPC-QR), um Überweisungen einfach per Scan zu ermöglichen.' %}
+  {% set t_rec = '👤 Empfänger' %}
+  {% set t_iban = '🏦 IBAN' %}
+  {% set t_amount = '💶 Betrag (EUR)' %}
+  {% set t_purpose = '📝 Verwendungszweck' %}
+  {% set p_rec = 'z. B. Ouhud GmbH' %}
+  {% set p_iban = 'z. B. CH93 0076 2011 6238 5295 7' %}
+  {% set p_amount = 'z. B. 59.90' %}
+  {% set p_purpose = 'z. B. Jahresabo Ouhud QR Pro' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
   <div class="container text-center">
-    <h1>💳 Zahlungs-QR-Code Generator</h1>
-    <p class="subtitle">
-      Erstelle einen SEPA-Zahlungs-QR-Code (EPC-QR), um Überweisungen einfach per Scan zu ermöglichen.
-    </p>
+    <h1>{{ t_h1 }}</h1>
+    <p class="subtitle">{{ t_sub }}</p>
 
     <form method="post" action="/qr/payment/generate" enctype="multipart/form-data" class="qr-form">
       <div class="form-grid">
         <div class="form-group">
-          <label for="recipient">👤 Empfänger</label>
-          <input type="text" id="recipient" name="recipient" placeholder="z. B. Ouhud GmbH" required />
+          <label for="recipient">{{ t_rec }}</label>
+          <input type="text" id="recipient" name="recipient" placeholder="{{ p_rec }}" required />
         </div>
 
         <div class="form-group">
-          <label for="iban">🏦 IBAN</label>
-          <input type="text" id="iban" name="iban" placeholder="z. B. CH93 0076 2011 6238 5295 7" required />
+          <label for="iban">{{ t_iban }}</label>
+          <input type="text" id="iban" name="iban" placeholder="{{ p_iban }}" required />
         </div>
 
         <div class="form-group">
-          <label for="amount">💶 Betrag (EUR)</label>
-          <input type="number" step="0.01" id="amount" name="amount" placeholder="z. B. 59.90" required />
+          <label for="amount">{{ t_amount }}</label>
+          <input type="number" step="0.01" id="amount" name="amount" placeholder="{{ p_amount }}" required />
         </div>
 
         <div class="form-group full">
-          <label for="purpose">📝 Verwendungszweck</label>
-          <input type="text" id="purpose" name="purpose" placeholder="z. B. Jahresabo Ouhud QR Pro" />
+          <label for="purpose">{{ t_purpose }}</label>
+          <input type="text" id="purpose" name="purpose" placeholder="{{ p_purpose }}" />
         </div>
       </div>
 

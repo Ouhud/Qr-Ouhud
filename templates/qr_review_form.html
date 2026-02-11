@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-{% block title %}Review QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Review QR' %}
+  {% set t_h1 = '⭐ Review QR' %}
+  {% set t_platform = 'Platform' %}
+  {% set t_url = 'Review URL *' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Review QR' %}
+  {% set t_h1 = '⭐ QR للتقييم' %}
+  {% set t_platform = 'المنصة' %}
+  {% set t_url = 'رابط التقييم *' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'Review QR' %}
+  {% set t_h1 = '⭐ Bewertungs-QR' %}
+  {% set t_platform = 'Plattform' %}
+  {% set t_url = 'Review URL *' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>⭐ Bewertungs-QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/review/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Plattform</label><input type="text" name="platform" placeholder="Google, Trustpilot ...">
-    <label>Review URL *</label><input type="url" name="review_url" required>
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_platform }}</label><input type="text" name="platform" placeholder="Google, Trustpilot ...">
+    <label>{{ t_url }}</label><input type="url" name="review_url" required>
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

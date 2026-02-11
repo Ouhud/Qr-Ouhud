@@ -1,37 +1,85 @@
 {% extends "base.html" %}
-{% block title %}💳 Abonnement & Tarife – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '💳 Subscription & Plans – Ouhud QR' %}
+  {% set t_h1 = '💳 Subscription & Plans' %}
+  {% set t_sub = 'Manage your current plan, extend your subscription, or upgrade.' %}
+  {% set t_current = '🔹 Current plan' %}
+  {% set t_status = 'Status:' %}
+  {% set t_active = '✅ Active' %}
+  {% set t_cancelled = '🚫 Cancelled' %}
+  {% set t_pending = '⏳ Pending' %}
+  {% set t_exp = 'Expiry date:' %}
+  {% set t_no_exp = '— No expiry date —' %}
+  {% set t_upgrade = '🚀 Upgrade plan' %}
+  {% set t_cancel = '❌ Cancel subscription' %}
+  {% set t_basic = ['Up to 10 QR codes', 'Standard designs', 'Basic management'] %}
+  {% set t_pro = ['Up to 50 QR codes', 'All design styles', 'Logo and color options'] %}
+  {% set t_business = ['Up to 250 QR codes', 'API access', 'Team management'] %}
+{% elif lang == 'ar' %}
+  {% set t_title = '💳 الاشتراك والباقات – Ouhud QR' %}
+  {% set t_h1 = '💳 الاشتراك والباقات' %}
+  {% set t_sub = 'إدارة الباقة الحالية، تمديد الاشتراك، أو الترقية.' %}
+  {% set t_current = '🔹 الباقة الحالية' %}
+  {% set t_status = 'الحالة:' %}
+  {% set t_active = '✅ نشط' %}
+  {% set t_cancelled = '🚫 مُلغى' %}
+  {% set t_pending = '⏳ قيد الانتظار' %}
+  {% set t_exp = 'تاريخ الانتهاء:' %}
+  {% set t_no_exp = '— بدون تاريخ انتهاء —' %}
+  {% set t_upgrade = '🚀 ترقية الباقة' %}
+  {% set t_cancel = '❌ إلغاء الاشتراك' %}
+  {% set t_basic = ['حتى 10 رموز QR', 'تصاميم قياسية', 'إدارة أساسية'] %}
+  {% set t_pro = ['حتى 50 رمز QR', 'كل أنماط التصميم', 'خيارات الشعار والألوان'] %}
+  {% set t_business = ['حتى 250 رمز QR', 'وصول API', 'إدارة الفريق'] %}
+{% else %}
+  {% set t_title = '💳 Abonnement & Tarife – Ouhud QR' %}
+  {% set t_h1 = '💳 Abonnement & Tarife' %}
+  {% set t_sub = 'Verwalte deinen aktuellen Tarif, verlängere dein Abo oder führe ein Upgrade durch.' %}
+  {% set t_current = '🔹 Aktueller Tarif' %}
+  {% set t_status = 'Status:' %}
+  {% set t_active = '✅ Aktiv' %}
+  {% set t_cancelled = '🚫 Gekündigt' %}
+  {% set t_pending = '⏳ Ausstehend' %}
+  {% set t_exp = 'Ablaufdatum:' %}
+  {% set t_no_exp = '— Kein Ablaufdatum —' %}
+  {% set t_upgrade = '🚀 Upgrade durchführen' %}
+  {% set t_cancel = '❌ Abo kündigen' %}
+  {% set t_basic = ['Bis zu 10 QR-Codes', 'Standard-Designs', 'Einfache Verwaltung'] %}
+  {% set t_pro = ['Bis zu 50 QR-Codes', 'Alle Design-Stile', 'Logo- und Farboptionen'] %}
+  {% set t_business = ['Bis zu 250 QR-Codes', 'API-Zugang', 'Teamverwaltung'] %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="billing-container">
-  <h1>💳 Abonnement & Tarife</h1>
-  <p class="subtitle">
-    Verwalte deinen aktuellen Tarif, verlängere dein Abo oder führe ein Upgrade durch.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="billing-card">
-    <h2>🔹 Aktueller Tarif</h2>
+    <h2>{{ t_current }}</h2>
     <p>
       <strong>{{ user.plan.name if user.plan else "Basic" }}</strong><br>
-      Status: 
+      {{ t_status }}
       {% if user.plan_status == "active" %}
-        <span class="status active">✅ Aktiv</span>
+        <span class="status active">{{ t_active }}</span>
       {% elif user.plan_status == "cancelled" %}
-        <span class="status cancelled">🚫 Gekündigt</span>
+        <span class="status cancelled">{{ t_cancelled }}</span>
       {% else %}
-        <span class="status pending">⏳ Ausstehend</span>
+        <span class="status pending">{{ t_pending }}</span>
       {% endif %}
       <br>
-      Ablaufdatum:
+      {{ t_exp }}
       {% if user.plan_expiry %}
         {{ user.plan_expiry.strftime('%d.%m.%Y') }}
       {% else %}
-        — Kein Ablaufdatum —
+        {{ t_no_exp }}
       {% endif %}
     </p>
 
     <div class="buttons">
-      <a href="/billing/upgrade" class="btn primary">🚀 Upgrade durchführen</a>
-      <a href="/billing/cancel" class="btn danger">❌ Abo kündigen</a>
+      <a href="/billing/upgrade" class="btn primary">{{ t_upgrade }}</a>
+      <a href="/billing/cancel" class="btn danger">{{ t_cancel }}</a>
     </div>
   </div>
 
@@ -40,9 +88,9 @@
       <h3>🟢 Basic</h3>
       <p>4,99 € / Monat</p>
       <ul>
-        <li>Bis zu 10 QR-Codes</li>
-        <li>Standard-Designs</li>
-        <li>Einfache Verwaltung</li>
+        <li>{{ t_basic[0] }}</li>
+        <li>{{ t_basic[1] }}</li>
+        <li>{{ t_basic[2] }}</li>
       </ul>
     </div>
 
@@ -50,9 +98,9 @@
       <h3>🟡 Pro</h3>
       <p>14,99 € / Monat</p>
       <ul>
-        <li>Bis zu 50 QR-Codes</li>
-        <li>Alle Design-Stile</li>
-        <li>Logo- und Farboptionen</li>
+        <li>{{ t_pro[0] }}</li>
+        <li>{{ t_pro[1] }}</li>
+        <li>{{ t_pro[2] }}</li>
       </ul>
     </div>
 
@@ -60,9 +108,9 @@
       <h3>🔵 Business</h3>
       <p>29,99 € / Monat</p>
       <ul>
-        <li>Bis zu 250 QR-Codes</li>
-        <li>API-Zugang</li>
-        <li>Teamverwaltung</li>
+        <li>{{ t_business[0] }}</li>
+        <li>{{ t_business[1] }}</li>
+        <li>{{ t_business[2] }}</li>
       </ul>
     </div>
   </div>
@@ -86,7 +134,7 @@ h1 { text-align:center; color:#0d2a78; margin-bottom:.5rem; }
 .status.active { color:#16a34a; font-weight:600; }
 .status.cancelled { color:#dc2626; font-weight:600; }
 .status.pending { color:#eab308; font-weight:600; }
-.buttons { margin-top:1rem; display:flex; gap:1rem; }
+.buttons { margin-top:1rem; display:flex; gap:1rem; flex-wrap:wrap; }
 .btn {
   display:inline-block; padding:.7rem 1.4rem; border-radius:8px; text-decoration:none; font-weight:600;
 }

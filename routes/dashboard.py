@@ -122,6 +122,7 @@ def dashboard(
     # 🔒 Sicherheitsprüfung: nur eingeloggte Benutzer
     if not user:
         return RedirectResponse("/auth/login", status_code=303)
+    lang = getattr(getattr(request, "state", None), "lang", "de")
 
     # 📦 QR-Codes des aktuellen Benutzers laden
     qr_codes: List[QRCode] = db.query(QRCode).filter(QRCode.user_id == user.id).all()
@@ -192,7 +193,12 @@ def dashboard(
     chart_labels: list[str] = []
     scans_per_period: list[int] = []
     filtered_scans: list[QRScan] = []
-    range_title = "Letzte 7 Tage"
+    if lang == "en":
+        range_title = "Last 7 days"
+    elif lang == "ar":
+        range_title = "آخر 7 أيام"
+    else:
+        range_title = "Letzte 7 Tage"
     period_start = datetime.combine(today - timedelta(days=6), time.min, tzinfo=timezone.utc)
     period_end = now_utc
 
@@ -209,7 +215,12 @@ def dashboard(
             scans_per_period.append(
                 len([s for s in filtered_scans if (_to_utc(s.timestamp) or start_range).date() == d])
             )
-        range_title = "Letzte 7 Tage"
+        if lang == "en":
+            range_title = "Last 7 days"
+        elif lang == "ar":
+            range_title = "آخر 7 أيام"
+        else:
+            range_title = "Letzte 7 Tage"
     elif range_key == "30d":
         from_date = today - timedelta(days=29)
         start_range = datetime.combine(from_date, time.min, tzinfo=timezone.utc)
@@ -223,7 +234,12 @@ def dashboard(
             scans_per_period.append(
                 len([s for s in filtered_scans if (_to_utc(s.timestamp) or start_range).date() == d])
             )
-        range_title = "Letzte 30 Tage"
+        if lang == "en":
+            range_title = "Last 30 days"
+        elif lang == "ar":
+            range_title = "آخر 30 يومًا"
+        else:
+            range_title = "Letzte 30 Tage"
     else:  # 6m
         current = today.replace(day=1)
         months: list[tuple[int, int]] = []
@@ -254,7 +270,12 @@ def dashboard(
                     ]
                 )
             )
-        range_title = "Letzte 6 Monate"
+        if lang == "en":
+            range_title = "Last 6 months"
+        elif lang == "ar":
+            range_title = "آخر 6 أشهر"
+        else:
+            range_title = "Letzte 6 Monate"
     
     # QR-Typ-Verteilung
     qr_type_labels = []
@@ -282,11 +303,24 @@ def dashboard(
     for label in order:
         count = device_stats.get(label, 0)
         if count > 0:
-            device_labels.append(label)
+            if label == "Andere":
+                if lang == "en":
+                    device_labels.append("Other")
+                elif lang == "ar":
+                    device_labels.append("أخرى")
+                else:
+                    device_labels.append("Andere")
+            else:
+                device_labels.append(label)
             device_counts.append(count)
 
     if not device_labels:
-        device_labels = ["Keine Daten"]
+        if lang == "en":
+            device_labels = ["No data"]
+        elif lang == "ar":
+            device_labels = ["لا توجد بيانات"]
+        else:
+            device_labels = ["Keine Daten"]
         device_counts = [1]
 
     # ---------------------------------------------------------------------
@@ -352,7 +386,12 @@ def dashboard(
     # ---------------------------------------------------------------------
     # 🔥 Heatmap: Wochentag × Stunde
     # ---------------------------------------------------------------------
-    heatmap_day_labels = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+    if lang == "en":
+        heatmap_day_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    elif lang == "ar":
+        heatmap_day_labels = ["الاث", "الثل", "الأر", "الخ", "الجم", "السب", "الأح"]
+    else:
+        heatmap_day_labels = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
     heatmap_counts: dict[tuple[int, int], int] = {}
     for s in filtered_scans:
         ts = _to_utc(s.timestamp)
@@ -442,7 +481,12 @@ def dashboard(
 
     if qr_unlimited:
         qr_usage_percent = 0
-        qr_usage_percent_label = "Intern frei"
+        if lang == "en":
+            qr_usage_percent_label = "Internal free"
+        elif lang == "ar":
+            qr_usage_percent_label = "مجاني داخلي"
+        else:
+            qr_usage_percent_label = "Intern frei"
     elif qr_limit > 0:
         ratio = qr_usage / qr_limit
         qr_usage_percent = int(round(min(ratio, 1) * 100))

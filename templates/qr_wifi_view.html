@@ -1,16 +1,56 @@
 {% extends "base.html" %}
-{% block title %}WLAN QR - Ouhud QR{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    Wi-Fi QR - Ouhud QR
+  {% elif request.state.lang == 'ar' %}
+    QR واي فاي - Ouhud QR
+  {% else %}
+    WLAN QR - Ouhud QR
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set v_title = 'Wi-Fi QR Details' %}
+  {% set v_name = 'Name (SSID):' %}
+  {% set v_enc = 'Encryption:' %}
+  {% set v_pw = 'Password:' %}
+  {% set v_hidden = 'Hidden:' %}
+  {% set v_yes = 'Yes' %}
+  {% set v_no = 'No' %}
+  {% set v_dynamic = 'Dynamic link:' %}
+  {% set v_edit = 'Edit' %}
+{% elif lang == 'ar' %}
+  {% set v_title = 'تفاصيل QR الواي فاي' %}
+  {% set v_name = 'اسم الشبكة (SSID):' %}
+  {% set v_enc = 'التشفير:' %}
+  {% set v_pw = 'كلمة المرور:' %}
+  {% set v_hidden = 'مخفي:' %}
+  {% set v_yes = 'نعم' %}
+  {% set v_no = 'لا' %}
+  {% set v_dynamic = 'الرابط الديناميكي:' %}
+  {% set v_edit = 'تعديل' %}
+{% else %}
+  {% set v_title = 'WLAN QR Details' %}
+  {% set v_name = 'Name (SSID):' %}
+  {% set v_enc = 'Verschluesselung:' %}
+  {% set v_pw = 'Passwort:' %}
+  {% set v_hidden = 'Versteckt:' %}
+  {% set v_yes = 'Ja' %}
+  {% set v_no = 'Nein' %}
+  {% set v_dynamic = 'Dynamischer Link:' %}
+  {% set v_edit = 'Bearbeiten' %}
+{% endif %}
 <section class="qr-generator">
-  <h1>WLAN QR Details</h1>
+  <h1>{{ v_title }}</h1>
   <div class="qr-form">
-    <p><strong>Name (SSID):</strong> {{ data.ssid or '-' }}</p>
-    <p><strong>Verschluesselung:</strong> {{ data.encryption or 'WPA' }}</p>
-    <p><strong>Passwort:</strong> {{ data.password or '-' }}</p>
-    <p><strong>Versteckt:</strong> {{ 'Ja' if data.hidden else 'Nein' }}</p>
-    <p><strong>Dynamischer Link:</strong> <a href="/d/{{ qr.slug }}" target="_blank" rel="noopener">/d/{{ qr.slug }}</a></p>
-    <a class="btn-primary" href="/qr/edit/{{ qr.slug }}">Bearbeiten</a>
+    <p><strong>{{ v_name }}</strong> {{ data.ssid or '-' }}</p>
+    <p><strong>{{ v_enc }}</strong> {{ data.encryption or 'WPA' }}</p>
+    <p><strong>{{ v_pw }}</strong> {{ data.password or '-' }}</p>
+    <p><strong>{{ v_hidden }}</strong> {{ v_yes if data.hidden else v_no }}</p>
+    <p><strong>{{ v_dynamic }}</strong> <a href="/d/{{ qr.slug }}" target="_blank" rel="noopener">/d/{{ qr.slug }}</a></p>
+    <a class="btn-primary" href="/qr/edit/{{ qr.slug }}">{{ v_edit }}</a>
   </div>
 </section>
 {% endblock %}

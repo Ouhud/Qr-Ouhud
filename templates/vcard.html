@@ -1,9 +1,16 @@
 {% extends "base.html" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% macro tr(de, en, ar) -%}
+  {%- if lang == 'en' -%}{{ en }}
+  {%- elif lang == 'ar' -%}{{ ar }}
+  {%- else -%}{{ de }}
+  {%- endif -%}
+{%- endmacro %}
 
 {% block title %}
-  {% if mode == "form" %}Digitale Visitenkarte erstellen – Ouhud QR{% endif %}
-  {% if mode == "view" %}{{ vcard.first_name }} {{ vcard.last_name }} – Visitenkarte{% endif %}
-  {% if mode == "edit" %}vCard bearbeiten – Ouhud QR{% endif %}
+  {% if mode == "form" %}{{ tr('Digitale Visitenkarte erstellen', 'Create Digital Business Card', 'إنشاء بطاقة تعريف رقمية') }} – Ouhud QR{% endif %}
+  {% if mode == "view" %}{{ vcard.first_name }} {{ vcard.last_name }} – {{ tr('Visitenkarte', 'Business Card', 'بطاقة تعريف') }}{% endif %}
+  {% if mode == "edit" %}{{ tr('vCard bearbeiten', 'Edit vCard', 'تعديل vCard') }} – Ouhud QR{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -16,34 +23,34 @@
      ============================ #}
   {% if mode == "form" %}
 
-    <h1>👤 Digitale Visitenkarte erstellen</h1>
+    <h1>👤 {{ tr('Digitale Visitenkarte erstellen', 'Create Digital Business Card', 'إنشاء بطاقة تعريف رقمية') }}</h1>
     <p class="subtitle">
-      Erstelle deine persönliche oder geschäftliche digitale Visitenkarte.
+      {{ tr('Erstelle deine persönliche oder geschäftliche digitale Visitenkarte.', 'Create your personal or professional digital business card.', 'أنشئ بطاقتك الرقمية الشخصية أو المهنية.') }}
     </p>
 
     <form method="post" action="/qr/vcard/create" enctype="multipart/form-data" class="qr-form">
 
-      <h2>Persönliche Informationen</h2>
+      <h2>{{ tr('Persönliche Informationen', 'Personal Information', 'المعلومات الشخصية') }}</h2>
       <div class="form-group-grid">
-        <div><label for="first_name">Vorname *</label><input id="first_name" type="text" name="first_name" placeholder="Vorname" required></div>
-        <div><label for="last_name">Nachname *</label><input id="last_name" type="text" name="last_name" placeholder="Nachname" required></div>
-        <div><label for="org">Firma / Organisation</label><input id="org" type="text" name="org" placeholder="Firma / Organisation"></div>
-        <div><label for="job_title">Position / Titel</label><input id="job_title" type="text" name="title" placeholder="Position / Titel"></div>
-        <div><label for="email">E-Mail *</label><input id="email" type="email" name="email" placeholder="name@firma.de" required></div>
-        <div><label for="phone">Telefon</label><input id="phone" type="tel" name="phone" placeholder="+49 ..."></div>
+        <div><label for="first_name">{{ tr('Vorname *', 'First name *', 'الاسم الأول *') }}</label><input id="first_name" type="text" name="first_name" placeholder="{{ tr('Vorname', 'First name', 'الاسم الأول') }}" required></div>
+        <div><label for="last_name">{{ tr('Nachname *', 'Last name *', 'اسم العائلة *') }}</label><input id="last_name" type="text" name="last_name" placeholder="{{ tr('Nachname', 'Last name', 'اسم العائلة') }}" required></div>
+        <div><label for="org">{{ tr('Firma / Organisation', 'Company / Organization', 'الشركة / المؤسسة') }}</label><input id="org" type="text" name="org" placeholder="{{ tr('Firma / Organisation', 'Company / Organization', 'الشركة / المؤسسة') }}"></div>
+        <div><label for="job_title">{{ tr('Position / Titel', 'Position / Title', 'المنصب / اللقب') }}</label><input id="job_title" type="text" name="title" placeholder="{{ tr('Position / Titel', 'Position / Title', 'المنصب / اللقب') }}"></div>
+        <div><label for="email">{{ tr('E-Mail *', 'Email *', 'البريد الإلكتروني *') }}</label><input id="email" type="email" name="email" placeholder="name@company.com" required></div>
+        <div><label for="phone">{{ tr('Telefon', 'Phone', 'الهاتف') }}</label><input id="phone" type="tel" name="phone" placeholder="+49 ..."></div>
       </div>
 
-      <h2>Adresse</h2>
+      <h2>{{ tr('Adresse', 'Address', 'العنوان') }}</h2>
       <div class="form-group-grid">
-        <div><label for="address">Straße & Hausnummer</label><input id="address" type="text" name="address" placeholder="Musterstraße 1"></div>
-        <div><label for="city">Stadt</label><input id="city" type="text" name="city" placeholder="Berlin"></div>
-        <div><label for="zip_code">PLZ</label><input id="zip_code" type="text" name="zip_code" placeholder="10115"></div>
-        <div><label for="country">Land</label><input id="country" type="text" name="country" placeholder="Deutschland"></div>
+        <div><label for="address">{{ tr('Straße & Hausnummer', 'Street & house number', 'الشارع ورقم المنزل') }}</label><input id="address" type="text" name="address" placeholder="{{ tr('Musterstraße 1', 'Main Street 1', 'الشارع الرئيسي 1') }}"></div>
+        <div><label for="city">{{ tr('Stadt', 'City', 'المدينة') }}</label><input id="city" type="text" name="city" placeholder="{{ tr('Berlin', 'Berlin', 'برلين') }}"></div>
+        <div><label for="zip_code">{{ tr('PLZ', 'ZIP', 'الرمز البريدي') }}</label><input id="zip_code" type="text" name="zip_code" placeholder="10115"></div>
+        <div><label for="country">{{ tr('Land', 'Country', 'الدولة') }}</label><input id="country" type="text" name="country" placeholder="{{ tr('Deutschland', 'Germany', 'ألمانيا') }}"></div>
       </div>
 
-      <h2>Social Media</h2>
+      <h2>{{ tr('Social Media', 'Social Media', 'وسائل التواصل الاجتماعي') }}</h2>
       <div class="form-group-grid">
-        <div><label for="website">Website</label><input id="website" type="url" name="website" placeholder="https://..."></div>
+        <div><label for="website">{{ tr('Website', 'Website', 'الموقع الإلكتروني') }}</label><input id="website" type="url" name="website" placeholder="https://..."></div>
         <div><label for="facebook">Facebook</label><input id="facebook" type="url" name="facebook" placeholder="https://facebook.com/..."></div>
         <div><label for="instagram">Instagram</label><input id="instagram" type="url" name="instagram" placeholder="https://instagram.com/..."></div>
         <div><label for="linkedin">LinkedIn</label><input id="linkedin" type="url" name="linkedin" placeholder="https://linkedin.com/in/..."></div>
@@ -51,29 +58,29 @@
         <div><label for="whatsapp">WhatsApp</label><input id="whatsapp" type="text" name="whatsapp" placeholder="+49..."></div>
       </div>
 
-      <h2>Wallet Integration</h2>
+      <h2>{{ tr('Wallet Integration', 'Wallet Integration', 'تكامل المحافظ الرقمية') }}</h2>
       <div class="form-group-grid">
         <div><label for="apple_wallet_url">Apple Wallet Pass URL</label><input id="apple_wallet_url" type="url" name="apple_wallet_url" placeholder="https://..."></div>
         <div><label for="google_wallet_url">Google Wallet Pass URL</label><input id="google_wallet_url" type="url" name="google_wallet_url" placeholder="https://..."></div>
       </div>
 
-      <h2>Profilbild</h2>
+      <h2>{{ tr('Profilbild', 'Profile Picture', 'صورة الملف الشخصي') }}</h2>
       <div class="logo-upload-box">
-        <label for="create_profile_image">Profilbild hochladen (JPG, PNG, WEBP)</label>
+        <label for="create_profile_image">{{ tr('Profilbild hochladen (JPG, PNG, WEBP)', 'Upload profile picture (JPG, PNG, WEBP)', 'رفع صورة الملف الشخصي (JPG, PNG, WEBP)') }}</label>
         <input id="create_profile_image" type="file" name="profile_image" accept="image/png,image/jpeg,image/webp">
-        <p>Dieses Bild wird in der digitalen vCard angezeigt.</p>
+        <p>{{ tr('Dieses Bild wird in der digitalen vCard angezeigt.', 'This image will be shown in the digital vCard.', 'سيتم عرض هذه الصورة داخل بطاقة vCard الرقمية.') }}</p>
       </div>
 
-      <h2>QR-Logo</h2>
+      <h2>{{ tr('QR-Logo', 'QR Logo', 'شعار QR') }}</h2>
       <div class="logo-upload-box">
-        <label for="create_qr_logo">QR-Logo hochladen (JPG, PNG, WEBP)</label>
+        <label for="create_qr_logo">{{ tr('QR-Logo hochladen (JPG, PNG, WEBP)', 'Upload QR logo (JPG, PNG, WEBP)', 'رفع شعار QR (JPG, PNG, WEBP)') }}</label>
         <input id="create_qr_logo" type="file" name="qr_logo" accept="image/png,image/jpeg,image/webp">
-        <p>Dieses Logo wird in der Mitte des QR-Codes platziert.</p>
+        <p>{{ tr('Dieses Logo wird in der Mitte des QR-Codes platziert.', 'This logo is placed in the center of the QR code.', 'سيتم وضع هذا الشعار في وسط رمز QR.') }}</p>
       </div>
 
       <hr class="divider">
       {% set default_style = "modern" %}
-      {% set submit_label = "✅ vCard QR-Code erstellen" %}
+      {% set submit_label = "✅ " ~ tr('vCard QR-Code erstellen', 'Create vCard QR code', 'إنشاء رمز vCard QR') %}
       {% set show_logo_upload = false %}
       {% include "partials/qr_style_selector.html" %}
 
@@ -90,7 +97,7 @@
 
   <div class="vc-page">
     {% if request.query_params.get("updated") == "1" %}
-    <div class="vc-alert">Änderungen wurden erfolgreich gespeichert.</div>
+    <div class="vc-alert">{{ tr('Änderungen wurden erfolgreich gespeichert.', 'Changes saved successfully.', 'تم حفظ التغييرات بنجاح.') }}</div>
     {% endif %}
     <article class="vc-card">
       <header class="vc-head">
@@ -101,7 +108,7 @@
         {% elif qr and qr.logo_path %}
           {% set avatar_src = qr.logo_path if qr.logo_path.startswith('/') else '/' + qr.logo_path %}
         {% endif %}
-        <img src="{{ avatar_src }}" class="vc-avatar" alt="Profilbild">
+        <img src="{{ avatar_src }}" class="vc-avatar" alt="{{ tr('Profilbild', 'Profile picture', 'صورة الملف الشخصي') }}">
         <div class="vc-identity">
           <h1>{{ (vcard.first_name or '') ~ ' ' ~ (vcard.last_name or '') }}</h1>
           {% if vcard.title %}<p class="vc-role">{{ vcard.title }}</p>{% endif %}
@@ -111,19 +118,19 @@
 
       <div class="vc-grid">
         <section class="vc-section">
-          <h2>Kontakt</h2>
+          <h2>{{ tr('Kontakt', 'Contact', 'التواصل') }}</h2>
           <ul>
             {% if vcard.phone %}
-              <li><span>Telefon</span><a href="tel:{{ vcard.phone }}">{{ vcard.phone }}</a></li>
+              <li><span>{{ tr('Telefon', 'Phone', 'الهاتف') }}</span><a href="tel:{{ vcard.phone }}">{{ vcard.phone }}</a></li>
             {% endif %}
             {% if vcard.email %}
-              <li><span>E-Mail</span><a href="mailto:{{ vcard.email }}">{{ vcard.email }}</a></li>
+              <li><span>{{ tr('E-Mail', 'Email', 'البريد الإلكتروني') }}</span><a href="mailto:{{ vcard.email }}">{{ vcard.email }}</a></li>
             {% endif %}
             {% if vcard.website %}
-              <li><span>Webseite</span><a href="{{ vcard.website }}" target="_blank" rel="noopener">{{ vcard.website }}</a></li>
+              <li><span>{{ tr('Webseite', 'Website', 'الموقع الإلكتروني') }}</span><a href="{{ vcard.website }}" target="_blank" rel="noopener">{{ vcard.website }}</a></li>
             {% endif %}
             {% if vcard.address or vcard.city or vcard.zip_code or vcard.country %}
-              <li><span>Adresse</span>
+              <li><span>{{ tr('Adresse', 'Address', 'العنوان') }}</span>
                 <span>
                   {{ vcard.address or '' }}
                   {% if vcard.zip_code or vcard.city %}, {{ vcard.zip_code or '' }} {{ vcard.city or '' }}{% endif %}
@@ -136,12 +143,12 @@
 
         {% if vcard.facebook or vcard.instagram or vcard.linkedin or vcard.xing or vcard.whatsapp %}
         <section class="vc-section">
-          <h2>Social</h2>
+          <h2>{{ tr('Social', 'Social', 'التواصل الاجتماعي') }}</h2>
           <ul>
-            {% if vcard.facebook %}<li><span>Facebook</span><a href="{{ vcard.facebook }}" target="_blank" rel="noopener">Profil öffnen</a></li>{% endif %}
-            {% if vcard.instagram %}<li><span>Instagram</span><a href="{{ vcard.instagram }}" target="_blank" rel="noopener">Profil öffnen</a></li>{% endif %}
-            {% if vcard.linkedin %}<li><span>LinkedIn</span><a href="{{ vcard.linkedin }}" target="_blank" rel="noopener">Profil öffnen</a></li>{% endif %}
-            {% if vcard.xing %}<li><span>Xing</span><a href="{{ vcard.xing }}" target="_blank" rel="noopener">Profil öffnen</a></li>{% endif %}
+            {% if vcard.facebook %}<li><span>Facebook</span><a href="{{ vcard.facebook }}" target="_blank" rel="noopener">{{ tr('Profil öffnen', 'Open profile', 'فتح الملف') }}</a></li>{% endif %}
+            {% if vcard.instagram %}<li><span>Instagram</span><a href="{{ vcard.instagram }}" target="_blank" rel="noopener">{{ tr('Profil öffnen', 'Open profile', 'فتح الملف') }}</a></li>{% endif %}
+            {% if vcard.linkedin %}<li><span>LinkedIn</span><a href="{{ vcard.linkedin }}" target="_blank" rel="noopener">{{ tr('Profil öffnen', 'Open profile', 'فتح الملف') }}</a></li>{% endif %}
+            {% if vcard.xing %}<li><span>Xing</span><a href="{{ vcard.xing }}" target="_blank" rel="noopener">{{ tr('Profil öffnen', 'Open profile', 'فتح الملف') }}</a></li>{% endif %}
             {% if vcard.whatsapp %}<li><span>WhatsApp</span><a href="https://wa.me/{{ (vcard.whatsapp|string)|replace('+', '')|replace(' ', '') }}">{{ vcard.whatsapp }}</a></li>{% endif %}
           </ul>
         </section>
@@ -151,29 +158,29 @@
         <section class="vc-section">
           <h2>Wallet</h2>
           <ul>
-            {% if vcard.apple_wallet_url %}<li><span>Apple Wallet</span><a href="{{ vcard.apple_wallet_url }}" target="_blank" rel="noopener">Pass installieren</a></li>{% endif %}
-            {% if vcard.google_wallet_url %}<li><span>Google Wallet</span><a href="{{ vcard.google_wallet_url }}" target="_blank" rel="noopener">Pass installieren</a></li>{% endif %}
+            {% if vcard.apple_wallet_url %}<li><span>Apple Wallet</span><a href="{{ vcard.apple_wallet_url }}" target="_blank" rel="noopener">{{ tr('Pass installieren', 'Install pass', 'تثبيت البطاقة') }}</a></li>{% endif %}
+            {% if vcard.google_wallet_url %}<li><span>Google Wallet</span><a href="{{ vcard.google_wallet_url }}" target="_blank" rel="noopener">{{ tr('Pass installieren', 'Install pass', 'تثبيت البطاقة') }}</a></li>{% endif %}
           </ul>
         </section>
         {% endif %}
 
         <aside class="vc-section vc-qr">
           {% if qr and qr.image_path %}
-            <img src="/{{ qr.image_path }}" alt="QR Code">
+            <img src="/{{ qr.image_path }}" alt="{{ tr('QR Code', 'QR Code', 'رمز QR') }}">
           {% endif %}
-          <p>Scannen, um diese Kontaktkarte direkt zu speichern.</p>
+          <p>{{ tr('Scannen, um diese Kontaktkarte direkt zu speichern.', 'Scan to save this contact card directly.', 'امسح الرمز لحفظ بطاقة التواصل مباشرة.') }}</p>
         </aside>
       </div>
 
       <footer class="vc-actions">
-        <a href="/qr/vcard/{{ qr.slug }}.vcf" class="btn-primary vc-action-btn">Kontakt speichern</a>
+        <a href="/qr/vcard/{{ qr.slug }}.vcf" class="btn-primary vc-action-btn">{{ tr('Kontakt speichern', 'Save contact', 'حفظ جهة الاتصال') }}</a>
         {% if vcard.apple_wallet_url %}
           <a href="{{ vcard.apple_wallet_url }}" target="_blank" rel="noopener" class="btn-secondary vc-action-btn">Apple Wallet</a>
         {% endif %}
         {% if vcard.google_wallet_url %}
           <a href="{{ vcard.google_wallet_url }}" target="_blank" rel="noopener" class="btn-secondary vc-action-btn">Google Wallet</a>
         {% endif %}
-        <a href="/qr/vcard/edit/{{ qr.slug }}" class="btn-secondary vc-action-btn">Bearbeiten</a>
+        <a href="/qr/vcard/edit/{{ qr.slug }}" class="btn-secondary vc-action-btn">{{ tr('Bearbeiten', 'Edit', 'تعديل') }}</a>
       </footer>
     </article>
   </div>
@@ -187,30 +194,30 @@
      ============================ #}
   {% if mode == "edit" %}
 
-    <h1>✏️ Visitenkarte bearbeiten</h1>
-    <p class="subtitle">Alle Daten wie beim Erstellen bearbeiten und danach direkt Vorschau öffnen.</p>
+    <h1>✏️ {{ tr('Visitenkarte bearbeiten', 'Edit Business Card', 'تعديل بطاقة التعريف') }}</h1>
+    <p class="subtitle">{{ tr('Alle Daten wie beim Erstellen bearbeiten und danach direkt Vorschau öffnen.', 'Edit all fields and then open the preview directly.', 'عدّل جميع البيانات ثم افتح المعاينة مباشرة.') }}</p>
 
     <form method="post" action="/qr/vcard/update/{{ qr.id }}" enctype="multipart/form-data" class="qr-form edit-form">
 
-      <h2>Persönliche Informationen</h2>
+      <h2>{{ tr('Persönliche Informationen', 'Personal Information', 'المعلومات الشخصية') }}</h2>
       <div class="form-group-grid">
-        <div><label for="edit_first_name">Vorname *</label><input id="edit_first_name" type="text" name="first_name" value="{{ vcard.first_name or '' }}" placeholder="Vorname" required></div>
-        <div><label for="edit_last_name">Nachname *</label><input id="edit_last_name" type="text" name="last_name" value="{{ vcard.last_name or '' }}" placeholder="Nachname" required></div>
-        <div><label for="edit_org">Firma / Organisation</label><input id="edit_org" type="text" name="org" value="{{ vcard.org or '' }}" placeholder="Firma / Organisation"></div>
-        <div><label for="edit_title">Position / Titel</label><input id="edit_title" type="text" name="title" value="{{ vcard.title or '' }}" placeholder="Position / Titel"></div>
-        <div><label for="edit_email">E-Mail *</label><input id="edit_email" type="email" name="email" value="{{ vcard.email or '' }}" placeholder="name@firma.de" required></div>
-        <div><label for="edit_phone">Telefon</label><input id="edit_phone" type="tel" name="phone" value="{{ vcard.phone or '' }}" placeholder="+49 ..."></div>
+        <div><label for="edit_first_name">{{ tr('Vorname *', 'First name *', 'الاسم الأول *') }}</label><input id="edit_first_name" type="text" name="first_name" value="{{ vcard.first_name or '' }}" placeholder="{{ tr('Vorname', 'First name', 'الاسم الأول') }}" required></div>
+        <div><label for="edit_last_name">{{ tr('Nachname *', 'Last name *', 'اسم العائلة *') }}</label><input id="edit_last_name" type="text" name="last_name" value="{{ vcard.last_name or '' }}" placeholder="{{ tr('Nachname', 'Last name', 'اسم العائلة') }}" required></div>
+        <div><label for="edit_org">{{ tr('Firma / Organisation', 'Company / Organization', 'الشركة / المؤسسة') }}</label><input id="edit_org" type="text" name="org" value="{{ vcard.org or '' }}" placeholder="{{ tr('Firma / Organisation', 'Company / Organization', 'الشركة / المؤسسة') }}"></div>
+        <div><label for="edit_title">{{ tr('Position / Titel', 'Position / Title', 'المنصب / اللقب') }}</label><input id="edit_title" type="text" name="title" value="{{ vcard.title or '' }}" placeholder="{{ tr('Position / Titel', 'Position / Title', 'المنصب / اللقب') }}"></div>
+        <div><label for="edit_email">{{ tr('E-Mail *', 'Email *', 'البريد الإلكتروني *') }}</label><input id="edit_email" type="email" name="email" value="{{ vcard.email or '' }}" placeholder="name@company.com" required></div>
+        <div><label for="edit_phone">{{ tr('Telefon', 'Phone', 'الهاتف') }}</label><input id="edit_phone" type="tel" name="phone" value="{{ vcard.phone or '' }}" placeholder="+49 ..."></div>
       </div>
 
-      <h2>Adresse</h2>
+      <h2>{{ tr('Adresse', 'Address', 'العنوان') }}</h2>
       <div class="form-group-grid">
-        <div><label for="edit_address">Straße & Hausnummer</label><input id="edit_address" type="text" name="address" value="{{ vcard.address or '' }}" placeholder="Musterstraße 1"></div>
-        <div><label for="edit_city">Stadt</label><input id="edit_city" type="text" name="city" value="{{ vcard.city or '' }}" placeholder="Berlin"></div>
-        <div><label for="edit_zip_code">PLZ</label><input id="edit_zip_code" type="text" name="zip_code" value="{{ vcard.zip_code or '' }}" placeholder="10115"></div>
-        <div><label for="edit_country">Land</label><input id="edit_country" type="text" name="country" value="{{ vcard.country or '' }}" placeholder="Deutschland"></div>
+        <div><label for="edit_address">{{ tr('Straße & Hausnummer', 'Street & house number', 'الشارع ورقم المنزل') }}</label><input id="edit_address" type="text" name="address" value="{{ vcard.address or '' }}" placeholder="{{ tr('Musterstraße 1', 'Main Street 1', 'الشارع الرئيسي 1') }}"></div>
+        <div><label for="edit_city">{{ tr('Stadt', 'City', 'المدينة') }}</label><input id="edit_city" type="text" name="city" value="{{ vcard.city or '' }}" placeholder="{{ tr('Berlin', 'Berlin', 'برلين') }}"></div>
+        <div><label for="edit_zip_code">{{ tr('PLZ', 'ZIP', 'الرمز البريدي') }}</label><input id="edit_zip_code" type="text" name="zip_code" value="{{ vcard.zip_code or '' }}" placeholder="10115"></div>
+        <div><label for="edit_country">{{ tr('Land', 'Country', 'الدولة') }}</label><input id="edit_country" type="text" name="country" value="{{ vcard.country or '' }}" placeholder="{{ tr('Deutschland', 'Germany', 'ألمانيا') }}"></div>
       </div>
 
-      <h2>Social Media</h2>
+      <h2>{{ tr('Social Media', 'Social Media', 'وسائل التواصل الاجتماعي') }}</h2>
       <div class="form-group-grid">
         <div><label for="edit_website">Website</label><input id="edit_website" type="url" name="website" value="{{ vcard.website or '' }}" placeholder="https://..."></div>
         <div><label for="edit_facebook">Facebook</label><input id="edit_facebook" type="url" name="facebook" value="{{ vcard.facebook or '' }}" placeholder="https://facebook.com/..."></div>
@@ -220,41 +227,41 @@
         <div><label for="edit_whatsapp">WhatsApp</label><input id="edit_whatsapp" type="text" name="whatsapp" value="{{ vcard.whatsapp or '' }}" placeholder="+49..."></div>
       </div>
 
-      <h2>Wallet Integration</h2>
+      <h2>{{ tr('Wallet Integration', 'Wallet Integration', 'تكامل المحافظ الرقمية') }}</h2>
       <div class="form-group-grid">
         <div><label for="edit_apple_wallet_url">Apple Wallet Pass URL</label><input id="edit_apple_wallet_url" type="url" name="apple_wallet_url" value="{{ vcard.apple_wallet_url or '' }}" placeholder="https://..."></div>
         <div><label for="edit_google_wallet_url">Google Wallet Pass URL</label><input id="edit_google_wallet_url" type="url" name="google_wallet_url" value="{{ vcard.google_wallet_url or '' }}" placeholder="https://..."></div>
       </div>
 
-      <h2>Profilbild</h2>
+      <h2>{{ tr('Profilbild', 'Profile Picture', 'صورة الملف الشخصي') }}</h2>
       <div class="logo-upload-box">
-        <label for="edit_profile_image">Neues Profilbild hochladen (optional)</label>
+        <label for="edit_profile_image">{{ tr('Neues Profilbild hochladen (optional)', 'Upload a new profile picture (optional)', 'رفع صورة ملف شخصي جديدة (اختياري)') }}</label>
         <input id="edit_profile_image" type="file" name="profile_image" accept="image/png,image/jpeg,image/webp">
         {% if vcard and vcard.profile_image_path %}
           {% set logo_src = vcard.profile_image_path if vcard.profile_image_path.startswith('/') else '/' + vcard.profile_image_path %}
           <div class="logo-preview">
-            <img src="{{ logo_src }}" alt="Aktuelles Profilbild">
-            <span>Aktuelles Profilbild</span>
+            <img src="{{ logo_src }}" alt="{{ tr('Aktuelles Profilbild', 'Current profile picture', 'صورة الملف الحالية') }}">
+            <span>{{ tr('Aktuelles Profilbild', 'Current profile picture', 'صورة الملف الحالية') }}</span>
           </div>
         {% endif %}
       </div>
 
-      <h2>QR-Logo</h2>
+      <h2>{{ tr('QR-Logo', 'QR Logo', 'شعار QR') }}</h2>
       <div class="logo-upload-box">
-        <label for="edit_qr_logo">Neues QR-Logo hochladen (optional)</label>
+        <label for="edit_qr_logo">{{ tr('Neues QR-Logo hochladen (optional)', 'Upload a new QR logo (optional)', 'رفع شعار QR جديد (اختياري)') }}</label>
         <input id="edit_qr_logo" type="file" name="qr_logo" accept="image/png,image/jpeg,image/webp">
         {% if qr and qr.logo_path %}
           {% set logo_src = qr.logo_path if qr.logo_path.startswith('/') else '/' + qr.logo_path %}
           <div class="logo-preview">
-            <img src="{{ logo_src }}" alt="Aktuelles QR-Logo">
-            <span>Aktuelles QR-Logo</span>
+            <img src="{{ logo_src }}" alt="{{ tr('Aktuelles QR-Logo', 'Current QR logo', 'شعار QR الحالي') }}">
+            <span>{{ tr('Aktuelles QR-Logo', 'Current QR logo', 'شعار QR الحالي') }}</span>
           </div>
         {% endif %}
       </div>
 
       <div class="edit-actions">
-        <button type="submit" class="edit-btn save">💾 Speichern</button>
-        <a href="/qr/vcard/v/{{ qr.slug }}" class="edit-btn preview">👁️ Vorschau</a>
+        <button type="submit" class="edit-btn save">💾 {{ tr('Speichern', 'Save', 'حفظ') }}</button>
+        <a href="/qr/vcard/v/{{ qr.slug }}" class="edit-btn preview">👁️ {{ tr('Vorschau', 'Preview', 'معاينة') }}</a>
       </div>
 
     </form>
@@ -483,5 +490,12 @@
 }
 </style>
 {% endif %}
+
+<style>
+html[lang="ar"] .vcard-generator {
+  direction: rtl;
+  text-align: right;
+}
+</style>
 
 {% endblock %}

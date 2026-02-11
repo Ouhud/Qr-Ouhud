@@ -1,8 +1,19 @@
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_suffix = 'Social Links' %}
+  {% set t_website = '🌐 Website' %}
+{% elif lang == 'ar' %}
+  {% set t_suffix = 'روابط التواصل' %}
+  {% set t_website = '🌐 الموقع الإلكتروني' %}
+{% else %}
+  {% set t_suffix = 'Social Links' %}
+  {% set t_website = '🌐 Website' %}
+{% endif %}
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ lang }}" dir="{{ 'rtl' if lang == 'ar' else 'ltr' }}">
 <head>
   <meta charset="UTF-8">
-  <title>{{ name }} – Social Links</title>
+  <title>{{ name }} – {{ t_suffix }}</title>
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <style>
     body {
@@ -38,7 +49,7 @@
 <body>
   <div class="card">
     <h1>{{ name }}</h1>
-    {% if data.website %}<a href="{{ data.website }}">🌐 Website</a>{% endif %}
+    {% if data.website %}<a href="{{ data.website }}">{{ t_website }}</a>{% endif %}
     {% if data.facebook %}<a href="{{ data.facebook }}">📘 Facebook</a>{% endif %}
     {% if data.instagram %}<a href="{{ data.instagram }}">📸 Instagram</a>{% endif %}
     {% if data.whatsapp %}<a href="{{ data.whatsapp }}">💬 WhatsApp</a>{% endif %}

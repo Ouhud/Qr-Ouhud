@@ -1,37 +1,91 @@
 {% extends "base.html" %}
-{% block title %}🌐 Social Media QR-Code Generator – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '🌐 Social Media QR Code Generator – Ouhud QR' %}
+  {% set t_h1 = '🌐 Social Media QR Code Generator' %}
+  {% set t_sub = 'Create a social link page like vCard and combine all profiles in one QR code.' %}
+  {% set t_profile = 'Profile' %}
+  {% set t_name = '👤 Name or profile title' %}
+  {% set t_internal = '📝 Internal title (optional)' %}
+  {% set t_links = 'Social links' %}
+  {% set p_name = 'e.g. Hamza Mehmalat' %}
+  {% set p_title = 'e.g. Social profile 2026' %}
+  {% set t_fb = '📘 Facebook link' %}
+  {% set t_ig = '📸 Instagram link' %}
+  {% set t_wa = '💬 WhatsApp (e.g. https://wa.me/...)' %}
+  {% set t_li = '💼 LinkedIn profile' %}
+  {% set t_xing = '🧑‍🎓 Xing profile' %}
+  {% set t_gh = '🐙 GitHub profile' %}
+  {% set t_tiktok = '🎵 TikTok link' %}
+  {% set t_x = '🐦 X / Twitter link' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '🌐 مولد QR لوسائل التواصل – Ouhud QR' %}
+  {% set t_h1 = '🌐 مولد QR لوسائل التواصل' %}
+  {% set t_sub = 'أنشئ صفحة روابط اجتماعية مثل vCard واجمع كل حساباتك في رمز QR واحد.' %}
+  {% set t_profile = 'الملف الشخصي' %}
+  {% set t_name = '👤 الاسم أو عنوان الملف' %}
+  {% set t_internal = '📝 عنوان داخلي (اختياري)' %}
+  {% set t_links = 'روابط التواصل' %}
+  {% set p_name = 'مثال: Hamza Mehmalat' %}
+  {% set p_title = 'مثال: Social Profile 2026' %}
+  {% set t_fb = '📘 رابط فيسبوك' %}
+  {% set t_ig = '📸 رابط إنستغرام' %}
+  {% set t_wa = '💬 واتساب (مثال: https://wa.me/...)' %}
+  {% set t_li = '💼 ملف LinkedIn' %}
+  {% set t_xing = '🧑‍🎓 ملف Xing' %}
+  {% set t_gh = '🐙 ملف GitHub' %}
+  {% set t_tiktok = '🎵 رابط TikTok' %}
+  {% set t_x = '🐦 رابط X / Twitter' %}
+{% else %}
+  {% set t_title = '🌐 Social Media QR-Code Generator – Ouhud QR' %}
+  {% set t_h1 = '🌐 Social Media QR-Code Generator' %}
+  {% set t_sub = 'Erstelle eine Social-Link-Seite wie vCard und verbinde alle Profile in einem QR-Code.' %}
+  {% set t_profile = 'Profil' %}
+  {% set t_name = '👤 Name oder Profil-Titel' %}
+  {% set t_internal = '📝 Interner Titel (optional)' %}
+  {% set t_links = 'Social Links' %}
+  {% set p_name = 'z. B. Hamza Mehmalat' %}
+  {% set p_title = 'z. B. Social Profil 2026' %}
+  {% set t_fb = '📘 Facebook-Link' %}
+  {% set t_ig = '📸 Instagram-Link' %}
+  {% set t_wa = '💬 WhatsApp (z. B. https://wa.me/...)' %}
+  {% set t_li = '💼 LinkedIn-Profil' %}
+  {% set t_xing = '🧑‍🎓 Xing-Profil' %}
+  {% set t_gh = '🐙 GitHub-Profil' %}
+  {% set t_tiktok = '🎵 TikTok-Link' %}
+  {% set t_x = '🐦 X / Twitter-Link' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator social-generator">
-  <h1>🌐 Social Media QR-Code Generator</h1>
-  <p class="subtitle">
-    Erstelle eine Social-Link-Seite wie vCard und verbinde alle Profile in einem QR-Code.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <form method="post" action="/qr/social/generate" enctype="multipart/form-data" class="qr-form">
-    <h2>Profil</h2>
+    <h2>{{ t_profile }}</h2>
     <div class="form-group-grid">
       <div>
-        <label for="name">👤 Name oder Profil-Titel</label>
-        <input type="text" id="name" name="name" placeholder="z. B. Hamza Mehmalat">
+        <label for="name">{{ t_name }}</label>
+        <input type="text" id="name" name="name" placeholder="{{ p_name }}">
       </div>
       <div>
-        <label for="title">📝 Interner Titel (optional)</label>
-        <input type="text" id="title" name="title" placeholder="z. B. Social Profil 2026">
+        <label for="title">{{ t_internal }}</label>
+        <input type="text" id="title" name="title" placeholder="{{ p_title }}">
       </div>
     </div>
 
-    <h2>Social Links</h2>
+    <h2>{{ t_links }}</h2>
     <div class="form-group-grid">
       <div><label for="website">🌐 Website</label><input type="url" id="website" name="website" placeholder="https://..."></div>
-      <div><label for="facebook">📘 Facebook-Link</label><input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/..."></div>
-      <div><label for="instagram">📸 Instagram-Link</label><input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/..."></div>
-      <div><label for="whatsapp">💬 WhatsApp (z. B. https://wa.me/...)</label><input type="url" id="whatsapp" name="whatsapp" placeholder="https://wa.me/..."></div>
-      <div><label for="linkedin">💼 LinkedIn-Profil</label><input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/..."></div>
-      <div><label for="xing">🧑‍🎓 Xing-Profil</label><input type="url" id="xing" name="xing" placeholder="https://xing.com/profile/..."></div>
-      <div><label for="github">🐙 GitHub-Profil</label><input type="url" id="github" name="github" placeholder="https://github.com/..."></div>
-      <div><label for="tiktok">🎵 TikTok-Link</label><input type="url" id="tiktok" name="tiktok" placeholder="https://tiktok.com/@..."></div>
-      <div><label for="twitter">🐦 X / Twitter-Link</label><input type="url" id="twitter" name="twitter" placeholder="https://x.com/..."></div>
+      <div><label for="facebook">{{ t_fb }}</label><input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/..."></div>
+      <div><label for="instagram">{{ t_ig }}</label><input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/..."></div>
+      <div><label for="whatsapp">{{ t_wa }}</label><input type="url" id="whatsapp" name="whatsapp" placeholder="https://wa.me/..."></div>
+      <div><label for="linkedin">{{ t_li }}</label><input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/..."></div>
+      <div><label for="xing">{{ t_xing }}</label><input type="url" id="xing" name="xing" placeholder="https://xing.com/profile/..."></div>
+      <div><label for="github">{{ t_gh }}</label><input type="url" id="github" name="github" placeholder="https://github.com/..."></div>
+      <div><label for="tiktok">{{ t_tiktok }}</label><input type="url" id="tiktok" name="tiktok" placeholder="https://tiktok.com/@..."></div>
+      <div><label for="twitter">{{ t_x }}</label><input type="url" id="twitter" name="twitter" placeholder="https://x.com/..."></div>
     </div>
 
     <hr class="divider">

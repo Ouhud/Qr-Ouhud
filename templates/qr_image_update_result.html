@@ -1,17 +1,35 @@
 {% extends "base.html" %}
-{% block title %}♻️ Bild aktualisiert – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '♻️ Image updated – Ouhud QR' %}
+  {% set t_h1 = '♻️ Image updated successfully' %}
+  {% set t_sub = 'Your new image has been saved. The QR code remains valid.' %}
+  {% set t_file = '📁 New file:' %}
+  {% set t_view = '🖼️ View new image' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '♻️ تم تحديث الصورة – Ouhud QR' %}
+  {% set t_h1 = '♻️ تم تحديث الصورة بنجاح' %}
+  {% set t_sub = 'تم حفظ الصورة الجديدة. يظل رمز QR صالحًا.' %}
+  {% set t_file = '📁 الملف الجديد:' %}
+  {% set t_view = '🖼️ عرض الصورة الجديدة' %}
+{% else %}
+  {% set t_title = '♻️ Bild aktualisiert – Ouhud QR' %}
+  {% set t_h1 = '♻️ Bild erfolgreich aktualisiert' %}
+  {% set t_sub = 'Dein neues Bild wurde gespeichert. Der QR-Code bleibt weiterhin gültig.' %}
+  {% set t_file = '📁 Neue Datei:' %}
+  {% set t_view = '🖼️ Neues Bild ansehen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-update-section">
-  <h1>♻️ Bild erfolgreich aktualisiert</h1>
-  <p class="subtitle">
-    Dein neues Bild wurde gespeichert. Der QR-Code bleibt weiterhin gültig.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="update-info">
     <p><strong>{{ title }}</strong></p>
-    <p>📁 Neue Datei: {{ file_name }}</p>
-    <p><a href="{{ image_url }}" target="_blank" class="btn-link">🖼️ Neues Bild ansehen</a></p>
+    <p>{{ t_file }} {{ file_name }}</p>
+    <p><a href="{{ image_url }}" target="_blank" class="btn-link">{{ t_view }}</a></p>
   </div>
 </section>
 

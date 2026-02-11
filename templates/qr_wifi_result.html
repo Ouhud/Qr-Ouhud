@@ -1,27 +1,59 @@
 {% extends "base.html" %}
-{% block title %}✅ WLAN-QR-Code Ergebnis{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    ✅ Wi-Fi QR Result
+  {% elif request.state.lang == 'ar' %}
+    ✅ نتيجة QR الواي فاي
+  {% else %}
+    ✅ WLAN-QR-Code Ergebnis
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set w_title = '✅ Wi-Fi QR code created!' %}
+  {% set w_sub = 'Scan this code to connect to Wi-Fi automatically.' %}
+  {% set w_ssid = 'SSID:' %}
+  {% set w_encryption = 'Encryption:' %}
+  {% set w_password = 'Password:' %}
+  {% set w_open = '🔓 Open network' %}
+  {% set w_print = '🖨️ Print QR code' %}
+{% elif lang == 'ar' %}
+  {% set w_title = '✅ تم إنشاء رمز QR للواي فاي!' %}
+  {% set w_sub = 'امسح هذا الرمز للاتصال بالشبكة تلقائيًا.' %}
+  {% set w_ssid = 'اسم الشبكة:' %}
+  {% set w_encryption = 'التشفير:' %}
+  {% set w_password = 'كلمة المرور:' %}
+  {% set w_open = '🔓 شبكة مفتوحة' %}
+  {% set w_print = '🖨️ طباعة رمز QR' %}
+{% else %}
+  {% set w_title = '✅ WLAN-QR-Code erstellt!' %}
+  {% set w_sub = 'Scanne diesen Code, um dich automatisch mit dem WLAN zu verbinden.' %}
+  {% set w_ssid = 'SSID:' %}
+  {% set w_encryption = 'Verschlüsselung:' %}
+  {% set w_password = 'Passwort:' %}
+  {% set w_open = '🔓 Offenes Netzwerk' %}
+  {% set w_print = '🖨️ QR-Code drucken' %}
+{% endif %}
 <section class="qr-result">
-  <h1>✅ WLAN-QR-Code erstellt!</h1>
-  <p class="subtitle">
-    Scanne diesen Code, um dich automatisch mit dem WLAN zu verbinden.
-  </p>
+  <h1>{{ w_title }}</h1>
+  <p class="subtitle">{{ w_sub }}</p>
 
   <div class="qr-card">
     <img src="data:image/png;base64,{{ qr_image }}" alt="QR-Code Vorschau" class="qr-preview">
 
     <div class="qr-info">
-      <p><strong>SSID:</strong> {{ ssid }}</p>
-      <p><strong>Verschlüsselung:</strong> {{ encryption }}</p>
+      <p><strong>{{ w_ssid }}</strong> {{ ssid }}</p>
+      <p><strong>{{ w_encryption }}</strong> {{ encryption }}</p>
       {% if password %}
-        <p><strong>Passwort:</strong> {{ password }}</p>
+        <p><strong>{{ w_password }}</strong> {{ password }}</p>
       {% else %}
-        <p><strong>🔓 Offenes Netzwerk</strong></p>
+        <p><strong>{{ w_open }}</strong></p>
       {% endif %}
     </div>
 
-    <a href="#" class="btn-link no-print" onclick="window.print()">🖨️ QR-Code drucken</a>
+    <a href="#" class="btn-link no-print" onclick="window.print()">{{ w_print }}</a>
   </div>
 </section>
 

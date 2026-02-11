@@ -1,109 +1,233 @@
 {% extends "base.html" %}
-{% set title = "Impressum – Ouhud GmbH" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+
+{% block title %}
+  {% if lang == 'en' %}Legal Notice – Ouhud GmbH{% elif lang == 'ar' %}البيانات القانونية – Ouhud GmbH{% else %}Impressum – Ouhud GmbH{% endif %}
+{% endblock %}
 
 {% block content %}
 <main class="legal-container">
   <article class="legal-content">
-    <h1>📄 Impressum</h1>
+    {% if lang == 'en' %}
+      <h1>📄 Legal Notice</h1>
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 Company Information</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            Managing Director: <strong>Hamza Mehmalat</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Germany
+          </p>
+          <p>
+            📞 Phone: <a href="tel:+4915150012000">+49 151 50012000</a><br>
+            ✉️ E-mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            🌐 Website: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
 
-    <div class="grid md:grid-cols-2 gap-10">
-      <section>
-        <h2>🏢 Angaben gemäß § 5 TMG / Art. 14 CH-DSG</h2>
-        <p>
-          <strong>Ouhud GmbH</strong><br>
-          Geschäftsführer: <strong>Mohamad Hamza Mehmalat</strong><br>
-          Sundernholz 112<br>
-          45134 Essen, Deutschland<br>
-          (Zweigniederlassung Schweiz in Vorbereitung)
-        </p>
-        <p>
-          📞 Telefon: <a href="tel:+4915150012000">+49 151 50012000</a><br>
-          ✉️ E-Mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
-          🌐 Website: <a href="https://ouhud.com" target="_blank">https://ouhud.com</a>
-        </p>
-      </section>
+        <section>
+          <h2>⚖️ Commercial Register</h2>
+          <p>
+            Registered in the commercial register.<br>
+            Register Court: Local Court Essen<br>
+            Registration number (HRB): <strong>37368</strong>
+          </p>
 
-      <section>
-        <h2>⚖️ Registereintrag</h2>
-        <p>
-          Eingetragen im Handelsregister beim Amtsgericht Musterstadt<br>
-          Handelsregisternummer (HRB): <strong>123456</strong>
-        </p>
+          <h2>💰 VAT ID</h2>
+          <p>
+            VAT identification number according to § 27 a UStG:<br>
+            <strong>DE459182907</strong>
+          </p>
 
-        <h2>💰 Umsatzsteuer-ID</h2>
-        <p>
-          Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG:<br>
-          <strong>DE 123 456 789</strong>
-        </p>
+          <h2>👤 Authorized Representative</h2>
+          <p>
+            Hamza Mehmalat<br>
+            Managing Director of Ouhud GmbH
+          </p>
+        </section>
 
-        <h2>👤 Vertretungsberechtigt</h2>
-        <p>
-          Mohamad Hamza Mehmalat<br>
-          Geschäftsführer der Ouhud GmbH
-        </p>
-      </section>
+        <section>
+          <h2>📜 Liability for Content</h2>
+          <p>
+            We create the content of this website with great care. However, we cannot guarantee completeness,
+            accuracy or timeliness in all cases. Mandatory legal obligations remain unaffected.
+          </p>
+        </section>
 
-      <section>
-        <h2>📜 Haftung für Inhalte</h2>
-        <p>
-          Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
-          Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte
-          nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir nicht verpflichtet,
-          übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine
-          rechtswidrige Tätigkeit hinweisen.
-        </p>
-        <p>
-          Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.
-          Eine Haftung ist jedoch erst ab Kenntnis einer konkreten Rechtsverletzung möglich.
-          Bei Bekanntwerden entsprechender Verstöße entfernen wir die Inhalte umgehend.
-        </p>
-      </section>
+        <section>
+          <h2>🔗 Liability for Links</h2>
+          <p>
+            Our website may contain links to third-party websites. We have no influence on their content and
+            therefore cannot accept liability for external content.
+          </p>
+        </section>
 
-      <section>
-        <h2>🔗 Haftung für Links</h2>
-        <p>
-          Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
-          Deshalb können wir für diese fremden Inhalte keine Gewähr übernehmen.
-          Für den Inhalt der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich.
-        </p>
-        <p>
-          Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft,
-          rechtswidrige Inhalte waren zu diesem Zeitpunkt nicht erkennbar.
-          Eine dauerhafte inhaltliche Kontrolle ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.
-          Bei Bekanntwerden entfernen wir derartige Links sofort.
-        </p>
-      </section>
+        <section>
+          <h2>🧠 Copyright</h2>
+          <p>
+            Content created by Ouhud GmbH is subject to copyright law. Any use outside statutory limits
+            requires prior written permission.
+          </p>
+        </section>
 
-      <section>
-        <h2>🧠 Urheberrecht</h2>
-        <p>
-          Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.
-          Beiträge Dritter sind als solche gekennzeichnet.
-          Jede Verwertung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des Autors oder Erstellers.
-        </p>
-        <p>
-          Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
-          Sollten Sie eine Urheberrechtsverletzung bemerken, informieren Sie uns bitte.
-          Bei Bekanntwerden entfernen wir derartige Inhalte unverzüglich.
-        </p>
-      </section>
+        <section>
+          <h2>⚖️ EU Dispute Resolution</h2>
+          <p>
+            The European Commission provides a platform for online dispute resolution (ODR):<br>
+            <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>
+          </p>
+          <p>
+            We are not obliged and generally not willing to participate in consumer arbitration proceedings.
+          </p>
+        </section>
+      </div>
+    {% elif lang == 'ar' %}
+      <h1>📄 البيانات القانونية</h1>
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 معلومات الشركة</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            المدير العام: <strong>Hamza Mehmalat</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Germany
+          </p>
+          <p>
+            📞 الهاتف: <a href="tel:+4915150012000">+49 151 50012000</a><br>
+            ✉️ البريد: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            🌐 الموقع: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
 
-      <section>
-        <h2>⚖️ EU-Streitschlichtung / OS-Plattform</h2>
-        <p>
-          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br>
-          <a href="https://ec.europa.eu/consumers/odr" target="_blank">
-            https://ec.europa.eu/consumers/odr
-          </a><br>
-          Unsere E-Mail-Adresse finden Sie oben im Impressum.
-        </p>
-        <p>
-          Wir sind nicht verpflichtet und grundsätzlich nicht bereit, an Verbraucherschlichtungsverfahren teilzunehmen.
-        </p>
-      </section>
-    </div>
+        <section>
+          <h2>⚖️ السجل التجاري</h2>
+          <p>
+            مسجل في السجل التجاري.<br>
+            محكمة التسجيل: Amtsgericht Essen<br>
+            رقم السجل (HRB): <strong>37368</strong>
+          </p>
 
+          <h2>💰 رقم ضريبة القيمة المضافة</h2>
+          <p>
+            رقم ضريبة القيمة المضافة:<br>
+            <strong>DE459182907</strong>
+          </p>
 
+          <h2>👤 الممثل المخول</h2>
+          <p>
+            Hamza Mehmalat<br>
+            المدير العام لشركة Ouhud GmbH
+          </p>
+        </section>
+
+        <section>
+          <h2>📜 المسؤولية عن المحتوى</h2>
+          <p>
+            يتم إعداد محتوى الموقع بعناية كبيرة، لكن لا يمكن تقديم ضمان كامل للدقة أو الاكتمال أو التحديث الدائم.
+          </p>
+        </section>
+
+        <section>
+          <h2>🔗 المسؤولية عن الروابط</h2>
+          <p>
+            قد يحتوي الموقع على روابط لمواقع خارجية، ولا نتحمل مسؤولية محتواها.
+          </p>
+        </section>
+
+        <section>
+          <h2>🧠 حقوق النشر</h2>
+          <p>
+            محتوى الموقع يخضع لقوانين حقوق النشر، وأي استخدام خارج الإطار القانوني يتطلب موافقة خطية مسبقة.
+          </p>
+        </section>
+
+        <section>
+          <h2>⚖️ تسوية النزاعات في الاتحاد الأوروبي</h2>
+          <p>
+            منصة تسوية النزاعات عبر الإنترنت:<br>
+            <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>
+          </p>
+          <p>
+            لسنا ملزمين ولا نشارك عادةً في إجراءات تسوية نزاعات المستهلك.
+          </p>
+        </section>
+      </div>
+    {% else %}
+      <h1>📄 Impressum</h1>
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 Angaben gemäß § 5 TMG / Art. 14 CH-DSG</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            Geschäftsführer: <strong>Hamza Mehmalat</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Deutschland
+          </p>
+          <p>
+            📞 Telefon: <a href="tel:+4915150012000">+49 151 50012000</a><br>
+            ✉️ E-Mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            🌐 Website: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>⚖️ Registereintrag</h2>
+          <p>
+            Eingetragen im Handelsregister.<br>
+            Registergericht: Amtsgericht Essen<br>
+            Handelsregisternummer: <strong>HRB 37368</strong>
+          </p>
+
+          <h2>💰 Umsatzsteuer-ID</h2>
+          <p>
+            Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG:<br>
+            <strong>DE459182907</strong>
+          </p>
+
+          <h2>👤 Vertretungsberechtigt</h2>
+          <p>
+            Hamza Mehmalat<br>
+            Geschäftsführer der Ouhud GmbH
+          </p>
+        </section>
+
+        <section>
+          <h2>📜 Haftung für Inhalte</h2>
+          <p>
+            Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für Richtigkeit, Vollständigkeit und Aktualität
+            der Inhalte können wir jedoch keine Gewähr übernehmen.
+          </p>
+        </section>
+
+        <section>
+          <h2>🔗 Haftung für Links</h2>
+          <p>
+            Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.
+            Für diese Inhalte können wir keine Gewähr übernehmen.
+          </p>
+        </section>
+
+        <section>
+          <h2>🧠 Urheberrecht</h2>
+          <p>
+            Die erstellten Inhalte unterliegen dem deutschen Urheberrecht. Jede Verwertung außerhalb der gesetzlichen
+            Grenzen bedarf der schriftlichen Zustimmung.
+          </p>
+        </section>
+
+        <section>
+          <h2>⚖️ EU-Streitschlichtung / OS-Plattform</h2>
+          <p>
+            Plattform der EU-Kommission zur Online-Streitbeilegung:<br>
+            <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>
+          </p>
+          <p>
+            Wir sind nicht verpflichtet und grundsätzlich nicht bereit, an Verbraucherschlichtungsverfahren teilzunehmen.
+          </p>
+        </section>
+      </div>
+    {% endif %}
   </article>
 </main>
 {% endblock %}
@@ -128,10 +252,7 @@
 .legal-content p, .legal-content ul {margin-bottom:1rem;}
 .legal-content a {color:#4f46e5;}
 .grid {display:grid;gap:2rem;}
+html[lang="ar"] .legal-content {direction: rtl; text-align: right;}
 @media(min-width:768px){.grid{grid-template-columns:repeat(2,1fr);gap:2.5rem;}}
-.legal-footer {
-  border-top:1px solid #e5e7eb;margin-top:2rem;padding-top:1rem;
-  text-align:center;font-size:.9rem;color:#6b7280;
-}
 </style>
 {% endblock %}

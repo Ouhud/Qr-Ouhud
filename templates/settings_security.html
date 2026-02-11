@@ -1,189 +1,237 @@
 {% extends "base.html" %}
-{% block title %}🔒 Sicherheit – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set s_title = '🔒 Security – Ouhud QR' %}
+  {% set s_h1 = '🔒 Security' %}
+  {% set s_sub = 'Manage password, 2FA, login devices, API keys, and account deletion.' %}
+  {% set s_pw = 'Change password' %}
+  {% set s_old = 'Current password' %}
+  {% set s_new = 'New password' %}
+  {% set s_new2 = 'Confirm new password' %}
+  {% set s_save = '💾 Save password' %}
+  {% set s_2fa = 'Two-factor authentication (2FA)' %}
+  {% set s_2fa_sub = 'Add an extra security layer using an authenticator app.' %}
+  {% set s_status = 'Status:' %}
+  {% set s_active = 'Active' %}
+  {% set s_inactive = 'Not active' %}
+  {% set s_pwd_confirm = 'Password confirmation' %}
+  {% set s_code = 'Current 2FA code' %}
+  {% set s_disable_2fa = 'Disable 2FA' %}
+  {% set s_step1 = '1. Scan the QR code in Google Authenticator / Authy.' %}
+  {% set s_step2 = '2. If scanning fails, use this secret:' %}
+  {% set s_enter_code = 'Enter code from app' %}
+  {% set s_enable_2fa = 'Enable 2FA' %}
+  {% set s_start_2fa = 'Set up 2FA now' %}
+  {% set s_devices = 'Login devices' %}
+  {% set s_no_devices = 'No active login devices.' %}
+  {% set s_end_session = 'End session' %}
+  {% set s_api = 'API keys' %}
+  {% set s_api_sub = 'Use header X-API-Key: YOUR_KEY for external software.' %}
+  {% set s_api_base = 'API base:' %}
+  {% set s_api_once = 'New API key created. It is shown in full only once.' %}
+  {% set s_api_save = 'Store this key now in your password manager.' %}
+  {% set s_copy = 'Copy' %}
+  {% set s_copied = 'Key copied.' %}
+  {% set s_copy_fail = 'Copy failed. Please copy manually.' %}
+  {% set s_api_name = 'Key name' %}
+  {% set s_api_create = 'Create new API key' %}
+  {% set s_created = 'Created' %}
+  {% set s_last_used = 'Last used' %}
+  {% set s_actions = 'Actions' %}
+  {% set s_rename = 'Save' %}
+  {% set s_delete = 'Delete' %}
+  {% set s_no_keys = 'No API keys created yet.' %}
+  {% set s_danger = 'Delete account' %}
+  {% set s_danger_sub = 'Warning: your account will be permanently deleted. This cannot be undone.' %}
+  {% set s_danger_btn = '❌ Delete account permanently' %}
+  {% set s_confirm = 'Are you sure? This action cannot be undone.' %}
+{% elif lang == 'ar' %}
+  {% set s_title = '🔒 الأمان – Ouhud QR' %}
+  {% set s_h1 = '🔒 الأمان' %}
+  {% set s_sub = 'إدارة كلمة المرور و2FA وأجهزة الدخول ومفاتيح API وحذف الحساب.' %}
+  {% set s_pw = 'تغيير كلمة المرور' %}
+  {% set s_old = 'كلمة المرور الحالية' %}
+  {% set s_new = 'كلمة المرور الجديدة' %}
+  {% set s_new2 = 'تأكيد كلمة المرور الجديدة' %}
+  {% set s_save = '💾 حفظ كلمة المرور' %}
+  {% set s_2fa = 'المصادقة الثنائية (2FA)' %}
+  {% set s_2fa_sub = 'أضف طبقة أمان إضافية عبر تطبيق المصادقة.' %}
+  {% set s_status = 'الحالة:' %}
+  {% set s_active = 'نشط' %}
+  {% set s_inactive = 'غير نشط' %}
+  {% set s_pwd_confirm = 'تأكيد كلمة المرور' %}
+  {% set s_code = 'رمز 2FA الحالي' %}
+  {% set s_disable_2fa = 'تعطيل 2FA' %}
+  {% set s_step1 = '1. امسح رمز QR عبر Google Authenticator / Authy.' %}
+  {% set s_step2 = '2. إذا تعذر المسح استخدم هذا السر:' %}
+  {% set s_enter_code = 'أدخل رمز التطبيق' %}
+  {% set s_enable_2fa = 'تفعيل 2FA' %}
+  {% set s_start_2fa = 'إعداد 2FA الآن' %}
+  {% set s_devices = 'أجهزة تسجيل الدخول' %}
+  {% set s_no_devices = 'لا توجد أجهزة نشطة.' %}
+  {% set s_end_session = 'إنهاء الجلسة' %}
+  {% set s_api = 'مفاتيح API' %}
+  {% set s_api_sub = 'استخدم الترويسة X-API-Key: YOUR_KEY للأنظمة الخارجية.' %}
+  {% set s_api_base = 'مسار API:' %}
+  {% set s_api_once = 'تم إنشاء مفتاح API جديد. سيظهر كاملًا مرة واحدة فقط.' %}
+  {% set s_api_save = 'احفظ المفتاح الآن في مدير كلمات المرور.' %}
+  {% set s_copy = 'نسخ' %}
+  {% set s_copied = 'تم نسخ المفتاح.' %}
+  {% set s_copy_fail = 'فشل النسخ. يرجى النسخ يدويًا.' %}
+  {% set s_api_name = 'اسم المفتاح' %}
+  {% set s_api_create = 'إنشاء مفتاح API جديد' %}
+  {% set s_created = 'تم الإنشاء' %}
+  {% set s_last_used = 'آخر استخدام' %}
+  {% set s_actions = 'الإجراءات' %}
+  {% set s_rename = 'حفظ' %}
+  {% set s_delete = 'حذف' %}
+  {% set s_no_keys = 'لا توجد مفاتيح API بعد.' %}
+  {% set s_danger = 'حذف الحساب' %}
+  {% set s_danger_sub = 'تحذير: سيتم حذف حسابك نهائيًا ولا يمكن التراجع.' %}
+  {% set s_danger_btn = '❌ حذف الحساب نهائيًا' %}
+  {% set s_confirm = 'هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.' %}
+{% else %}
+  {% set s_title = '🔒 Sicherheit – Ouhud QR' %}
+  {% set s_h1 = '🔒 Sicherheit' %}
+  {% set s_sub = 'Verwalte Passwort, 2FA, Login-Geräte, API-Schlüssel und Konto-Löschung.' %}
+  {% set s_pw = 'Passwort ändern' %}
+  {% set s_old = 'Aktuelles Passwort' %}
+  {% set s_new = 'Neues Passwort' %}
+  {% set s_new2 = 'Neues Passwort bestätigen' %}
+  {% set s_save = '💾 Passwort speichern' %}
+  {% set s_2fa = 'Zwei-Faktor-Authentifizierung (2FA)' %}
+  {% set s_2fa_sub = 'Aktiviere eine zusätzliche Sicherheitsstufe per Authenticator-App.' %}
+  {% set s_status = 'Status:' %}
+  {% set s_active = 'Aktiv' %}
+  {% set s_inactive = 'Nicht aktiv' %}
+  {% set s_pwd_confirm = 'Passwort zur Bestätigung' %}
+  {% set s_code = 'Aktueller 2FA-Code' %}
+  {% set s_disable_2fa = '2FA deaktivieren' %}
+  {% set s_step1 = '1. QR-Code in Google Authenticator / Authy scannen.' %}
+  {% set s_step2 = '2. Falls Scan nicht geht, diesen Secret verwenden:' %}
+  {% set s_enter_code = 'Code aus App eingeben' %}
+  {% set s_enable_2fa = '2FA aktivieren' %}
+  {% set s_start_2fa = '2FA jetzt einrichten' %}
+  {% set s_devices = 'Login-Geräte' %}
+  {% set s_no_devices = 'Keine aktiven Geräte angemeldet.' %}
+  {% set s_end_session = 'Sitzung beenden' %}
+  {% set s_api = 'API-Schlüssel' %}
+  {% set s_api_sub = 'Nutze Header X-API-Key: DEIN_KEY für externe Software.' %}
+  {% set s_api_base = 'API Basis:' %}
+  {% set s_api_once = 'Neuer API-Schlüssel erstellt. Er wird nur jetzt vollständig angezeigt.' %}
+  {% set s_api_save = 'Speichere den Schlüssel jetzt sicher in deinem Passwort-Manager.' %}
+  {% set s_copy = 'Kopieren' %}
+  {% set s_copied = 'Schlüssel kopiert.' %}
+  {% set s_copy_fail = 'Kopieren fehlgeschlagen. Bitte manuell markieren und kopieren.' %}
+  {% set s_api_name = 'Name des Schlüssels' %}
+  {% set s_api_create = 'Neuen API-Schlüssel erstellen' %}
+  {% set s_created = 'Erstellt' %}
+  {% set s_last_used = 'Zuletzt genutzt' %}
+  {% set s_actions = 'Aktionen' %}
+  {% set s_rename = 'Speichern' %}
+  {% set s_delete = 'Löschen' %}
+  {% set s_no_keys = 'Noch keine API-Schlüssel erstellt.' %}
+  {% set s_danger = 'Konto löschen' %}
+  {% set s_danger_sub = 'Achtung: Dein Konto wird dauerhaft entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.' %}
+  {% set s_danger_btn = '❌ Konto endgültig löschen' %}
+  {% set s_confirm = 'Bist du sicher? Dieser Vorgang kann nicht rückgängig gemacht werden.' %}
+{% endif %}
+{% block title %}{{ s_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator pdf-generator">
+  <h1>{{ s_h1 }}</h1>
+  <p class="subtitle">{{ s_sub }}</p>
 
-  <h1>🔒 Sicherheit</h1>
-  <p class="subtitle">
-    Verwalte die sicherheitsrelevanten Einstellungen deines Kontos: Passwort, 2FA,
-    Login-Geräte, API-Schlüssel und Konto-Löschung.
-  </p>
-
-  <!-- ✅ PASSWORT ÄNDERN -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-key-fill"></i> Passwort ändern</h2>
-
-    {% if request.query_params.get("msg") == "updated" %}
-      <div class="alert success">✅ Passwort erfolgreich geändert.</div>
-    {% elif request.query_params.get("msg") == "device_removed" %}
-      <div class="alert success">✅ Sitzung wurde beendet.</div>
-    {% elif request.query_params.get("error") == "wrong_old" %}
-      <div class="alert error">❌ Das alte Passwort ist falsch.</div>
-    {% elif request.query_params.get("error") == "nomatch" %}
-      <div class="alert error">⚠️ Die neuen Passwörter stimmen nicht überein.</div>
-    {% elif request.query_params.get("error") == "device_not_found" %}
-      <div class="alert error">❌ Gerät wurde nicht gefunden.</div>
-    {% endif %}
-
+    <h2 class="form-title">{{ s_pw }}</h2>
+    {% if request.query_params.get("msg") == "updated" %}<div class="alert success">✅</div>{% endif %}
+    {% if request.query_params.get("error") %}<div class="alert error">⚠️ {{ request.query_params.get("error") }}</div>{% endif %}
     <form method="post" action="/settings/security/change-password" class="space-y">
-      <div class="form-group">
-        <label>Aktuelles Passwort</label>
-        <input type="password" name="old_password" required>
-      </div>
-
-      <div class="form-group">
-        <label>Neues Passwort</label>
-        <input type="password" name="new_password" required>
-      </div>
-
-      <div class="form-group">
-        <label>Neues Passwort bestätigen</label>
-        <input type="password" name="confirm_password" required>
-      </div>
-
-      <button type="submit" class="btn-primary w-full">
-        💾 Passwort speichern
-      </button>
+      <div class="form-group"><label>{{ s_old }}</label><input type="password" name="old_password" required></div>
+      <div class="form-group"><label>{{ s_new }}</label><input type="password" name="new_password" required></div>
+      <div class="form-group"><label>{{ s_new2 }}</label><input type="password" name="confirm_password" required></div>
+      <button type="submit" class="btn-primary w-full">{{ s_save }}</button>
     </form>
   </div>
 
   <hr class="divider">
 
-  <!-- ✅ 2FA -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-shield-lock-fill"></i> Zwei-Faktor-Authentifizierung (2FA)</h2>
-    <p class="info-text">Aktiviere eine zusätzliche Sicherheitsstufe für dein Konto (Authenticator-App).</p>
-
-    {% if request.query_params.get("msg") == "2fa_enabled" %}
-      <div class="alert success">✅ 2FA ist jetzt aktiv.</div>
-    {% elif request.query_params.get("msg") == "2fa_disabled" %}
-      <div class="alert success">✅ 2FA wurde deaktiviert.</div>
-    {% elif request.query_params.get("error") == "2fa_invalid_code" %}
-      <div class="alert error">❌ Ungültiger 2FA-Code.</div>
-    {% elif request.query_params.get("error") == "2fa_wrong_password" %}
-      <div class="alert error">❌ Passwort ist falsch.</div>
-    {% endif %}
+    <h2 class="form-title">{{ s_2fa }}</h2>
+    <p class="info-text">{{ s_2fa_sub }}</p>
 
     {% if twofa_enabled %}
-      <div class="info-text"><strong>Status:</strong> Aktiv</div>
+      <div class="info-text"><strong>{{ s_status }}</strong> {{ s_active }}</div>
       <form method="post" action="/settings/security/2fa/disable" class="space-y">
-        <div class="form-group">
-          <label>Passwort zur Bestätigung</label>
-          <input type="password" name="password" required>
-        </div>
-        <div class="form-group">
-          <label>Aktueller 2FA-Code</label>
-          <input type="text" name="otp_code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required>
-        </div>
-        <button class="btn-danger w-full" type="submit">2FA deaktivieren</button>
+        <div class="form-group"><label>{{ s_pwd_confirm }}</label><input type="password" name="password" required></div>
+        <div class="form-group"><label>{{ s_code }}</label><input type="text" name="otp_code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required></div>
+        <button class="btn-danger w-full" type="submit">{{ s_disable_2fa }}</button>
       </form>
     {% else %}
       {% if twofa_qr %}
         <div class="twofa-setup">
-          <p class="info-text">1. QR-Code in Google Authenticator / Authy scannen.</p>
+          <p class="info-text">{{ s_step1 }}</p>
           <img src="{{ twofa_qr }}" alt="2FA Setup QR" class="twofa-qr">
-          <p class="info-text">2. Falls Scan nicht geht, diesen Secret verwenden:</p>
+          <p class="info-text">{{ s_step2 }}</p>
           <div class="api-box">{{ twofa_secret }}</div>
           <form method="post" action="/settings/security/2fa/confirm" class="space-y" style="margin-top:1rem;">
-            <div class="form-group">
-              <label>Code aus App eingeben</label>
-              <input type="text" name="otp_code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required>
-            </div>
-            <button class="btn-primary w-full" type="submit">2FA aktivieren</button>
+            <div class="form-group"><label>{{ s_enter_code }}</label><input type="text" name="otp_code" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required></div>
+            <button class="btn-primary w-full" type="submit">{{ s_enable_2fa }}</button>
           </form>
         </div>
       {% else %}
-        <div class="info-text"><strong>Status:</strong> Nicht aktiv</div>
-        <form method="post" action="/settings/security/2fa/start">
-          <button class="btn-primary w-full" type="submit">2FA jetzt einrichten</button>
-        </form>
+        <div class="info-text"><strong>{{ s_status }}</strong> {{ s_inactive }}</div>
+        <form method="post" action="/settings/security/2fa/start"><button class="btn-primary w-full" type="submit">{{ s_start_2fa }}</button></form>
       {% endif %}
     {% endif %}
   </div>
 
   <hr class="divider">
 
-  <!-- ✅ LOGIN-GERÄTE -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-laptop"></i> Login-Geräte</h2>
-
+    <h2 class="form-title">{{ s_devices }}</h2>
     {% if devices and devices|length > 0 %}
       <ul class="device-list">
         {% for d in devices %}
         <li class="device-entry">
-          <div>
-            <strong>{{ d.device }}</strong><br>
-            <span class="device-meta">
-              IP: {{ d.ip }} • {{ d.last_login }}
-            </span>
-          </div>
-
-          <a href="/settings/security/device/remove/{{ d.id }}" class="btn-danger-sm">
-            Sitzung beenden
-          </a>
+          <div><strong>{{ d.device }}</strong><br><span class="device-meta">IP: {{ d.ip }} • {{ d.last_login }}</span></div>
+          <a href="/settings/security/device/remove/{{ d.id }}" class="btn-danger-sm">{{ s_end_session }}</a>
         </li>
         {% endfor %}
       </ul>
     {% else %}
-      <p class="info-text">Keine aktiven Geräte angemeldet.</p>
+      <p class="info-text">{{ s_no_devices }}</p>
     {% endif %}
   </div>
 
   <hr class="divider">
 
-  <!-- ✅ API-KEYS -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-key"></i> API-Schluessel</h2>
-    <p class="info-text">Nutze Header <code>X-API-Key: DEIN_KEY</code> fuer externe Software.</p>
-    <p class="info-text">API Basis: <code>/api/v1</code> (z. B. <code>GET /api/v1/qrs</code>)</p>
+    <h2 class="form-title">{{ s_api }}</h2>
+    <p class="info-text">{{ s_api_sub }}</p>
+    <p class="info-text">{{ s_api_base }} <code>/api/v1</code></p>
 
     {% if newly_created_api_key %}
-      <div class="alert success">Neuer API-Schluessel erstellt. Er wird nur jetzt einmal vollstaendig angezeigt.</div>
+      <div class="alert success">{{ s_api_once }}</div>
       <div class="api-key-once">
         <input id="new-api-key" type="text" value="{{ newly_created_api_key }}" readonly>
-        <button id="copy-key-btn" type="button" class="btn-primary" onclick="copyApiKey()">Kopieren</button>
+        <button id="copy-key-btn" type="button" class="btn-primary" onclick="copyApiKey()">{{ s_copy }}</button>
       </div>
       <p id="copy-key-status" class="info-text" style="margin-top:.35rem;"></p>
-      <p class="info-text"><strong>Wichtig:</strong> Nach Verlassen dieser Seite wird der volle Schluessel nicht mehr angezeigt.</p>
-      <div class="alert error">Speichere den Schluessel jetzt sicher in deinem Passwort-Manager.</div>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-        <button type="button" class="btn-primary" onclick="copyApiKey()">Jetzt kopieren</button>
-        <button type="button" class="btn-danger" onclick="document.getElementById('new-api-key').value='';">Ausblenden</button>
-      </div>
-    {% endif %}
-
-    {% if request.query_params.get("msg") == "api_key_created" %}
-      <div class="alert success">✅ API-Schluessel erstellt.</div>
-    {% elif request.query_params.get("msg") == "api_key_renamed" %}
-      <div class="alert success">✅ API-Schluessel umbenannt.</div>
-    {% elif request.query_params.get("msg") == "api_key_deleted" %}
-      <div class="alert success">✅ API-Schluessel geloescht.</div>
-    {% elif request.query_params.get("error") == "api_key_name_exists" %}
-      <div class="alert error">❌ Dieser Schluesselname existiert bereits. Bitte einen anderen Namen nutzen.</div>
-    {% elif request.query_params.get("error") == "api_key_not_found" %}
-      <div class="alert error">❌ API-Schluessel nicht gefunden.</div>
+      <div class="alert error">{{ s_api_save }}</div>
     {% endif %}
 
     <form method="post" action="/settings/security/api-keys/create" class="space-y" style="margin-bottom:1rem;">
-      <div class="form-group">
-        <label>Name des Schluessels</label>
-        <input type="text" name="name" placeholder="z. B. CRM Integration" required>
-      </div>
-      <button class="btn-primary" type="submit">Neuen API-Schluessel erstellen</button>
+      <div class="form-group"><label>{{ s_api_name }}</label><input type="text" name="name" placeholder="CRM Integration" required></div>
+      <button class="btn-primary" type="submit">{{ s_api_create }}</button>
     </form>
 
     {% if api_keys and api_keys|length > 0 %}
       <div style="overflow:auto;">
         <table class="api-table">
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Schluessel</th>
-              <th>Erstellt</th>
-              <th>Zuletzt genutzt</th>
-              <th>Aktionen</th>
-            </tr>
+            <tr><th>Name</th><th>Key</th><th>{{ s_created }}</th><th>{{ s_last_used }}</th><th>{{ s_actions }}</th></tr>
           </thead>
           <tbody>
             {% for k in api_keys %}
@@ -191,15 +239,15 @@
                 <td>
                   <form method="post" action="/settings/security/api-keys/{{ k.id }}/rename" style="display:flex;gap:.4rem;align-items:center;">
                     <input type="text" name="name" value="{{ k.name }}" style="min-width:160px;">
-                    <button class="btn-primary" type="submit">Speichern</button>
+                    <button class="btn-primary" type="submit">{{ s_rename }}</button>
                   </form>
                 </td>
                 <td><code>{{ k.prefix }}...{{ k.last4 }}</code></td>
                 <td>{{ k.created_at.strftime("%d.%m.%Y %H:%M") if k.created_at else "-" }}</td>
                 <td>{{ k.last_used_at.strftime("%d.%m.%Y %H:%M") if k.last_used_at else "-" }}</td>
                 <td>
-                  <form method="post" action="/settings/security/api-keys/{{ k.id }}/delete" onsubmit="return confirm('API-Schluessel wirklich loeschen?');">
-                    <button class="btn-danger" type="submit">Loeschen</button>
+                  <form method="post" action="/settings/security/api-keys/{{ k.id }}/delete" onsubmit="return confirm('{{ s_confirm }}');">
+                    <button class="btn-danger" type="submit">{{ s_delete }}</button>
                   </form>
                 </td>
               </tr>
@@ -208,197 +256,52 @@
         </table>
       </div>
     {% else %}
-      <p class="info-text">Noch keine API-Schluessel erstellt.</p>
+      <p class="info-text">{{ s_no_keys }}</p>
     {% endif %}
   </div>
+
   <hr class="divider">
 
-  <!-- ✅ KONTO LÖSCHEN -->
   <div class="qr-form danger-zone">
-    <h2 class="form-title text-red"><i class="bi bi-trash-fill"></i> Konto löschen</h2>
-    <p class="info-text text-red">
-      Achtung: Dein Konto wird dauerhaft entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.
-    </p>
-
-    <form method="post" action="/settings/security/delete-account"
-          onsubmit="return confirm('Bist du sicher? Dieser Vorgang kann nicht rückgängig gemacht werden.');">
-
-      <button class="btn-danger w-full">❌ Konto endgültig löschen</button>
+    <h2 class="form-title text-red">{{ s_danger }}</h2>
+    <p class="info-text text-red">{{ s_danger_sub }}</p>
+    <form method="post" action="/settings/security/delete-account" onsubmit="return confirm('{{ s_confirm }}');">
+      <button class="btn-danger w-full">{{ s_danger_btn }}</button>
     </form>
   </div>
-
 </section>
 
-
-<!-- ✅ CSS exakt wie PDF-Seite -->
 <style>
-
-.qr-generator {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.qr-generator h1 {
-  font-size: 2rem;
-  margin-bottom: .5rem;
-}
-
-.subtitle {
-  margin-bottom: 2rem;
-  color: #64748b;
-}
-
-.qr-form {
-  background: #fff;
-  padding: 1.6rem;
-  border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
-}
-
-.form-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  font-weight: 600;
-  margin-bottom: .3rem;
-  display: block;
-}
-
-input {
-  width: 100%;
-  padding: .6rem .8rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  padding: .7rem 1rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: .2s;
-}
-
-.btn-primary:hover {
-  background: #1d4ed8;
-}
-
-.btn-danger {
-  background: #dc2626;
-  color: #fff;
-  padding: .75rem 1rem;
-  border-radius: 10px;
-}
-
-.api-key-once {
-  display: flex;
-  gap: .6rem;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.api-key-once input {
-  flex: 1;
-  min-width: 320px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  letter-spacing: .2px;
-  background: #f8fafc;
-}
-
-.api-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.api-table th, .api-table td {
-  padding: .6rem .4rem;
-  border-bottom: 1px solid #e2e8f0;
-  text-align: left;
-}
-
-.btn-danger-sm {
-  color: #dc2626;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.btn-disabled {
-  background: #e5e7eb;
-  color: #9ca3af;
-  padding: .7rem;
-  border-radius: 10px;
-  cursor: not-allowed;
-}
-
-.divider {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 2rem 0;
-}
-
-.device-entry {
-  background: #f8fafc;
-  padding: .9rem 1rem;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.api-box {
-  background: #f1f5f9;
-  border: 1px solid #d1d5db;
-  padding: .8rem;
-  border-radius: 8px;
-  word-break: break-all;
-}
-.twofa-setup {
-  text-align: center;
-}
-.twofa-qr {
-  width: 220px;
-  max-width: 100%;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fff;
-  padding: .5rem;
-}
-
-.alert {
-  padding: .7rem;
-  border-radius: 10px;
-  font-weight: 600;
-}
-
-.alert.success {
-  background: #ecfdf5;
-  color: #15803d;
-}
-
-.alert.error {
-  background: #fef2f2;
-  color: #b91c1c;
-}
-
+.qr-generator { max-width: 720px; margin: 0 auto; padding: 2rem 1rem; }
+.qr-generator h1 { font-size: 2rem; margin-bottom: .5rem; }
+.subtitle { margin-bottom: 2rem; color: #64748b; }
+.qr-form { background:#fff; padding:1.6rem; border-radius:18px; border:1px solid #e2e8f0; box-shadow:0 3px 8px rgba(0,0,0,0.05); margin-bottom:2rem; }
+.form-title { font-size:1.25rem; font-weight:600; margin-bottom:1rem; color:var(--primary); }
+.form-group { margin-bottom:1rem; }
+.form-group label { font-weight:600; margin-bottom:.3rem; display:block; }
+input { width:100%; padding:.6rem .8rem; border:1px solid #cbd5e1; border-radius:8px; }
+.btn-primary { background:var(--accent); color:#fff; padding:.7rem 1rem; border-radius:10px; font-weight:600; border:0; cursor:pointer; }
+.btn-danger { background:#dc2626; color:#fff; padding:.75rem 1rem; border-radius:10px; border:0; cursor:pointer; }
+.api-key-once { display:flex; gap:.6rem; align-items:center; margin-bottom:1rem; flex-wrap:wrap; }
+.api-key-once input { flex:1; min-width:320px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background:#f8fafc; }
+.api-table { width:100%; border-collapse:collapse; }
+.api-table th, .api-table td { padding:.6rem .4rem; border-bottom:1px solid #e2e8f0; text-align:left; }
+.btn-danger-sm { color:#dc2626; font-weight:600; text-decoration:none; }
+.divider { border:none; border-top:1px solid #e5e7eb; margin:2rem 0; }
+.device-entry { background:#f8fafc; padding:.9rem 1rem; border-radius:12px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; }
+.api-box { background:#f1f5f9; border:1px solid #d1d5db; padding:.8rem; border-radius:8px; word-break:break-all; }
+.twofa-setup { text-align:center; }
+.twofa-qr { width:220px; max-width:100%; border:1px solid #e2e8f0; border-radius:12px; background:#fff; padding:.5rem; }
+.alert { padding:.7rem; border-radius:10px; font-weight:600; margin-bottom:.7rem; }
+.alert.success { background:#ecfdf5; color:#15803d; }
+.alert.error { background:#fef2f2; color:#b91c1c; }
 </style>
 
 <script>
+const COPY_OK = {{ s_copied | tojson }};
+const COPY_FAIL = {{ s_copy_fail | tojson }};
+const COPY_LABEL = {{ s_copy | tojson }};
+
 function copyApiKey() {
   const input = document.getElementById("new-api-key");
   const status = document.getElementById("copy-key-status");
@@ -407,14 +310,14 @@ function copyApiKey() {
 
   const value = input.value || "";
   const markSuccess = () => {
-    if (status) status.textContent = "Schluessel kopiert.";
-    if (btn) btn.textContent = "Kopiert";
+    if (status) status.textContent = COPY_OK;
+    if (btn) btn.textContent = COPY_OK;
     setTimeout(() => {
-      if (btn) btn.textContent = "Kopieren";
+      if (btn) btn.textContent = COPY_LABEL;
     }, 1500);
   };
   const markError = () => {
-    if (status) status.textContent = "Kopieren fehlgeschlagen. Bitte manuell markieren und kopieren.";
+    if (status) status.textContent = COPY_FAIL;
   };
 
   if (navigator.clipboard && window.isSecureContext) {
@@ -443,5 +346,4 @@ function copyApiKey() {
   }
 }
 </script>
-
 {% endblock %}

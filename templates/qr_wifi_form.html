@@ -1,47 +1,73 @@
 {% extends "base.html" %}
-{% block title %}📶 WLAN-QR-Code Generator – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📶 Wi-Fi QR Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📶 Wi-Fi QR Code Generator' %}
+  {% set t_sub = 'Create a professional QR code to share your Wi-Fi easily.' %}
+  {% set t_ssid = '📡 Wi-Fi name (SSID):' %}
+  {% set t_pwd = '🔑 Password:' %}
+  {% set t_enc = '🔒 Encryption:' %}
+  {% set t_none = 'None' %}
+  {% set t_hidden = '🔕 Hidden network' %}
+  {% set p_ssid = 'e.g. Ouhud-Office' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📶 مولد QR للواي فاي – Ouhud QR' %}
+  {% set t_h1 = '📶 مولد QR للواي فاي' %}
+  {% set t_sub = 'أنشئ رمز QR احترافي لمشاركة شبكة الواي فاي بسهولة.' %}
+  {% set t_ssid = '📡 اسم الشبكة (SSID):' %}
+  {% set t_pwd = '🔑 كلمة المرور:' %}
+  {% set t_enc = '🔒 التشفير:' %}
+  {% set t_none = 'بدون' %}
+  {% set t_hidden = '🔕 شبكة مخفية' %}
+  {% set p_ssid = 'مثال: Ouhud-Office' %}
+{% else %}
+  {% set t_title = '📶 WLAN-QR-Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📶 WLAN-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen professionellen QR-Code, um dein WLAN bequem zu teilen.' %}
+  {% set t_ssid = '📡 WLAN-Name (SSID):' %}
+  {% set t_pwd = '🔑 Passwort:' %}
+  {% set t_enc = '🔒 Verschlüsselung:' %}
+  {% set t_none = 'Keine' %}
+  {% set t_hidden = '🔕 Verstecktes Netzwerk' %}
+  {% set p_ssid = 'z. B. Ouhud-Office' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator wifi-generator">
-  <h1>📶 WLAN-QR-Code Generator</h1>
-  <p class="subtitle">
-    Erstelle einen professionellen QR-Code, um dein WLAN bequem zu teilen.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
-  <!-- 🔧 Wichtig: kein multipart/enctype -->
   <form method="post" action="/qr/wifi/generate" enctype="multipart/form-data" class="qr-form">
-
-    <!-- 📡 WLAN-Daten -->
     <div class="form-group">
-      <label for="ssid">📡 WLAN-Name (SSID):</label>
-      <input type="text" id="ssid" name="ssid" placeholder="z. B. Ouhud-Office" required>
+      <label for="ssid">{{ t_ssid }}</label>
+      <input type="text" id="ssid" name="ssid" placeholder="{{ p_ssid }}" required>
     </div>
 
     <div class="form-group">
-      <label for="password">🔑 Passwort:</label>
+      <label for="password">{{ t_pwd }}</label>
       <input type="text" id="password" name="password" placeholder="••••••••">
     </div>
 
     <div class="form-group">
-      <label for="encryption">🔒 Verschlüsselung:</label>
+      <label for="encryption">{{ t_enc }}</label>
       <select id="encryption" name="encryption">
         <option value="WPA" selected>WPA/WPA2/WPA3</option>
         <option value="WEP">WEP</option>
-        <option value="nopass">Keine</option>
+        <option value="nopass">{{ t_none }}</option>
       </select>
     </div>
 
     <div class="form-group checkbox">
-      <input type="hidden" name="hidden" value="false"> <!-- 👈 sendet immer false -->
+      <input type="hidden" name="hidden" value="false">
       <label>
         <input type="checkbox" name="hidden" value="true">
-        🔕 Verstecktes Netzwerk
+        {{ t_hidden }}
       </label>
     </div>
 
     <hr class="divider">
 
-    <!-- 🎨 Designauswahl -->
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

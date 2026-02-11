@@ -1,10 +1,21 @@
 {% extends "base.html" %}
-{% block title %}{{ data.title or "Multi-Link" }}{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_default_title = 'Multi-Link' %}
+  {% set t_default_h1 = 'Links' %}
+{% elif lang == 'ar' %}
+  {% set t_default_title = 'روابط متعددة' %}
+  {% set t_default_h1 = 'روابط' %}
+{% else %}
+  {% set t_default_title = 'Multi-Link' %}
+  {% set t_default_h1 = 'Links' %}
+{% endif %}
+{% block title %}{{ data.title or t_default_title }}{% endblock %}
 
 {% block content %}
 <section class="multilink-view text-center">
   <div class="container">
-    <h1>{{ data.title or "Links" }}</h1>
+    <h1>{{ data.title or t_default_h1 }}</h1>
     <div class="links">
       {% if data.link1 %}
         <p><a href="{{ data.link1 }}" target="_blank" class="btn primary">{{ data.link1 }}</a></p>

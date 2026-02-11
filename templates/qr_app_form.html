@@ -1,14 +1,40 @@
 {% extends "base.html" %}
-{% block title %}App Deep Link QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'App Deep Link QR' %}
+  {% set t_h1 = '📲 App Deep Link QR' %}
+  {% set t_deep = 'Deep Link *' %}
+  {% set t_ios = 'iOS Store URL' %}
+  {% set t_android = 'Android Store URL' %}
+  {% set t_web = 'Web fallback URL' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'App Deep Link QR' %}
+  {% set t_h1 = '📲 رمز QR للرابط العميق للتطبيق' %}
+  {% set t_deep = 'الرابط العميق *' %}
+  {% set t_ios = 'رابط متجر iOS' %}
+  {% set t_android = 'رابط متجر Android' %}
+  {% set t_web = 'رابط ويب احتياطي' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'App Deep Link QR' %}
+  {% set t_h1 = '📲 App-Deep-Link QR' %}
+  {% set t_deep = 'Deep Link *' %}
+  {% set t_ios = 'iOS Store URL' %}
+  {% set t_android = 'Android Store URL' %}
+  {% set t_web = 'Web Fallback URL' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>📲 App-Deep-Link QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/app/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Deep Link *</label><input type="url" name="deep_link" required placeholder="myapp://open/screen">
-    <label>iOS Store URL</label><input type="url" name="ios_store_url">
-    <label>Android Store URL</label><input type="url" name="android_store_url">
-    <label>Web Fallback URL</label><input type="url" name="web_fallback_url">
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_deep }}</label><input type="url" name="deep_link" required placeholder="myapp://open/screen">
+    <label>{{ t_ios }}</label><input type="url" name="ios_store_url">
+    <label>{{ t_android }}</label><input type="url" name="android_store_url">
+    <label>{{ t_web }}</label><input type="url" name="web_fallback_url">
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

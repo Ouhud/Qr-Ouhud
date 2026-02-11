@@ -1,26 +1,47 @@
 {% extends "base.html" %}
-{% block title %}📞 QR-Code Ergebnis – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📞 QR code result – Ouhud QR' %}
+  {% set t_h1 = '✅ QR code created successfully!' %}
+  {% set t_sub = 'Scan the code to call <strong>%s</strong> directly.' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_download = '⬇️ Download' %}
+  {% set t_new = '🔙 New code' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📞 نتيجة رمز QR – Ouhud QR' %}
+  {% set t_h1 = '✅ تم إنشاء رمز QR بنجاح!' %}
+  {% set t_sub = 'امسح الرمز للاتصال مباشرة بـ <strong>%s</strong>.' %}
+  {% set t_dyn = 'الرابط الديناميكي:' %}
+  {% set t_download = '⬇️ تنزيل' %}
+  {% set t_new = '🔙 رمز جديد' %}
+{% else %}
+  {% set t_title = '📞 QR-Code Ergebnis – Ouhud QR' %}
+  {% set t_h1 = '✅ QR-Code erfolgreich erstellt!' %}
+  {% set t_sub = 'Scanne den Code, um <strong>%s</strong> direkt anzurufen.' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_download = '⬇️ Herunterladen' %}
+  {% set t_new = '🔙 Neuen Code' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-style-section">
   <div class="container text-center">
     <div class="custom-design">
-      <h2>✅ QR-Code erfolgreich erstellt!</h2>
-      <p class="subtitle">
-        Scanne den Code, um <strong>{{ phone }}</strong> direkt anzurufen.
-      </p>
+      <h2>{{ t_h1 }}</h2>
+      <p class="subtitle">{{ t_sub|format(phone)|safe }}</p>
 
       <img src="data:image/png;base64,{{ qr_image }}" alt="Telefon-QR-Code" class="qr-preview">
 
       {% if dynamic_url %}
       <p class="subtitle">
-        Dynamischer Link: <a href="{{ dynamic_url }}" target="_blank">{{ dynamic_url }}</a>
+        {{ t_dyn }} <a href="{{ dynamic_url }}" target="_blank">{{ dynamic_url }}</a>
       </p>
       {% endif %}
 
       <div class="action-buttons">
-        <a href="data:image/png;base64,{{ qr_image }}" download="telefon_qr.png" class="btn primary">⬇️ Herunterladen</a>
-        <a href="/qr/tel/" class="btn secondary">🔙 Neuen Code</a>
+        <a href="data:image/png;base64,{{ qr_image }}" download="telefon_qr.png" class="btn primary">{{ t_download }}</a>
+        <a href="/qr/tel/" class="btn secondary">{{ t_new }}</a>
       </div>
     </div>
   </div>

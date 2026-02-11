@@ -1,20 +1,76 @@
 {% extends "base.html" %}
-{% block title %}Team Workspaces{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = 'Team Workspaces' %}
+  {% set h1 = '👥 Team Workspaces & Sharing' %}
+  {% set s_new = 'Create new workspace' %}
+  {% set s_name = 'Name *' %}
+  {% set s_desc = 'Description' %}
+  {% set s_create = 'Create workspace' %}
+  {% set s_owned = 'My workspaces' %}
+  {% set s_add = 'Add member' %}
+  {% set s_pick_qr = 'Select QR' %}
+  {% set s_assign = 'Assign QR' %}
+  {% set s_none_owned = 'No owned workspaces.' %}
+  {% set s_member = 'Member in workspaces' %}
+  {% set s_role = 'Role' %}
+  {% set s_none_member = 'No memberships.' %}
+  {% set s_share = 'Share QR directly' %}
+  {% set s_target = 'Target email' %}
+  {% set s_share_btn = 'Share' %}
+{% elif lang == 'ar' %}
+  {% set p_title = 'مساحات عمل الفريق' %}
+  {% set h1 = '👥 مساحات عمل الفريق والمشاركة' %}
+  {% set s_new = 'إنشاء مساحة عمل جديدة' %}
+  {% set s_name = 'الاسم *' %}
+  {% set s_desc = 'الوصف' %}
+  {% set s_create = 'إنشاء مساحة العمل' %}
+  {% set s_owned = 'مساحات العمل الخاصة بي' %}
+  {% set s_add = 'إضافة عضو' %}
+  {% set s_pick_qr = 'اختر QR' %}
+  {% set s_assign = 'ربط QR' %}
+  {% set s_none_owned = 'لا توجد مساحات عمل مملوكة.' %}
+  {% set s_member = 'عضو في مساحات العمل' %}
+  {% set s_role = 'الدور' %}
+  {% set s_none_member = 'لا توجد عضويات.' %}
+  {% set s_share = 'مشاركة QR مباشرة' %}
+  {% set s_target = 'بريد الهدف' %}
+  {% set s_share_btn = 'مشاركة' %}
+{% else %}
+  {% set p_title = 'Team Workspaces' %}
+  {% set h1 = '👥 Team Workspaces & Freigaben' %}
+  {% set s_new = 'Neuen Workspace erstellen' %}
+  {% set s_name = 'Name *' %}
+  {% set s_desc = 'Beschreibung' %}
+  {% set s_create = 'Workspace erstellen' %}
+  {% set s_owned = 'Meine Workspaces' %}
+  {% set s_add = 'Mitglied hinzufügen' %}
+  {% set s_pick_qr = 'QR waehlen' %}
+  {% set s_assign = 'QR zuordnen' %}
+  {% set s_none_owned = 'Keine eigenen Workspaces.' %}
+  {% set s_member = 'Mitglied in Workspaces' %}
+  {% set s_role = 'Rolle' %}
+  {% set s_none_member = 'Keine Mitgliedschaften.' %}
+  {% set s_share = 'QR direkt freigeben' %}
+  {% set s_target = 'Ziel-E-Mail' %}
+  {% set s_share_btn = 'Freigeben' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="max-width:980px;">
-  <h1>👥 Team Workspaces & Freigaben</h1>
+  <h1>{{ h1 }}</h1>
 
   <div class="qr-form">
-    <h2>Neuen Workspace erstellen</h2>
+    <h2>{{ s_new }}</h2>
     <form method="post" action="/team/workspaces/create">
-      <label>Name *</label><input type="text" name="name" required>
-      <label>Beschreibung</label><input type="text" name="description">
-      <button class="btn-primary" type="submit">Workspace erstellen</button>
+      <label>{{ s_name }}</label><input type="text" name="name" required>
+      <label>{{ s_desc }}</label><input type="text" name="description">
+      <button class="btn-primary" type="submit">{{ s_create }}</button>
     </form>
   </div>
 
   <div class="qr-form">
-    <h2>Meine Workspaces</h2>
+    <h2>{{ s_owned }}</h2>
     {% if owned %}
       <ul>
       {% for w in owned %}
@@ -22,52 +78,52 @@
           <form method="post" action="/team/workspaces/{{ w.id }}/members/add" style="margin-top:.5rem;">
             <input type="email" name="email" placeholder="user@email.com" required>
             <select name="role"><option>viewer</option><option>editor</option><option>admin</option></select>
-            <button type="submit" class="btn-secondary">Mitglied hinzufügen</button>
+            <button type="submit" class="btn-secondary">{{ s_add }}</button>
           </form>
           <form method="post" action="/team/workspaces/{{ w.id }}/qrs/assign" style="margin-top:.4rem;">
             <select name="qr_slug" required>
-              <option value="">QR waehlen</option>
+              <option value="">{{ s_pick_qr }}</option>
               {% for qr in my_qrs %}
                 <option value="{{ qr.slug }}">{{ qr.title or ('QR ' ~ qr.slug) }} ({{ qr.type }})</option>
               {% endfor %}
             </select>
-            <button type="submit" class="btn-secondary">QR zuordnen</button>
+            <button type="submit" class="btn-secondary">{{ s_assign }}</button>
           </form>
         </li>
       {% endfor %}
       </ul>
     {% else %}
-      <p>Keine eigenen Workspaces.</p>
+      <p>{{ s_none_owned }}</p>
     {% endif %}
   </div>
 
   <div class="qr-form">
-    <h2>Mitglied in Workspaces</h2>
+    <h2>{{ s_member }}</h2>
     {% if member_of %}
       <ul>
       {% for w in member_of %}
-        <li><strong>{{ w.name }}</strong> – Rolle: {{ role_map.get(w.id, 'viewer') }}</li>
+        <li><strong>{{ w.name }}</strong> – {{ s_role }}: {{ role_map.get(w.id, 'viewer') }}</li>
       {% endfor %}
       </ul>
     {% else %}
-      <p>Keine Mitgliedschaften.</p>
+      <p>{{ s_none_member }}</p>
     {% endif %}
   </div>
 
   <div class="qr-form">
-    <h2>QR direkt freigeben</h2>
+    <h2>{{ s_share }}</h2>
     <form method="post" action="/team/share">
       <label>QR</label>
       <select name="qr_slug" required>
-        <option value="">QR waehlen</option>
+        <option value="">{{ s_pick_qr }}</option>
         {% for qr in my_qrs %}
           <option value="{{ qr.slug }}">{{ qr.title or ('QR ' ~ qr.slug) }} ({{ qr.type }})</option>
         {% endfor %}
       </select>
-      <label>Ziel-E-Mail</label><input type="email" name="user_email" required>
-      <label>Rolle</label>
+      <label>{{ s_target }}</label><input type="email" name="user_email" required>
+      <label>{{ s_role }}</label>
       <select name="role"><option>viewer</option><option>editor</option><option>admin</option></select>
-      <button class="btn-primary" type="submit">Freigeben</button>
+      <button class="btn-primary" type="submit">{{ s_share_btn }}</button>
     </form>
   </div>
 </section>

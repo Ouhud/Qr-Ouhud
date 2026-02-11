@@ -1,13 +1,36 @@
 {% extends "base.html" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_h1 = 'Create dynamic URL QR' %}
+  {% set t_title = 'Title:' %}
+  {% set t_target = 'Target URL:' %}
+  {% set t_note = 'Note:' %}
+  {% set t_submit = 'Create QR code' %}
+  {% set p_title = 'My website' %}
+{% elif lang == 'ar' %}
+  {% set t_h1 = 'إنشاء QR ديناميكي للرابط' %}
+  {% set t_title = 'العنوان:' %}
+  {% set t_target = 'الرابط المستهدف:' %}
+  {% set t_note = 'ملاحظة:' %}
+  {% set t_submit = 'إنشاء رمز QR' %}
+  {% set p_title = 'موقعي' %}
+{% else %}
+  {% set t_h1 = 'Dynamische QR-URL erstellen' %}
+  {% set t_title = 'Titel:' %}
+  {% set t_target = 'Ziel-URL:' %}
+  {% set t_note = 'Notiz:' %}
+  {% set t_submit = 'QR-Code erstellen' %}
+  {% set p_title = 'Meine Website' %}
+{% endif %}
 {% block content %}
-<h1>Dynamische QR-URL erstellen</h1>
+<h1>{{ t_h1 }}</h1>
 <form method="post" action="/qr/url/create">
-  <label>Titel:</label>
-  <input type="text" name="title" placeholder="Meine Website"><br>
-  <label>Ziel-URL:</label>
+  <label>{{ t_title }}</label>
+  <input type="text" name="title" placeholder="{{ p_title }}"><br>
+  <label>{{ t_target }}</label>
   <input type="url" name="destination_url" placeholder="https://..." required><br>
-  <label>Notiz:</label>
+  <label>{{ t_note }}</label>
   <textarea name="note"></textarea><br>
-  <button type="submit">QR-Code erstellen</button>
+  <button type="submit">{{ t_submit }}</button>
 </form>
 {% endblock %}

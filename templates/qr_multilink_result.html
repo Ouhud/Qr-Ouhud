@@ -1,81 +1,82 @@
 {% extends "base.html" %}
-{% block title %}✅ Multi-Link-QR – Erfolgreich erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ Multi-Link QR - created successfully' %}
+  {% set t_h1 = '✅ Multi-Link QR code created' %}
+  {% set t_sub = 'Your QR code was generated and saved successfully.' %}
+  {% set t_view = '👁️ View' %}
+  {% set t_download = '⬇️ Download PNG' %}
+  {% set t_dyn = '🧭 Dynamic URL:' %}
+  {% set t_design = '🎨 Design:' %}
+  {% set t_new = '➕ Create new Multi-Link QR' %}
+  {% set t_my = '📋 My QR codes' %}
+  {% set t_back = '🔙 Back to dashboard' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ تم إنشاء Multi-Link QR بنجاح' %}
+  {% set t_h1 = '✅ تم إنشاء رمز Multi-Link QR' %}
+  {% set t_sub = 'تم إنشاء رمز QR وحفظه بنجاح.' %}
+  {% set t_view = '👁️ عرض' %}
+  {% set t_download = '⬇️ تنزيل PNG' %}
+  {% set t_dyn = '🧭 الرابط الديناميكي:' %}
+  {% set t_design = '🎨 التصميم:' %}
+  {% set t_new = '➕ إنشاء Multi-Link QR جديد' %}
+  {% set t_my = '📋 رموز QR الخاصة بي' %}
+  {% set t_back = '🔙 العودة إلى لوحة التحكم' %}
+{% else %}
+  {% set t_title = '✅ Multi-Link-QR – Erfolgreich erstellt' %}
+  {% set t_h1 = '✅ Multi-Link-QR-Code wurde erstellt' %}
+  {% set t_sub = 'Dein QR-Code wurde erfolgreich generiert und gespeichert.' %}
+  {% set t_view = '👁️ Anzeigen' %}
+  {% set t_download = '⬇️ Download PNG' %}
+  {% set t_dyn = '🧭 Dynamische URL:' %}
+  {% set t_design = '🎨 Design:' %}
+  {% set t_new = '➕ Neuen Multi-Link-QR erstellen' %}
+  {% set t_my = '📋 Meine QR-Codes' %}
+  {% set t_back = '🔙 Zurück zum Dashboard' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 
 <section class="max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-lg font-[Inter]">
-
-  <!-- ✅ HEADER -->
   <header class="mb-8 text-center">
-    <h1 class="text-3xl font-bold text-[var(--primary)] flex justify-center items-center gap-2">
-      ✅ Multi-Link-QR-Code wurde erstellt
-    </h1>
-    <p class="text-gray-500 mt-2">
-      Dein QR-Code wurde erfolgreich generiert und gespeichert.
-    </p>
+    <h1 class="text-3xl font-bold text-[var(--primary)] flex justify-center items-center gap-2">{{ t_h1 }}</h1>
+    <p class="text-gray-500 mt-2">{{ t_sub }}</p>
   </header>
 
-  <!-- ✅ CONTENT-GRID -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-
-    <!-- ✅ QR-Code Anzeige -->
     <div class="text-center">
       {% if qr_image %}
-        <img src="data:image/png;base64,{{ qr_image }}" 
-             alt="QR Code"
-             class="w-full rounded-2xl shadow-md border border-gray-200">
+        <img src="data:image/png;base64,{{ qr_image }}" alt="QR Code" class="w-full rounded-2xl shadow-md border border-gray-200">
       {% endif %}
 
-      <!-- ✅ Actions unter dem QR-Bild -->
       <div class="mt-4 flex flex-wrap justify-center gap-3">
-        <a href="{{ dynamic_url }}" target="_blank"
-           class="px-4 py-2 rounded-xl bg-[var(--primary)] text-white font-semibold shadow hover:bg-[var(--primary-dark)]">
-          👁️ Anzeigen
-        </a>
+        <a href="{{ dynamic_url }}" target="_blank" class="px-4 py-2 rounded-xl bg-[var(--primary)] text-white font-semibold shadow hover:bg-[var(--primary-dark)]">{{ t_view }}</a>
 
-        <a href="data:image/png;base64,{{ qr_image }}" download="multilink_qr.png"
-           class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700">
-          ⬇️ Download PNG
-        </a>
+        <a href="data:image/png;base64,{{ qr_image }}" download="multilink_qr.png" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700">{{ t_download }}</a>
       </div>
     </div>
 
-    <!-- ✅ Multi-Link-Informationen -->
     <div class="p-6 bg-gray-50 rounded-2xl border">
       <h2 class="text-xl font-bold text-gray-800 mb-4">{{ qr.title or "Multi-Link" }}</h2>
 
       <ul class="space-y-2 text-gray-700">
         <li>
-          <strong>🧭 Dynamische URL:</strong><br>
-          <a href="{{ dynamic_url }}" class="text-blue-700 underline break-words" target="_blank">
-            {{ dynamic_url }}
-          </a>
+          <strong>{{ t_dyn }}</strong><br>
+          <a href="{{ dynamic_url }}" class="text-blue-700 underline break-words" target="_blank">{{ dynamic_url }}</a>
         </li>
 
-        <li>
-          <strong>🎨 Design:</strong> {{ qr.style }}
-        </li>
+        <li><strong>{{ t_design }}</strong> {{ qr.style }}</li>
       </ul>
     </div>
   </div>
 
-  <!-- ✅ Footer-Aktionen -->
   <div class="mt-10 flex flex-wrap justify-center gap-4">
-    <a href="/qr/multilink/"
-       class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">
-      ➕ Neuen Multi-Link-QR erstellen
-    </a>
+    <a href="/qr/multilink/" class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">{{ t_new }}</a>
 
-    <a href="/qr/my"
-       class="px-5 py-3 rounded-xl bg-[var(--primary)] text-white shadow font-semibold hover:bg-[var(--primary-dark)]">
-      📋 Meine QR-Codes
-    </a>
+    <a href="/qr/my" class="px-5 py-3 rounded-xl bg-[var(--primary)] text-white shadow font-semibold hover:bg-[var(--primary-dark)]">{{ t_my }}</a>
 
-    <a href="/dashboard"
-       class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">
-      🔙 Zurück zum Dashboard
-    </a>
+    <a href="/dashboard" class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">{{ t_back }}</a>
   </div>
-
 </section>
 
 <style>

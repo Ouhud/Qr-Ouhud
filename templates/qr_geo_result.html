@@ -1,13 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Geo QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Geo QR created' %}
+  {% set t_h1 = '✅ Geo QR created' %}
+  {% set t_target = 'Target:' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'تم إنشاء Geo QR' %}
+  {% set t_h1 = '✅ تم إنشاء Geo QR' %}
+  {% set t_target = 'الوجهة:' %}
+{% else %}
+  {% set t_title = 'Geo QR erstellt' %}
+  {% set t_h1 = '✅ Geo-QR erstellt' %}
+  {% set t_target = 'Ziel:' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="text-align:center;">
-  <h1>✅ Geo-QR erstellt</h1>
+  <h1>{{ t_h1 }}</h1>
   {% if qr_image %}
     <img src="data:image/png;base64,{{ qr_image }}" alt="Geo QR" style="max-width:300px;border-radius:12px;">
   {% endif %}
   {% if geo %}
-    <p><strong>Ziel:</strong> {{ geo }}</p>
+    <p><strong>{{ t_target }}</strong> {{ geo }}</p>
   {% endif %}
   {% if dynamic_url %}
     <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>

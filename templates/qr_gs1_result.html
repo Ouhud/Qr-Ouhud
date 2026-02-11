@@ -1,10 +1,27 @@
 {% extends "base.html" %}
-{% block title %}GS1 QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = 'GS1 QR created' %}
+  {% set p_h1 = '✅ GS1 QR created' %}
+  {% set p_gs1 = 'GS1 link:' %}
+  {% set p_dyn = 'Dynamic:' %}
+{% elif lang == 'ar' %}
+  {% set p_title = 'تم إنشاء GS1 QR' %}
+  {% set p_h1 = '✅ تم إنشاء GS1 QR' %}
+  {% set p_gs1 = 'رابط GS1:' %}
+  {% set p_dyn = 'ديناميكي:' %}
+{% else %}
+  {% set p_title = 'GS1 QR erstellt' %}
+  {% set p_h1 = '✅ GS1-QR erstellt' %}
+  {% set p_gs1 = 'GS1 Link:' %}
+  {% set p_dyn = 'Dynamisch:' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="text-align:center;">
-  <h1>✅ GS1-QR erstellt</h1>
+  <h1>{{ p_h1 }}</h1>
   {% if qr_image %}<img src="data:image/png;base64,{{ qr_image }}" style="max-width:300px;border-radius:12px;">{% endif %}
-  <p>GS1 Link: <a href="{{ gs1_link }}" target="_blank">{{ gs1_link }}</a></p>
-  <p>Dynamisch: <a href="{{ dynamic_url }}" target="_blank">{{ dynamic_url }}</a></p>
+  <p>{{ p_gs1 }} <a href="{{ gs1_link }}" target="_blank" rel="noopener">{{ gs1_link }}</a></p>
+  <p>{{ p_dyn }} <a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
 </section>
 {% endblock %}

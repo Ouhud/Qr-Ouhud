@@ -1,107 +1,76 @@
 {% extends "base.html" %}
-{% block title %}✅ vCard erstellt – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ vCard created – Ouhud QR' %}
+  {% set t_h1 = '✅ vCard created successfully!' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_view = '👁️ View vCard' %}
+  {% set t_edit = '✏️ Edit vCard' %}
+  {% set t_vcf = '💾 vCard (.vcf) Download' %}
+  {% set t_print = '🖨️ Print' %}
+  {% set t_new = '➕ Create new vCard' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ تم إنشاء vCard – Ouhud QR' %}
+  {% set t_h1 = '✅ تم إنشاء vCard بنجاح!' %}
+  {% set t_dyn = 'الرابط الديناميكي:' %}
+  {% set t_view = '👁️ عرض vCard' %}
+  {% set t_edit = '✏️ تعديل vCard' %}
+  {% set t_vcf = '💾 تنزيل vCard (.vcf)' %}
+  {% set t_print = '🖨️ طباعة' %}
+  {% set t_new = '➕ إنشاء vCard جديدة' %}
+{% else %}
+  {% set t_title = '✅ vCard erstellt – Ouhud QR' %}
+  {% set t_h1 = '✅ vCard erfolgreich erstellt!' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_view = '👁️ vCard anzeigen' %}
+  {% set t_edit = '✏️ vCard bearbeiten' %}
+  {% set t_vcf = '💾 vCard (.vcf) Download' %}
+  {% set t_print = '🖨️ Drucken' %}
+  {% set t_new = '➕ Neue vCard erstellen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-
 <section class="qr-generator vcard-generator" style="max-width:850px;margin:2rem auto;text-align:center;">
+    <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">{{ t_h1 }}</h1>
 
-    <!-- ✅ Überschrift -->
-    <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">
-        ✅ vCard erfolgreich erstellt!
-    </h1>
-
-    <!-- ✅ QR-Bild -->
     {% if qr and qr.image_path %}
     <div style="margin:2rem 0;">
-        <img src="/{{ qr.image_path }}"
-             alt="QR-Code"
-             style="width:320px;height:320px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.12);">
+        <img src="/{{ qr.image_path }}" alt="QR-Code" style="width:320px;height:320px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.12);">
     </div>
     {% endif %}
 
-    <!-- ✅ Dynamischer Link -->
     {% if dynamic_url %}
     <p style="font-size:1.1rem;color:#1e293b;margin-bottom:2rem;">
-        📎 <strong>Dynamischer Link:</strong><br>
-        <a href="{{ dynamic_url }}" target="_blank"
-           style="color:var(--accent);font-weight:600;">
-           {{ dynamic_url }}
-        </a>
+        📎 <strong>{{ t_dyn }}</strong><br>
+        <a href="{{ dynamic_url }}" target="_blank" style="color:var(--accent);font-weight:600;">{{ dynamic_url }}</a>
     </p>
     {% endif %}
 
-    <!-- ✅ Aktionen -->
     <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
-
-        <!-- 👁️ vCard ansehen -->
         {% if qr %}
-        <a href="/qr/vcard/v/{{ qr.slug }}"
-           class="btn primary"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           👁️ vCard anzeigen
-        </a>
+        <a href="/qr/vcard/v/{{ qr.slug }}" class="btn primary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_view }}</a>
         {% endif %}
 
-        <!-- ✏️ Bearbeiten -->
         {% if qr %}
-        <a href="/qr/edit/{{ qr.slug }}"
-           class="btn secondary"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           ✏️ vCard bearbeiten
-        </a>
+        <a href="/qr/edit/{{ qr.slug }}" class="btn secondary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_edit }}</a>
         {% endif %}
 
-        <!-- 💾 vCard Download -->
         {% if qr %}
-        <a href="/qr/vcard/{{ qr.slug }}.vcf"
-           class="btn primary"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           💾 vCard (.vcf) Download
-        </a>
+        <a href="/qr/vcard/{{ qr.slug }}.vcf" class="btn primary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_vcf }}</a>
         {% endif %}
 
         {% if vcard and vcard.apple_wallet_url %}
-        <a href="{{ vcard.apple_wallet_url }}"
-           class="btn secondary"
-           target="_blank"
-           rel="noopener"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           🍎 Apple Wallet
-        </a>
+        <a href="{{ vcard.apple_wallet_url }}" class="btn secondary" target="_blank" rel="noopener" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">🍎 Apple Wallet</a>
         {% endif %}
 
         {% if vcard and vcard.google_wallet_url %}
-        <a href="{{ vcard.google_wallet_url }}"
-           class="btn secondary"
-           target="_blank"
-           rel="noopener"
-           style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           🤖 Google Wallet
-        </a>
+        <a href="{{ vcard.google_wallet_url }}" class="btn secondary" target="_blank" rel="noopener" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">🤖 Google Wallet</a>
         {% endif %}
 
-        <button type="button"
-                class="btn secondary"
-                onclick="window.print()"
-                style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">
-           🖨️ Drucken
-        </button>
+        <button type="button" class="btn secondary" onclick="window.print()" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
 
-        <!-- ➕ Neue erstellen -->
-        <a href="/qr/vcard/new"
-           class="btn"
-           style="background:#e2e8f0;padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;color:#1e293b;">
-           ➕ Neue vCard erstellen
-        </a>
-
+        <a href="/qr/vcard/new" class="btn" style="background:#e2e8f0;padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;color:#1e293b;">{{ t_new }}</a>
     </div>
-
 </section>
-
-<script>
-  function printQR() {
-    window.print();
-  }
-</script>
-
 {% endblock %}

@@ -5,8 +5,9 @@
 from __future__ import annotations
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request, Depends, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -59,6 +60,75 @@ app.add_middleware(
     same_site=os.getenv("SESSION_SAME_SITE", "lax"),
     https_only=os.getenv("SESSION_HTTPS_ONLY", "0") in {"1", "true", "yes"},
 )
+
+SUPPORTED_LANGUAGES = {"de", "en", "ar"}
+
+
+def _normalize_language(value: str | None) -> str:
+    raw = str(value or "").strip().lower()
+    if raw.startswith("de"):
+        return "de"
+    if raw.startswith("en"):
+        return "en"
+    if raw.startswith("ar"):
+        return "ar"
+    return "de"
+
+
+def _detect_accept_language(header: str | None) -> str:
+    raw = str(header or "").strip().lower()
+    if not raw:
+        return "de"
+    for part in raw.split(","):
+        token = part.split(";")[0].strip()
+        normalized = _normalize_language(token)
+        if normalized in SUPPORTED_LANGUAGES:
+            return normalized
+    return "de"
+
+
+def _safe_redirect_path(raw_target: str | None) -> str:
+    target = str(raw_target or "").strip()
+    if not target:
+        return "/"
+    parsed = urlparse(target)
+    path = parsed.path or "/"
+    if not path.startswith("/"):
+        path = "/"
+    if parsed.query:
+        return f"{path}?{parsed.query}"
+    return path
+
+
+@app.middleware("http")
+async def language_middleware(request: Request, call_next):
+    session_data = request.scope.get("session") or {}
+    has_session_lang = "lang" in session_data
+    session_lang = _normalize_language(session_data.get("lang"))
+    has_cookie_lang = request.cookies.get("preferred_lang") is not None
+    cookie_lang = _normalize_language(request.cookies.get("preferred_lang"))
+    header_lang = _detect_accept_language(request.headers.get("accept-language"))
+
+    if has_session_lang and session_lang in SUPPORTED_LANGUAGES:
+        selected = session_lang
+    elif has_cookie_lang and cookie_lang in SUPPORTED_LANGUAGES:
+        selected = cookie_lang
+    else:
+        selected = header_lang
+
+    if selected not in SUPPORTED_LANGUAGES:
+        selected = "de"
+
+    request.state.lang = selected
+    response = await call_next(request)
+    if request.cookies.get("preferred_lang") != selected:
+        response.set_cookie(
+            "preferred_lang",
+            selected,
+            max_age=60 * 60 * 24 * 365,
+            samesite="lax",
+        )
+    return response
 
 # -------------------------------------------------------------------------
 # 5️⃣ Routen laden – NUR die neuen, modularen Router
@@ -198,6 +268,28 @@ def home(request: Request, db: Session = Depends(get_db)):
         plans = _fallback_home_plans()
 
     return templates.TemplateResponse("index.html", {"request": request, "plans": plans})
+
+
+@app.post("/language", include_in_schema=False)
+def set_language(
+    request: Request,
+    language: str = Form("de"),
+    next: str = Form("/"),
+):
+    selected = _normalize_language(language)
+    if selected not in SUPPORTED_LANGUAGES:
+        selected = "de"
+
+    request.session["lang"] = selected
+    target = _safe_redirect_path(next or request.headers.get("referer") or "/")
+    response = RedirectResponse(target, status_code=303)
+    response.set_cookie(
+        "preferred_lang",
+        selected,
+        max_age=60 * 60 * 24 * 365,
+        samesite="lax",
+    )
+    return response
 
 # -------------------------------------------------------------------------
 # 6.1️⃣ Example QR Image

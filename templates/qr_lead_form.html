@@ -1,13 +1,36 @@
 {% extends "base.html" %}
-{% block title %}Lead Formular QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Lead Form QR' %}
+  {% set t_h1 = '🧾 Form/Lead QR' %}
+  {% set t_headline = 'Headline' %}
+  {% set t_desc = 'Description' %}
+  {% set t_success = 'Success message' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Lead Form QR' %}
+  {% set t_h1 = '🧾 QR لنموذج العملاء المحتملين' %}
+  {% set t_headline = 'العنوان الرئيسي' %}
+  {% set t_desc = 'الوصف' %}
+  {% set t_success = 'رسالة النجاح' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'Lead Formular QR' %}
+  {% set t_h1 = '🧾 Formular/Lead-QR' %}
+  {% set t_headline = 'Überschrift' %}
+  {% set t_desc = 'Beschreibung' %}
+  {% set t_success = 'Erfolgsmeldung' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>🧾 Formular/Lead-QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/lead/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Überschrift</label><input type="text" name="headline" value="Kontakt aufnehmen">
-    <label>Beschreibung</label><textarea name="description" rows="3">Bitte Kontaktdaten eintragen.</textarea>
-    <label>Erfolgsmeldung</label><input type="text" name="success_message" value="Danke! Wir melden uns zeitnah.">
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_headline }}</label><input type="text" name="headline" value="Kontakt aufnehmen">
+    <label>{{ t_desc }}</label><textarea name="description" rows="3">Bitte Kontaktdaten eintragen.</textarea>
+    <label>{{ t_success }}</label><input type="text" name="success_message" value="Danke! Wir melden uns zeitnah.">
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

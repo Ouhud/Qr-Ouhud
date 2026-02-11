@@ -1,16 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Event QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Event QR created' %}
+  {% set t_h1 = '✅ Event QR created' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_static = 'Static event QR was created.' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'تم إنشاء Event QR' %}
+  {% set t_h1 = '✅ تم إنشاء Event QR' %}
+  {% set t_dyn = 'رابط ديناميكي:' %}
+  {% set t_static = 'تم إنشاء QR ثابت للفعالية.' %}
+{% else %}
+  {% set t_title = 'Event QR erstellt' %}
+  {% set t_h1 = '✅ Event-QR erstellt' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_static = 'Statischer Event-QR wurde erstellt.' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="text-align:center;">
-  <h1>✅ Event-QR erstellt</h1>
+  <h1>{{ t_h1 }}</h1>
   {% if qr_image %}
     <img src="data:image/png;base64,{{ qr_image }}" alt="Event QR" style="max-width:300px;border-radius:12px;">
   {% endif %}
 
   {% if dynamic_url %}
-    <p><strong>Dynamischer Link:</strong> <a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
+    <p><strong>{{ t_dyn }}</strong> <a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
   {% else %}
-    <p>Statischer Event-QR wurde erstellt.</p>
+    <p>{{ t_static }}</p>
   {% endif %}
 </section>
 {% endblock %}

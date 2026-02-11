@@ -1,9 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Booking QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = 'Booking QR created' %}
+  {% set p_h1 = '✅ Booking QR created' %}
+{% elif lang == 'ar' %}
+  {% set p_title = 'تم إنشاء Booking QR' %}
+  {% set p_h1 = '✅ تم إنشاء Booking QR' %}
+{% else %}
+  {% set p_title = 'Booking QR erstellt' %}
+  {% set p_h1 = '✅ Booking-QR erstellt' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="text-align:center;">
-  <h1>✅ Booking-QR erstellt</h1>
+  <h1>{{ p_h1 }}</h1>
   {% if qr_image %}<img src="data:image/png;base64,{{ qr_image }}" style="max-width:300px;border-radius:12px;">{% endif %}
-  <p><a href="{{ dynamic_url }}" target="_blank">{{ dynamic_url }}</a></p>
+  <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
 </section>
 {% endblock %}

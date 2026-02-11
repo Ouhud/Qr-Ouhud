@@ -1,12 +1,42 @@
 {% extends "base.html" %}
-{% block title %}📨 E-Mail-QR-Code erstellt – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📨 Email QR code created – Ouhud QR' %}
+  {% set t_h1 = '✅ Email QR code created successfully' %}
+  {% set t_sub = 'Scan the code or click below to open your email or download the QR code.' %}
+  {% set t_open = '📧 Open email' %}
+  {% set t_download = '⬇️ Download QR code' %}
+  {% set t_print = '🖨️ Print QR code' %}
+  {% set t_share = '🔗 Share or embed' %}
+  {% set t_copy = '📋 Copy' %}
+  {% set t_copied = '🔗 Link copied!' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📨 تم إنشاء QR للبريد الإلكتروني – Ouhud QR' %}
+  {% set t_h1 = '✅ تم إنشاء QR للبريد الإلكتروني بنجاح' %}
+  {% set t_sub = 'امسح الرمز أو انقر أدناه لفتح البريد أو تنزيل رمز QR.' %}
+  {% set t_open = '📧 فتح البريد' %}
+  {% set t_download = '⬇️ تنزيل رمز QR' %}
+  {% set t_print = '🖨️ طباعة رمز QR' %}
+  {% set t_share = '🔗 مشاركة أو تضمين' %}
+  {% set t_copy = '📋 نسخ' %}
+  {% set t_copied = '🔗 تم نسخ الرابط!' %}
+{% else %}
+  {% set t_title = '📨 E-Mail-QR-Code erstellt – Ouhud QR' %}
+  {% set t_h1 = '✅ E-Mail-QR-Code erfolgreich erstellt' %}
+  {% set t_sub = 'Scanne den Code oder klicke unten, um deine E-Mail zu öffnen oder den QR-Code herunterzuladen.' %}
+  {% set t_open = '📧 E-Mail öffnen' %}
+  {% set t_download = '⬇️ QR-Code herunterladen' %}
+  {% set t_print = '🖨️ QR-Code drucken' %}
+  {% set t_share = '🔗 Teilen oder einbetten' %}
+  {% set t_copy = '📋 Kopieren' %}
+  {% set t_copied = '🔗 Link kopiert!' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-result">
-  <h1>✅ E-Mail-QR-Code erfolgreich erstellt</h1>
-  <p class="subtitle">
-    Scanne den Code oder klicke unten, um deine E-Mail zu öffnen oder den QR-Code herunterzuladen.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="qr-card">
     <div class="qr-image-container">
@@ -16,25 +46,24 @@
     <div class="qr-details">
       <h2>{{ title }}</h2>
       <p class="email-link">
-        <a href="{{ mailto_url }}" target="_blank">📧 E-Mail öffnen</a>
+        <a href="{{ mailto_url }}" target="_blank">{{ t_open }}</a>
       </p>
     </div>
 
     <div class="qr-actions">
-      <a href="data:image/png;base64,{{ qr_image }}" download="email_qr.png" class="btn primary">⬇️ QR-Code herunterladen</a>
-      <button onclick="printQR()" class="btn secondary">🖨️ QR-Code drucken</button>
+      <a href="data:image/png;base64,{{ qr_image }}" download="email_qr.png" class="btn primary">{{ t_download }}</a>
+      <button onclick="printQR()" class="btn secondary">{{ t_print }}</button>
     </div>
 
     <div class="share-section">
-      <h3>🔗 Teilen oder einbetten</h3>
+      <h3>{{ t_share }}</h3>
       <input type="text" id="qrLink" value="{{ request.url }}" readonly>
-      <button onclick="copyLink()">📋 Kopieren</button>
+      <button onclick="copyLink()">{{ t_copy }}</button>
     </div>
   </div>
 </section>
 
 <style>
-/* === Allgemein === */
 .qr-result {
   max-width: 850px;
   margin: 3rem auto;
@@ -45,118 +74,25 @@
   text-align: center;
   font-family: "Inter", system-ui, sans-serif;
 }
-h1 {
-  color: #0D2A78;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-.subtitle {
-  color: #475569;
-  margin-bottom: 2rem;
-}
-.qr-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-/* === QR Code === */
-.qr-image-container {
-  background: #f8fafc;
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-}
-.qr-image {
-  width: 250px;
-  height: 250px;
-  border-radius: 10px;
-}
-
-/* === Titel und Link === */
-.qr-details h2 {
-  color: #0d2a78;
-  font-size: 1.3rem;
-  margin-top: 0.5rem;
-}
-.email-link a {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 600;
-}
-.email-link a:hover {
-  text-decoration: underline;
-}
-
-/* === Buttons === */
-.qr-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-.btn {
-  padding: 0.9rem 1.6rem;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  text-decoration: none;
-  display: inline-block;
-}
-.btn.primary {
-  background: linear-gradient(135deg,#0D2A78,#2563EB);
-  color: white;
-}
-.btn.primary:hover {
-  background: linear-gradient(135deg,#0B1742,#1E40AF);
-}
-.btn.secondary {
-  background: linear-gradient(135deg,#1E3A8A,#0D2A78);
-  color: white;
-}
-.btn.secondary:hover {
-  background: linear-gradient(135deg,#0D2A78,#1E3A8A);
-}
-
-/* === Teilen === */
-.share-section {
-  margin-top: 2rem;
-  background: #f9fafb;
-  padding: 1.2rem;
-  border-radius: 10px;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-}
-.share-section h3 {
-  color: #0D2A78;
-  margin-bottom: 0.6rem;
-}
-#qrLink {
-  width: 70%;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  font-size: 0.95rem;
-  text-align: center;
-  margin-right: 0.5rem;
-}
-.share-section button {
-  background: #0D2A78;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.share-section button:hover {
-  background: #1E40AF;
-}
-
-/* === Responsive === */
+h1 { color: #0D2A78; font-size: 2rem; margin-bottom: 1rem; }
+.subtitle { color: #475569; margin-bottom: 2rem; }
+.qr-card { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+.qr-image-container { background: #f8fafc; padding: 1.5rem; border-radius: 16px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); }
+.qr-image { width: 250px; height: 250px; border-radius: 10px; }
+.qr-details h2 { color: #0d2a78; font-size: 1.3rem; margin-top: 0.5rem; }
+.email-link a { color: #2563eb; text-decoration: none; font-weight: 600; }
+.email-link a:hover { text-decoration: underline; }
+.qr-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem; }
+.btn { padding: 0.9rem 1.6rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; text-decoration: none; display: inline-block; }
+.btn.primary { background: linear-gradient(135deg,#0D2A78,#2563EB); color: white; }
+.btn.primary:hover { background: linear-gradient(135deg,#0B1742,#1E40AF); }
+.btn.secondary { background: linear-gradient(135deg,#1E3A8A,#0D2A78); color: white; }
+.btn.secondary:hover { background: linear-gradient(135deg,#0D2A78,#1E3A8A); }
+.share-section { margin-top: 2rem; background: #f9fafb; padding: 1.2rem; border-radius: 10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+.share-section h3 { color: #0D2A78; margin-bottom: 0.6rem; }
+#qrLink { width: 70%; padding: 0.6rem; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 0.95rem; text-align: center; margin-right: 0.5rem; }
+.share-section button { background: #0D2A78; color: white; border: none; border-radius: 8px; padding: 0.6rem 1rem; font-weight: 600; cursor: pointer; }
+.share-section button:hover { background: #1E40AF; }
 @media (max-width: 700px) {
   .qr-result { padding: 2rem 1.2rem; }
   .qr-image { width: 220px; height: 220px; }
@@ -166,6 +102,7 @@ h1 {
 </style>
 
 <script>
+const EMAIL_LINK_COPIED_TEXT = {{ t_copied | tojson }};
 function printQR() {
   const w = window.open();
   w.document.write('<img src="data:image/png;base64,{{ qr_image }}" style="width:300px">');
@@ -176,7 +113,7 @@ function copyLink() {
   const linkInput = document.getElementById('qrLink');
   linkInput.select();
   document.execCommand('copy');
-  alert('🔗 Link kopiert!');
+  alert(EMAIL_LINK_COPIED_TEXT);
 }
 </script>
 {% endblock %}

@@ -1,112 +1,126 @@
 {% extends "base.html" %}
-{% block title %}✅ Produkt-QR – Erfolgreich erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ Product QR - created successfully' %}
+  {% set t_h1 = '✅ Product QR code created' %}
+  {% set t_sub = 'Your QR code was generated and saved successfully.' %}
+  {% set t_view = '👁️ View' %}
+  {% set t_download = '⬇️ Download PNG' %}
+  {% set t_price = '💰 Price:' %}
+  {% set t_desc = '📝 Description:' %}
+  {% set t_link = '🔗 Product link:' %}
+  {% set t_dyn = '🧭 Dynamic URL:' %}
+  {% set t_design = '🎨 Design:' %}
+  {% set t_style = 'Style:' %}
+  {% set t_fg = 'Foreground:' %}
+  {% set t_bg = 'Background:' %}
+  {% set t_size = 'Size:' %}
+  {% set t_new = '➕ Create new product QR' %}
+  {% set t_my = '📋 My QR codes' %}
+  {% set t_back = '🔙 Back to dashboard' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ تم إنشاء Product QR بنجاح' %}
+  {% set t_h1 = '✅ تم إنشاء رمز Product QR' %}
+  {% set t_sub = 'تم إنشاء رمز QR وحفظه بنجاح.' %}
+  {% set t_view = '👁️ عرض' %}
+  {% set t_download = '⬇️ تنزيل PNG' %}
+  {% set t_price = '💰 السعر:' %}
+  {% set t_desc = '📝 الوصف:' %}
+  {% set t_link = '🔗 رابط المنتج:' %}
+  {% set t_dyn = '🧭 الرابط الديناميكي:' %}
+  {% set t_design = '🎨 التصميم:' %}
+  {% set t_style = 'النمط:' %}
+  {% set t_fg = 'اللون الأمامي:' %}
+  {% set t_bg = 'لون الخلفية:' %}
+  {% set t_size = 'الحجم:' %}
+  {% set t_new = '➕ إنشاء Product QR جديد' %}
+  {% set t_my = '📋 رموز QR الخاصة بي' %}
+  {% set t_back = '🔙 العودة إلى لوحة التحكم' %}
+{% else %}
+  {% set t_title = '✅ Produkt-QR – Erfolgreich erstellt' %}
+  {% set t_h1 = '✅ Produkt-QR-Code wurde erstellt' %}
+  {% set t_sub = 'Dein QR-Code wurde erfolgreich generiert und gespeichert.' %}
+  {% set t_view = '👁️ Anzeigen' %}
+  {% set t_download = '⬇️ Download PNG' %}
+  {% set t_price = '💰 Preis:' %}
+  {% set t_desc = '📝 Beschreibung:' %}
+  {% set t_link = '🔗 Produktlink:' %}
+  {% set t_dyn = '🧭 Dynamische URL:' %}
+  {% set t_design = '🎨 Design:' %}
+  {% set t_style = 'Stil:' %}
+  {% set t_fg = 'Vordergrundfarbe:' %}
+  {% set t_bg = 'Hintergrundfarbe:' %}
+  {% set t_size = 'Größe:' %}
+  {% set t_new = '➕ Neuen Produkt-QR erstellen' %}
+  {% set t_my = '📋 Meine QR-Codes' %}
+  {% set t_back = '🔙 Zurück zum Dashboard' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 
 <section class="max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-lg font-[Inter]">
-
-  <!-- ✅ HEADER -->
   <header class="mb-8 text-center">
-    <h1 class="text-3xl font-bold text-[var(--primary)] flex justify-center items-center gap-2">
-      ✅ Produkt-QR-Code wurde erstellt
-    </h1>
-    <p class="text-gray-500 mt-2">
-      Dein QR-Code wurde erfolgreich generiert und gespeichert.
-    </p>
+    <h1 class="text-3xl font-bold text-[var(--primary)] flex justify-center items-center gap-2">{{ t_h1 }}</h1>
+    <p class="text-gray-500 mt-2">{{ t_sub }}</p>
   </header>
 
-
-  <!-- ✅ CONTENT-GRID -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-
-    <!-- ✅ QR-Code Anzeige -->
     <div class="text-center">
       {% if qr_image %}
-        <img src="data:image/png;base64,{{ qr_image }}" 
-             alt="QR Code"
-             class="w-full rounded-2xl shadow-md border border-gray-200">
+        <img src="data:image/png;base64,{{ qr_image }}" alt="QR Code" class="w-full rounded-2xl shadow-md border border-gray-200">
       {% elif product.qr_image %}
-        <img src="/{{ product.qr_image }}"
-             alt="QR Code"
-             class="w-full rounded-2xl shadow-md border border-gray-200">
+        <img src="/{{ product.qr_image }}" alt="QR Code" class="w-full rounded-2xl shadow-md border border-gray-200">
       {% endif %}
 
-      <!-- ✅ Actions unter dem QR-Bild -->
       <div class="mt-4 flex flex-wrap justify-center gap-3">
-        <a href="/qr/product/v/{{ product.public_id }}"
-           class="px-4 py-2 rounded-xl bg-[var(--primary)] text-white font-semibold shadow hover:bg-[var(--primary-dark)]">
-          👁️ Anzeigen
-        </a>
+        <a href="/qr/product/v/{{ product.public_id }}" class="px-4 py-2 rounded-xl bg-[var(--primary)] text-white font-semibold shadow hover:bg-[var(--primary-dark)]">{{ t_view }}</a>
 
-        <a href="/{{ product.qr_image }}" download
-           class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700">
-          ⬇️ Download PNG
-        </a>
+        <a href="/{{ product.qr_image }}" download class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700">{{ t_download }}</a>
       </div>
     </div>
 
-
-    <!-- ✅ Produkt-Informationen -->
     <div class="p-6 bg-gray-50 rounded-2xl border">
       <h2 class="text-xl font-bold text-gray-800 mb-4">{{ product.name }}</h2>
 
       <ul class="space-y-2 text-gray-700">
-        <li><strong>💰 Preis:</strong> {{ '%.2f'|format(product.price) }} €</li>
+        <li><strong>{{ t_price }}</strong> {{ '%.2f'|format(product.price) }} €</li>
 
         {% if product.description %}
-        <li><strong>📝 Beschreibung:</strong><br>{{ product.description }}</li>
+        <li><strong>{{ t_desc }}</strong><br>{{ product.description }}</li>
         {% endif %}
 
         {% if product.link %}
         <li>
-          <strong>🔗 Produktlink:</strong><br>
-          <a href="{{ product.link }}" class="text-blue-700 underline break-words" target="_blank">
-            {{ product.link }}
-          </a>
+          <strong>{{ t_link }}</strong><br>
+          <a href="{{ product.link }}" class="text-blue-700 underline break-words" target="_blank">{{ product.link }}</a>
         </li>
         {% endif %}
 
         <li>
-          <strong>🧭 Dynamische URL:</strong><br>
-          <a href="{{ dynamic_url }}" class="text-blue-700 underline break-words" target="_blank">
-            {{ dynamic_url }}
-          </a>
+          <strong>{{ t_dyn }}</strong><br>
+          <a href="{{ dynamic_url }}" class="text-blue-700 underline break-words" target="_blank">{{ dynamic_url }}</a>
         </li>
 
         <li>
-          <strong>🎨 Design:</strong>
+          <strong>{{ t_design }}</strong>
           <div class="mt-1">
-            Stil: <span class="font-semibold">{{ product.style }}</span><br>
-            Vordergrundfarbe: <span class="font-semibold">{{ product.fg_color }}</span><br>
-            Hintergrundfarbe: <span class="font-semibold">{{ product.bg_color }}</span><br>
-            Größe: <span class="font-semibold">{{ product.qr_size }} px</span>
+            {{ t_style }} <span class="font-semibold">{{ product.style }}</span><br>
+            {{ t_fg }} <span class="font-semibold">{{ product.fg_color }}</span><br>
+            {{ t_bg }} <span class="font-semibold">{{ product.bg_color }}</span><br>
+            {{ t_size }} <span class="font-semibold">{{ product.qr_size }} px</span>
           </div>
         </li>
-
       </ul>
     </div>
   </div>
 
-
-  <!-- ✅ Footer-Aktionen -->
   <div class="mt-10 flex flex-wrap justify-center gap-4">
+    <a href="/qr/product/" class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">{{ t_new }}</a>
 
-    <a href="/qr/product/"
-       class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">
-      ➕ Neuen Produkt-QR erstellen
-    </a>
+    <a href="/qr/my" class="px-5 py-3 rounded-xl bg-[var(--primary)] text-white shadow font-semibold hover:bg-[var(--primary-dark)]">{{ t_my }}</a>
 
-    <a href="/qr/my"
-       class="px-5 py-3 rounded-xl bg-[var(--primary)] text-white shadow font-semibold hover:bg-[var(--primary-dark)]">
-      📋 Meine QR-Codes
-    </a>
-
-    <a href="/dashboard"
-       class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">
-      🔙 Zurück zum Dashboard
-    </a>
-
+    <a href="/dashboard" class="px-5 py-3 rounded-xl bg-gray-200 text-gray-800 shadow hover:bg-gray-300">{{ t_back }}</a>
   </div>
-
 </section>
 
 <style>

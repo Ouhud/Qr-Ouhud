@@ -1,7 +1,62 @@
 {% extends "base.html" %}
-{% block title %}🔐 Login – Ouhud QR{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    🔐 Sign In – Ouhud QR
+  {% elif request.state.lang == 'ar' %}
+    🔐 تسجيل الدخول – Ouhud QR
+  {% else %}
+    🔐 Login – Ouhud QR
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set l_title = 'Welcome back' %}
+  {% set l_sub = 'Sign in to manage your QR codes.' %}
+  {% set l_email = 'Email address' %}
+  {% set l_email_ph = 'example@domain.com' %}
+  {% set l_password = 'Password' %}
+  {% set l_forgot = 'Forgot password?' %}
+  {% set l_password_ph = '••••••••' %}
+  {% set l_otp = '2FA code' %}
+  {% set l_otp_optional = '(if enabled)' %}
+  {% set l_remember = 'Keep me signed in (7 days)' %}
+  {% set l_submit = 'Sign in' %}
+  {% set l_or = 'or' %}
+  {% set l_new = 'New to Ouhud QR?' %}
+  {% set l_create = 'Create account' %}
+{% elif lang == 'ar' %}
+  {% set l_title = 'مرحبًا بعودتك' %}
+  {% set l_sub = 'سجّل الدخول لإدارة رموز QR الخاصة بك.' %}
+  {% set l_email = 'البريد الإلكتروني' %}
+  {% set l_email_ph = 'example@domain.com' %}
+  {% set l_password = 'كلمة المرور' %}
+  {% set l_forgot = 'هل نسيت كلمة المرور؟' %}
+  {% set l_password_ph = '••••••••' %}
+  {% set l_otp = 'رمز التحقق الثنائي' %}
+  {% set l_otp_optional = '(إذا كان مفعّلًا)' %}
+  {% set l_remember = 'إبقائي مسجّل الدخول (7 أيام)' %}
+  {% set l_submit = 'تسجيل الدخول' %}
+  {% set l_or = 'أو' %}
+  {% set l_new = 'جديد على Ouhud QR؟' %}
+  {% set l_create = 'إنشاء حساب' %}
+{% else %}
+  {% set l_title = 'Willkommen zurück' %}
+  {% set l_sub = 'Logge dich ein, um deine QR-Codes zu verwalten.' %}
+  {% set l_email = 'E-Mail-Adresse' %}
+  {% set l_email_ph = 'beispiel@domain.de' %}
+  {% set l_password = 'Passwort' %}
+  {% set l_forgot = 'Passwort vergessen?' %}
+  {% set l_password_ph = '••••••••' %}
+  {% set l_otp = '2FA-Code' %}
+  {% set l_otp_optional = '(falls aktiviert)' %}
+  {% set l_remember = 'Angemeldet bleiben (7 Tage)' %}
+  {% set l_submit = 'Anmelden' %}
+  {% set l_or = 'oder' %}
+  {% set l_new = 'Neu bei Ouhud QR?' %}
+  {% set l_create = 'Konto erstellen' %}
+{% endif %}
 <div class="auth-page-wrapper">
   <div class="auth-container">
     <div class="auth-card">
@@ -9,8 +64,8 @@
         <a href="/" class="auth-logo">
           <img src="/static/logo.png" alt="Ouhud QR Logo">
         </a>
-        <h1>Willkommen zurück</h1>
-        <p>Logge dich ein, um deine QR-Codes zu verwalten.</p>
+        <h1>{{ l_title }}</h1>
+        <p>{{ l_sub }}</p>
       </header>
 
       {% if error %}
@@ -22,27 +77,27 @@
 
       <form method="post" action="/auth/login" class="auth-form">
         <div class="input-group">
-          <label for="email">E-Mail-Adresse</label>
+          <label for="email">{{ l_email }}</label>
           <div class="input-wrapper">
             <span class="input-icon">✉️</span>
-            <input type="email" id="email" name="email" placeholder="beispiel@domain.de" value="{{ prefill_email or '' }}" required autofocus>
+            <input type="email" id="email" name="email" placeholder="{{ l_email_ph }}" value="{{ prefill_email or '' }}" required autofocus>
           </div>
         </div>
 
         <div class="input-group">
           <div class="label-row">
-            <label for="password">Passwort</label>
-            <a href="/auth/forgot-password" class="label-link">Passwort vergessen?</a>
+            <label for="password">{{ l_password }}</label>
+            <a href="/auth/forgot-password" class="label-link">{{ l_forgot }}</a>
           </div>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input type="password" id="password" name="password" placeholder="••••••••" required>
+            <input type="password" id="password" name="password" placeholder="{{ l_password_ph }}" required>
             <button type="button" class="eye-toggle" onclick="togglePassword()" title="Passwort anzeigen">👁️</button>
           </div>
         </div>
 
         <div class="input-group">
-          <label for="otp_code">2FA-Code {% if require_2fa %}*{% else %}(falls aktiviert){% endif %}</label>
+          <label for="otp_code">{{ l_otp }} {% if require_2fa %}*{% else %}{{ l_otp_optional }}{% endif %}</label>
           <div class="input-wrapper">
             <span class="input-icon">🛡️</span>
             <input type="text" id="otp_code" name="otp_code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="123456" {% if require_2fa %}required{% endif %}>
@@ -52,18 +107,18 @@
         <div class="checkbox-group">
           <label class="custom-checkbox">
             <input type="checkbox" name="remember_me">
-            <span class="label-text">Angemeldet bleiben (7 Tage)</span>
+            <span class="label-text">{{ l_remember }}</span>
           </label>
         </div>
 
         <button type="submit" class="auth-submit-btn">
-          Anmelden <span>→</span>
+          {{ l_submit }} <span>→</span>
         </button>
       </form>
 
       <footer class="auth-footer">
-        <div class="divider"><span>oder</span></div>
-        <p>Neu bei Ouhud QR? <a href="/auth/register">Konto erstellen</a></p>
+        <div class="divider"><span>{{ l_or }}</span></div>
+        <p>{{ l_new }} <a href="/auth/register">{{ l_create }}</a></p>
       </footer>
     </div>
   </div>

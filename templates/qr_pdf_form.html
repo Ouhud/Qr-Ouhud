@@ -1,64 +1,117 @@
 {% extends "base.html" %}
-{% block title %}📄 PDF-QR-Code {% if mode == "edit" %}bearbeiten{% else %}erstellen{% endif %} – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_mode_edit = 'edit' %}
+  {% set t_mode_create = 'create' %}
+  {% set t_sub_edit = 'Update your PDF file or title. The QR code stays the same.' %}
+  {% set t_sub_create = 'Upload a PDF file and get a <strong>dynamic QR code link</strong>.<br>You can replace the file any time later.' %}
+  {% set t_title_label = '📝 Title:' %}
+  {% set t_file = '📂 Upload PDF file:' %}
+  {% set t_current = '📄 Current file:' %}
+  {% set t_save = '💾 Save changes' %}
+  {% set t_create = '✅ Create QR code' %}
+  {% set t_current_qr = '📎 Current QR code' %}
+  {% set t_download = '⬇️ Download QR code' %}
+  {% set t_success = '✅ QR code created successfully!' %}
+  {% set t_open_pdf = '📄 Open PDF' %}
+  {% set t_preview = '📄 Preview:' %}
+  {% set p_title = 'e.g. Product brochure 2025' %}
+  {% set page_title = '📄 PDF QR Code ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) ~ ' – Ouhud QR' %}
+  {% set h1_title = '📄 PDF QR Code ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) %}
+{% elif lang == 'ar' %}
+  {% set t_mode_edit = 'تعديل' %}
+  {% set t_mode_create = 'إنشاء' %}
+  {% set t_sub_edit = 'حدّث ملف PDF أو العنوان. يبقى رمز QR كما هو.' %}
+  {% set t_sub_create = 'ارفع ملف PDF واحصل على <strong>رابط QR ديناميكي</strong>.<br>يمكنك استبدال الملف لاحقًا في أي وقت.' %}
+  {% set t_title_label = '📝 العنوان:' %}
+  {% set t_file = '📂 رفع ملف PDF:' %}
+  {% set t_current = '📄 الملف الحالي:' %}
+  {% set t_save = '💾 حفظ التغييرات' %}
+  {% set t_create = '✅ إنشاء رمز QR' %}
+  {% set t_current_qr = '📎 رمز QR الحالي' %}
+  {% set t_download = '⬇️ تنزيل رمز QR' %}
+  {% set t_success = '✅ تم إنشاء رمز QR بنجاح!' %}
+  {% set t_open_pdf = '📄 فتح PDF' %}
+  {% set t_preview = '📄 معاينة:' %}
+  {% set p_title = 'مثال: كتيب منتج 2025' %}
+  {% set page_title = '📄 QR لملف PDF ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) ~ ' – Ouhud QR' %}
+  {% set h1_title = '📄 QR لملف PDF ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) %}
+{% else %}
+  {% set t_mode_edit = 'bearbeiten' %}
+  {% set t_mode_create = 'erstellen' %}
+  {% set t_sub_edit = 'Aktualisiere deine PDF-Datei oder den Titel. Der QR-Code bleibt gleich.' %}
+  {% set t_sub_create = 'Lade eine PDF-Datei hoch und erhalte einen <strong>dynamischen QR-Code-Link</strong>.<br>Du kannst die Datei später jederzeit austauschen.' %}
+  {% set t_title_label = '📝 Titel:' %}
+  {% set t_file = '📂 PDF-Datei hochladen:' %}
+  {% set t_current = '📄 Aktuelle Datei:' %}
+  {% set t_save = '💾 Änderungen speichern' %}
+  {% set t_create = '✅ QR-Code erstellen' %}
+  {% set t_current_qr = '📎 Aktueller QR-Code' %}
+  {% set t_download = '⬇️ QR-Code herunterladen' %}
+  {% set t_success = '✅ QR-Code erfolgreich erstellt!' %}
+  {% set t_open_pdf = '📄 PDF öffnen' %}
+  {% set t_preview = '📄 Vorschau:' %}
+  {% set p_title = 'z. B. Produktbroschüre 2025' %}
+  {% set page_title = '📄 PDF-QR-Code ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) ~ ' – Ouhud QR' %}
+  {% set h1_title = '📄 PDF-QR-Code ' ~ (t_mode_edit if mode == 'edit' else t_mode_create) %}
+{% endif %}
+{% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator pdf-generator">
-  <h1>📄 PDF-QR-Code {% if mode == "edit" %}bearbeiten{% else %}erstellen{% endif %}</h1>
+  <h1>{{ h1_title }}</h1>
   <p class="subtitle">
     {% if mode == "edit" %}
-      Aktualisiere deine PDF-Datei oder den Titel. Der QR-Code bleibt gleich.
+      {{ t_sub_edit }}
     {% else %}
-      Lade eine PDF-Datei hoch und erhalte einen <strong>dynamischen QR-Code-Link</strong>.<br>
-      Du kannst die Datei später jederzeit austauschen.
+      {{ t_sub_create|safe }}
     {% endif %}
   </p>
 
-  <!-- 🧾 Formular -->
   <form method="post" action="{% if mode == 'edit' %}/qr/pdf/update/{{ qr.id }}{% else %}/qr/pdf/generate{% endif %}" enctype="multipart/form-data" class="qr-form">
     <div class="form-group">
-      <label for="title">📝 Titel:</label>
-      <input type="text" id="title" name="title" value="{{ qr.title if qr else '' }}" placeholder="z. B. Produktbroschüre 2025" required>
+      <label for="title">{{ t_title_label }}</label>
+      <input type="text" id="title" name="title" value="{{ qr.title if qr else '' }}" placeholder="{{ p_title }}" required>
     </div>
 
     <div class="form-group">
-      <label for="file">📂 PDF-Datei hochladen:</label>
+      <label for="file">{{ t_file }}</label>
       <input type="file" id="file" name="file" accept="application/pdf" {% if mode != "edit" %}required{% endif %} onchange="previewPdf(event)">
       {% if mode == "edit" and qr_data.pdf_path %}
-        <p class="current-file">📄 Aktuelle Datei: {{ qr_data.pdf_path.split('/')[-1] }}</p>
+        <p class="current-file">{{ t_current }} {{ qr_data.pdf_path.split('/')[-1] }}</p>
       {% endif %}
     </div>
 
     <hr class="divider">
 
-    <!-- 🎨 Stil-Auswahl -->
-    {% set submit_label = "💾 Änderungen speichern" if mode == "edit" else "✅ QR-Code erstellen" %}
+    {% set submit_label = t_save if mode == "edit" else t_create %}
     {% include "partials/qr_style_selector.html" %}
   </form>
 
   {% if mode == "edit" and qr %}
   <div class="qr-result">
-    <p><strong>📎 Aktueller QR-Code</strong></p>
+    <p><strong>{{ t_current_qr }}</strong></p>
     <img src="/{{ qr.image_path }}" alt="QR-Code" class="qr-preview">
     <p>
-      <a href="/{{ qr.image_path }}" download class="download-link">⬇️ QR-Code herunterladen</a>
+      <a href="/{{ qr.image_path }}" download class="download-link">{{ t_download }}</a>
     </p>
   </div>
   {% endif %}
 
   {% if qr_image %}
   <div class="qr-result">
-    <p><strong>✅ QR-Code erfolgreich erstellt!</strong></p>
+    <p><strong>{{ t_success }}</strong></p>
     <img src="data:image/png;base64,{{ qr_image }}" alt="QR-Code Vorschau" class="qr-preview">
     <p>
-      <a href="{{ dynamic_url }}" target="_blank" class="download-link">📄 PDF öffnen</a><br>
-      <a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="download-link">⬇️ QR-Code herunterladen</a>
+      <a href="{{ dynamic_url }}" target="_blank" class="download-link">{{ t_open_pdf }}</a><br>
+      <a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="download-link">{{ t_download }}</a>
     </p>
   </div>
   {% endif %}
 </section>
 
-<!-- === PDF-Vorschau-Skript === -->
 <script>
+const PDF_PREVIEW_LABEL = {{ t_preview | tojson }};
 function previewPdf(event) {
   const file = event.target.files[0];
   if (file && file.type === "application/pdf") {
@@ -71,7 +124,7 @@ function previewPdf(event) {
     preview.type = "application/pdf";
     preview.classList.add("pdf-preview");
 
-    container.innerHTML = '<p class="preview-label">📄 Vorschau:</p>';
+    container.innerHTML = `<p class="preview-label">${PDF_PREVIEW_LABEL}</p>`;
     container.appendChild(preview);
 
     document.querySelector(".qr-form").insertAdjacentElement("afterend", container);

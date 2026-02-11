@@ -1,10 +1,64 @@
 {# templates/partials/qr_style_panel.html #}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set q_panel_title = '🎨 QR Design & Output' %}
+  {% set q_panel_sub = 'Choose a style, customize colors, add a logo, and define output size.' %}
+  {% set q_styles_title = 'Styles' %}
+  {% set q_custom_title = '⚙️ Custom QR Design' %}
+  {% set q_custom_sub = 'Design your QR code to match your brand with colors, logo, and size.' %}
+  {% set q_fg = 'QR color (foreground)' %}
+  {% set q_bg = 'Background color' %}
+  {% set q_size = 'Size (px)' %}
+  {% set q_logo = 'Upload logo (optional)' %}
+  {% set q_submit_default = '✅ Create QR code' %}
+  {% set q_print = '🖨️ Print' %}
+  {% set q_extra_title = '✨ Advanced options' %}
+  {% set q_extra_sub = 'Enable dynamic QR codes so you can update content later without reprinting.' %}
+  {% set q_extra_toggle = 'Enable dynamic QR code' %}
+  {% set q_btn_select = 'Select' %}
+  {% set q_btn_selected = '✅ Selected' %}
+{% elif lang == 'ar' %}
+  {% set q_panel_title = '🎨 تصميم QR والإخراج' %}
+  {% set q_panel_sub = 'اختر نمطًا، خصّص الألوان، أضف شعارًا، وحدد حجم الإخراج.' %}
+  {% set q_styles_title = 'الأنماط' %}
+  {% set q_custom_title = '⚙️ تصميم QR مخصص' %}
+  {% set q_custom_sub = 'صمّم رمز QR بما يناسب علامتك بالألوان والشعار والحجم.' %}
+  {% set q_fg = 'لون QR (الأمامي)' %}
+  {% set q_bg = 'لون الخلفية' %}
+  {% set q_size = 'الحجم (px)' %}
+  {% set q_logo = 'رفع شعار (اختياري)' %}
+  {% set q_submit_default = '✅ إنشاء رمز QR' %}
+  {% set q_print = '🖨️ طباعة' %}
+  {% set q_extra_title = '✨ خيارات متقدمة' %}
+  {% set q_extra_sub = 'فعّل QR الديناميكي لتعديل المحتوى لاحقًا بدون إعادة الطباعة.' %}
+  {% set q_extra_toggle = 'تفعيل QR ديناميكي' %}
+  {% set q_btn_select = 'اختيار' %}
+  {% set q_btn_selected = '✅ تم الاختيار' %}
+{% else %}
+  {% set q_panel_title = '🎨 QR-Design & Ausgabe' %}
+  {% set q_panel_sub = 'Wähle ein Design, passe Farben an, setze ein Logo und lege die Ausgabegröße fest.' %}
+  {% set q_styles_title = 'Stile' %}
+  {% set q_custom_title = '⚙️ Individuelles QR-Code-Design' %}
+  {% set q_custom_sub = 'Gestalte deinen QR-Code nach deinen Vorstellungen – Farben, Logo und Größe perfekt auf deine Marke abgestimmt.' %}
+  {% set q_fg = 'QR-Farbe (Vordergrund)' %}
+  {% set q_bg = 'Hintergrundfarbe' %}
+  {% set q_size = 'Größe px' %}
+  {% set q_logo = 'Logo hochladen (optional)' %}
+  {% set q_submit_default = '✅ QR-Code erstellen' %}
+  {% set q_print = '🖨️ Drucken' %}
+  {% set q_extra_title = '✨ Erweiterte Optionen' %}
+  {% set q_extra_sub = 'Aktiviere dynamische QR-Codes, die du später anpassen kannst – ohne neue Drucke.' %}
+  {% set q_extra_toggle = 'Dynamischer QR-Code aktivieren' %}
+  {% set q_btn_select = 'Auswählen' %}
+  {% set q_btn_selected = '✅ Ausgewählt' %}
+{% endif %}
+
 <section class="qr-style-panel" aria-labelledby="qr-style-panel-title">
   <h2 id="qr-style-panel-title" class="qrsp-title">
-    🎨 QR-Design & Ausgabe
+    {{ q_panel_title }}
   </h2>
   <p class="qrsp-subtitle">
-    Wähle ein Design, passe Farben an, setze ein Logo und lege die Ausgabegröße fest.
+    {{ q_panel_sub }}
   </p>
 
   <!-- Hidden: STYLE-Key für Backend -->
@@ -13,8 +67,51 @@
   <div class="qrsp-grid">
     <!-- ========== Stil-Raster ========== -->
     <div class="qrsp-card">
-      <h3 class="qrsp-card-title">Stile</h3>
+      <h3 class="qrsp-card-title">{{ q_styles_title }}</h3>
 
+{% if lang == 'en' %}
+{% set styles = [
+  {"name":"Classic","key":"classic","img":"classic.png","desc":"Standard - high contrast and universal readability"},
+  {"name":"Rounded","key":"rounded","img":"rounded.png","desc":"Modern soft corners"},
+  {"name":"Dots","key":"dots","img":"dots.png","desc":"Creative dot pattern"},
+  {"name":"Soft Modern","key":"soft","img":"soft.png","desc":"Minimal and elegant"},
+  {"name":"Gradient","key":"gradient","img":"gradient.png","desc":"Color gradient"},
+  {"name":"Premium","key":"premium","img":"premium.png","desc":"Luxury gold style"},
+  {"name":"Neon","key":"neon","img":"neon.png","desc":"Glowing effect"},
+  {"name":"Dark Mode","key":"dark","img":"dark.png","desc":"Great for dark backgrounds"},
+  {"name":"Sunset","key":"sunset","img":"sunset.png","desc":"Orange to red"},
+  {"name":"Ocean","key":"ocean","img":"ocean.png","desc":"Blue gradient"},
+  {"name":"Forest","key":"forest","img":"forest.png","desc":"Natural green"},
+  {"name":"Rose Gold","key":"rose","img":"rose.png","desc":"Pink and gold"},
+  {"name":"3D Blue","key":"3d_pro","img":"3d_pro.png","desc":"Deep 3D metallic shine"},
+  {"name":"Metallic","key":"metallic","img":"metallic.png","desc":"Steel look"},
+  {"name":"Glass Effect","key":"glass","img":"glass.png","desc":"Glass style"},
+  {"name":"Futuristic","key":"futuristic","img":"futuristic.png","desc":"Neon lines"},
+  {"name":"Hologram","key":"holo","img":"holo.png","desc":"Hologram pastel"},
+  {"name":"Ouhud Brand","key":"ouhud","img":"ouhud.png","desc":"Ouhud blue with glow"}
+] %}
+{% elif lang == 'ar' %}
+{% set styles = [
+  {"name":"كلاسيكي","key":"classic","img":"classic.png","desc":"قياسي - تباين قوي وقراءة ممتازة"},
+  {"name":"حواف دائرية","key":"rounded","img":"rounded.png","desc":"زوايا ناعمة وعصرية"},
+  {"name":"نقاط","key":"dots","img":"dots.png","desc":"نمط نقاط إبداعي"},
+  {"name":"عصري ناعم","key":"soft","img":"soft.png","desc":"بسيط وأنيق"},
+  {"name":"تدرّج","key":"gradient","img":"gradient.png","desc":"تدرّج لوني"},
+  {"name":"بريميوم","key":"premium","img":"premium.png","desc":"تصميم ذهبي فاخر"},
+  {"name":"نيون","key":"neon","img":"neon.png","desc":"تأثير مضيء"},
+  {"name":"الوضع الداكن","key":"dark","img":"dark.png","desc":"مثالي للخلفيات الداكنة"},
+  {"name":"غروب","key":"sunset","img":"sunset.png","desc":"برتقالي إلى أحمر"},
+  {"name":"محيط","key":"ocean","img":"ocean.png","desc":"تدرّج أزرق"},
+  {"name":"غابة","key":"forest","img":"forest.png","desc":"أخضر طبيعي"},
+  {"name":"روز غولد","key":"rose","img":"rose.png","desc":"وردي وذهبي"},
+  {"name":"أزرق 3D","key":"3d_pro","img":"3d_pro.png","desc":"لمعة معدنية ثلاثية الأبعاد"},
+  {"name":"معدني","key":"metallic","img":"metallic.png","desc":"مظهر فولاذي"},
+  {"name":"تأثير زجاجي","key":"glass","img":"glass.png","desc":"مظهر الزجاج"},
+  {"name":"مستقبلي","key":"futuristic","img":"futuristic.png","desc":"خطوط نيون"},
+  {"name":"هولوغرام","key":"holo","img":"holo.png","desc":"ألوان هولوغرام باستيل"},
+  {"name":"هوية Ouhud","key":"ouhud","img":"ouhud.png","desc":"أزرق Ouhud مع توهج"}
+] %}
+{% else %}
 {% set styles = [
   {"name":"Klassisch","key":"classic","img":"classic.png","desc":"Standard – kontrastreich und universell lesbar"},
   {"name":"Abgerundet","key":"rounded","img":"rounded.png","desc":"Moderne, weiche Kanten"},
@@ -35,6 +132,7 @@
   {"name":"Hologramm","key":"holo","img":"holo.png","desc":"Hologramm-Pastell"},
   {"name":"Ouhud Brand","key":"ouhud","img":"ouhud.png","desc":"Ouhud Blue mit Glow"}
 ] %}
+{% endif %}
 
     <!-- === Style Grid === -->
     <div class="style-grid">
@@ -46,7 +144,7 @@
         <h3>{{ style.name }}</h3>
         <p class="desc">{{ style.desc }}</p>
         <button type="button" class="btn primary style-btn" data-style="{{ style.key }}"
-                onclick="selectStyle(event, '{{ style.key }}')">Auswählen</button>
+                onclick="selectStyle(event, '{{ style.key }}')">{{ q_btn_select }}</button>
       </div>
       {% endfor %}
     </div>
@@ -59,11 +157,11 @@
   <div class="design-container">
 
     <h2 class="section-title">
-      <span class="icon-gear">⚙️</span> Individuelles QR-Code-Design
+      <span class="icon-gear">⚙️</span> {{ q_custom_title|replace('⚙️ ', '') }}
     </h2>
 
     <p class="section-subtitle">
-      Gestalte deinen QR-Code nach deinen Vorstellungen – Farben, Logo und Größe perfekt auf deine Marke abgestimmt.
+      {{ q_custom_sub }}
     </p>
 
     <div id="designForm">
@@ -72,23 +170,23 @@
       <div class="design-grid">
 
               <div class="form-group">
-                <label>QR-Farbe (Vordergrund)</label>
+                <label>{{ q_fg }}</label>
                 <input type="color" id="fg_color" name="fg_color" value="#0d2a78" class="text-input"> 
               </div>
 
               <div class="form-group">
-                <label>Hintergrundfarbe</label>
+                <label>{{ q_bg }}</label>
                 <input type="color" id="bg_color" name="bg_color" value="#ffffff" class="text-input">
               </div>
 
               <div class="form-group">
-                <label>Größe px</label>
+                <label>{{ q_size }}</label>
                 <input type="number" id="qr_size" name="qr_size" min="200" max="1000" value="300" class="input-field text-input">
               </div>
 
               {% if show_logo_upload|default(true) %}
               <div class="form-group">
-                <label>Logo hochladen (optional)</label>
+                <label>{{ q_logo }}</label>
                 <input type="file" id="logo" name="logo" accept="image/*" class="input-file">
               </div>
               {% endif %}
@@ -99,12 +197,12 @@
       {% if include_submit|default(true) %}
       <div class="action-buttons">
         <button type="submit" class="btn primary">
-          {{ submit_label|default("✅ QR-Code erstellen") }}
+          {{ submit_label|default(q_submit_default) }}
         </button>
 
         {% if include_print|default(true) %}
         <button type="button" class="btn gray" onclick="printQR()">
-          🖨️ Drucken
+          {{ q_print }}
         </button>
         {% endif %}
       </div>
@@ -112,16 +210,16 @@
 
       <!-- ERWEITERTE OPTIONEN -->
       <div class="extra-actions">
-        <h3>✨ Erweiterte Optionen</h3>
+        <h3>{{ q_extra_title }}</h3>
         <p class="desc">
-          Aktiviere dynamische QR-Codes, die du später anpassen kannst – ohne neue Drucke.
+          {{ q_extra_sub }}
         </p>
 
         <input type="hidden" id="dynamicQR" name="dynamicQR" value="1">
         <label class="toggle" for="dynamicQR_toggle">
           <input type="checkbox" id="dynamicQR_toggle" checked>
           <span class="toggle-slider"></span>
-          <span class="toggle-label">Dynamischer QR-Code aktivieren</span>
+          <span class="toggle-label">{{ q_extra_toggle }}</span>
         </label>
       </div>
 
@@ -451,6 +549,9 @@ input[type=number] {
 }
 </style>
 <script>
+const STYLE_BTN_SELECT_TEXT = {{ q_btn_select | tojson }};
+const STYLE_BTN_SELECTED_TEXT = {{ q_btn_selected | tojson }};
+
 if (!window.printQR) {
   window.printQR = function () {
     window.print();
@@ -468,7 +569,7 @@ if (!window.selectStyle) {
     document.querySelectorAll(".style-btn").forEach((btn) => {
       btn.classList.remove("active");
       if (btn.dataset && btn.dataset.style) {
-        btn.textContent = "Auswählen";
+        btn.textContent = STYLE_BTN_SELECT_TEXT;
       }
     });
 
@@ -477,7 +578,7 @@ if (!window.selectStyle) {
       document.querySelector(`.style-btn[data-style="${styleName}"]`);
     if (target) {
       target.classList.add("active");
-      target.textContent = "✅ Ausgewählt";
+      target.textContent = STYLE_BTN_SELECTED_TEXT;
     }
   };
 }
@@ -490,7 +591,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     if (btn && !btn.classList.contains("active")) {
       btn.classList.add("active");
-      btn.textContent = "✅ Ausgewählt";
+      btn.textContent = STYLE_BTN_SELECTED_TEXT;
     }
   }
 

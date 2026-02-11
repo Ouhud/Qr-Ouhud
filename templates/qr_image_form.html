@@ -1,42 +1,59 @@
 {% extends "base.html" %}
-{% block title %}🖼️ Bild-QR-Code erstellen – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '🖼️ Create image QR code – Ouhud QR' %}
+  {% set t_h1 = '🖼️ Create image QR code' %}
+  {% set t_sub = 'Upload an image to create a dynamic QR code. You can update the image later without changing the QR.' %}
+  {% set t_label = '📝 Label:' %}
+  {% set t_file = '📁 Select image:' %}
+  {% set t_preview = '📷 Image preview:' %}
+  {% set p_label = 'Example: Product image, Event banner, Flyer ...' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '🖼️ إنشاء QR للصورة – Ouhud QR' %}
+  {% set t_h1 = '🖼️ إنشاء QR للصورة' %}
+  {% set t_sub = 'ارفع صورة لإنشاء QR ديناميكي. يمكنك تحديث الصورة لاحقًا دون تغيير الرمز.' %}
+  {% set t_label = '📝 التسمية:' %}
+  {% set t_file = '📁 اختيار صورة:' %}
+  {% set t_preview = '📷 معاينة الصورة:' %}
+  {% set p_label = 'مثال: صورة منتج، بانر فعالية، منشور ...' %}
+{% else %}
+  {% set t_title = '🖼️ Bild-QR-Code erstellen – Ouhud QR' %}
+  {% set t_h1 = '🖼️ Bild-QR-Code erstellen' %}
+  {% set t_sub = 'Lade ein Bild hoch, um einen dynamischen QR-Code zu erzeugen. Du kannst später das Bild aktualisieren, ohne den QR-Code zu ändern.' %}
+  {% set t_label = '📝 Bezeichnung:' %}
+  {% set t_file = '📁 Bild auswählen:' %}
+  {% set t_preview = '📷 Bild-Vorschau:' %}
+  {% set p_label = 'Beispiel: Produktbild, Eventbanner, Flyer …' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
-  <h1>🖼️ Bild-QR-Code erstellen</h1>
-  <p class="subtitle">
-    Lade ein Bild hoch, um einen <strong>dynamischen QR-Code</strong> zu erzeugen.  
-    Du kannst später das Bild aktualisieren, ohne den QR-Code zu ändern.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <form method="post" action="/qr/image/generate" enctype="multipart/form-data" class="qr-form">
-
-    <!-- 🧾 Bezeichnung -->
     <div class="form-group">
-      <label for="title">📝 Bezeichnung:</label>
-      <input type="text" id="title" name="title" placeholder="Beispiel: Produktbild, Eventbanner, Flyer …" required>
+      <label for="title">{{ t_label }}</label>
+      <input type="text" id="title" name="title" placeholder="{{ p_label }}" required>
     </div>
 
-    <!-- 📂 Bild-Datei -->
     <div class="form-group">
-      <label for="file">📁 Bild auswählen:</label>
+      <label for="file">{{ t_file }}</label>
       <input type="file" id="file" name="file" accept="image/*" required onchange="previewImage(event)">
     </div>
 
-    <!-- 📸 Vorschau -->
     <div id="image-preview-container" style="display:none;">
-      <p class="preview-label">📷 Bild-Vorschau:</p>
-      <img id="image-preview" class="preview-img" alt="Bild Vorschau">
+      <p class="preview-label">{{ t_preview }}</p>
+      <img id="image-preview" class="preview-img" alt="Image preview">
     </div>
 
     <hr class="divider">
 
-    <!-- 🎨 Stil-Auswahl -->
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>
 
-<!-- === SCRIPT: Bildvorschau === -->
 <script>
 function previewImage(event) {
   const file = event.target.files[0];
@@ -44,7 +61,7 @@ function previewImage(event) {
   const img = document.getElementById('image-preview');
   if (file) {
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = (e) => {
       img.src = e.target.result;
       container.style.display = 'block';
     };

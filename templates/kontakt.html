@@ -1,100 +1,103 @@
 {% extends "base.html" %}
-{% set title = "Kontakt – Ouhud QR" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set title = 'Contact – Ouhud QR' %}
+  {% set h1 = '📬 Contact form' %}
+  {% set topic_enterprise = 'Enterprise inquiry: we will reply with a custom offer.' %}
+  {% set topic_api = 'API access request: please describe your use case briefly.' %}
+  {% set topic_default = 'We look forward to your message.' %}
+  {% set ok = '✅ Thank you! Your message has been sent successfully.' %}
+  {% set name = 'Name *' %}
+  {% set email = 'Email *' %}
+  {% set subject = 'Subject' %}
+  {% set message = 'Message *' %}
+  {% set send = 'Send message' %}
+  {% set p_name = 'Your name' %}
+  {% set p_email = 'Your email address' %}
+  {% set p_subject = 'e.g. Question about Ouhud QR' %}
+  {% set p_msg = 'Your message...' %}
+  {% set alt = '📧 You can also reach us directly at' %}
+{% elif lang == 'ar' %}
+  {% set title = 'تواصل معنا – Ouhud QR' %}
+  {% set h1 = '📬 نموذج التواصل' %}
+  {% set topic_enterprise = 'طلب Enterprise: سنرسل عرضًا مخصصًا.' %}
+  {% set topic_api = 'طلب وصول API: يرجى وصف حالة الاستخدام باختصار.' %}
+  {% set topic_default = 'يسعدنا استقبال رسالتك.' %}
+  {% set ok = '✅ شكرًا لك! تم إرسال رسالتك بنجاح.' %}
+  {% set name = 'الاسم *' %}
+  {% set email = 'البريد الإلكتروني *' %}
+  {% set subject = 'الموضوع' %}
+  {% set message = 'الرسالة *' %}
+  {% set send = 'إرسال الرسالة' %}
+  {% set p_name = 'اسمك' %}
+  {% set p_email = 'بريدك الإلكتروني' %}
+  {% set p_subject = 'مثال: استفسار حول Ouhud QR' %}
+  {% set p_msg = 'رسالتك...' %}
+  {% set alt = '📧 يمكنك التواصل معنا مباشرة عبر' %}
+{% else %}
+  {% set title = 'Kontakt – Ouhud QR' %}
+  {% set h1 = '📬 Kontaktformular' %}
+  {% set topic_enterprise = 'Enterprise-Anfrage: wir melden uns mit einem individuellen Angebot.' %}
+  {% set topic_api = 'API-Zugang anfragen: bitte kurz den Use-Case beschreiben.' %}
+  {% set topic_default = 'Wir freuen uns über Ihre Nachricht.' %}
+  {% set ok = '✅ Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.' %}
+  {% set name = 'Name *' %}
+  {% set email = 'E-Mail *' %}
+  {% set subject = 'Betreff' %}
+  {% set message = 'Nachricht *' %}
+  {% set send = 'Nachricht senden' %}
+  {% set p_name = 'Ihr Name' %}
+  {% set p_email = 'Ihre E-Mail-Adresse' %}
+  {% set p_subject = 'z. B. Anfrage zu Ouhud QR' %}
+  {% set p_msg = 'Ihre Nachricht...' %}
+  {% set alt = '📧 Alternativ erreichen Sie uns direkt unter' %}
+{% endif %}
 
 {% block content %}
-<main style="
-  max-width:600px;
-  margin:2rem auto;
-  background:#fff;
-  border-radius:12px;
-  padding:2rem;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
-  font-family:system-ui, -apple-system, sans-serif;
-">
-  <h1 style="color:#4f46e5;text-align:center;">📬 Kontaktformular</h1>
+<main style="max-width:600px;margin:2rem auto;background:#fff;border-radius:12px;padding:2rem;box-shadow:0 4px 12px rgba(0,0,0,0.06);font-family:system-ui,-apple-system,sans-serif;">
+  <h1 style="color:#4f46e5;text-align:center;">{{ h1 }}</h1>
   <p style="text-align:center;color:#555;">
     {% if contact_topic == "enterprise" %}
-      Enterprise-Anfrage: wir melden uns mit einem individuellen Angebot.
+      {{ topic_enterprise }}
     {% elif contact_topic == "api-access" %}
-      API-Zugang anfragen: bitte kurz den Use-Case beschreiben.
+      {{ topic_api }}
     {% else %}
-      Wir freuen uns über Ihre Nachricht.
+      {{ topic_default }}
     {% endif %}
   </p>
 
   {% if success %}
-    <div style="
-      background:#ecfdf5;
-      color:#065f46;
-      padding:12px 16px;
-      border-radius:8px;
-      margin:1rem 0;
-      text-align:center;
-      font-weight:500;">
-      ✅ Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.
-    </div>
+    <div style="background:#ecfdf5;color:#065f46;padding:12px 16px;border-radius:8px;margin:1rem 0;text-align:center;font-weight:500;">{{ ok }}</div>
   {% elif error %}
-    <div style="
-      background:#fef2f2;
-      color:#b91c1c;
-      padding:12px 16px;
-      border-radius:8px;
-      margin:1rem 0;
-      text-align:center;
-      font-weight:500;">
-      ⚠️ {{ error }}
-    </div>
+    <div style="background:#fef2f2;color:#b91c1c;padding:12px 16px;border-radius:8px;margin:1rem 0;text-align:center;font-weight:500;">⚠️ {{ error }}</div>
   {% endif %}
 
   <form method="post" action="/contact" style="display:flex;flex-direction:column;gap:1.2rem;margin-top:1rem;">
     <div>
-      <label for="name" style="font-weight:500;">Name *</label><br>
-      <input type="text" id="name" name="name" required
-             placeholder="Ihr Name"
-             style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
+      <label for="name" style="font-weight:500;">{{ name }}</label><br>
+      <input type="text" id="name" name="name" required placeholder="{{ p_name }}" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
     </div>
 
     <div>
-      <label for="email" style="font-weight:500;">E-Mail *</label><br>
-      <input type="email" id="email" name="email" required
-             placeholder="Ihre E-Mail-Adresse"
-             style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
+      <label for="email" style="font-weight:500;">{{ email }}</label><br>
+      <input type="email" id="email" name="email" required placeholder="{{ p_email }}" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
     </div>
 
     <div>
-      <label for="subject" style="font-weight:500;">Betreff</label><br>
-      <input type="text" id="subject" name="subject"
-             placeholder="z. B. Anfrage zu Ouhud QR"
-             value="{{ prefill_subject | default('') }}"
-             style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
+      <label for="subject" style="font-weight:500;">{{ subject }}</label><br>
+      <input type="text" id="subject" name="subject" placeholder="{{ p_subject }}" value="{{ prefill_subject | default('') }}" style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;">
     </div>
 
     <div>
-      <label for="message" style="font-weight:500;">Nachricht *</label><br>
-      <textarea id="message" name="message" required
-                placeholder="Ihre Nachricht..."
-                style="width:100%;height:150px;padding:10px 12px;border:1px solid #ddd;border-radius:8px;resize:vertical;">{{ prefill_message | default('') }}</textarea>
+      <label for="message" style="font-weight:500;">{{ message }}</label><br>
+      <textarea id="message" name="message" required placeholder="{{ p_msg }}" style="width:100%;height:150px;padding:10px 12px;border:1px solid #ddd;border-radius:8px;resize:vertical;">{{ prefill_message | default('') }}</textarea>
     </div>
 
-    <button type="submit"
-            style="
-              background:#4f46e5;
-              color:white;
-              padding:12px;
-              border:none;
-              border-radius:8px;
-              cursor:pointer;
-              font-weight:600;
-              transition:background 0.2s;">
-      Nachricht senden
-    </button>
+    <button type="submit" style="background:#4f46e5;color:white;padding:12px;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:background 0.2s;">{{ send }}</button>
   </form>
 
-  <p style="margin-top:1.5rem;font-size:0.9rem;color:#888;text-align:center;">
-    📧 Alternativ erreichen Sie uns direkt unter 
-    <a href="mailto:contact@ouhud.com" style="color:#4f46e5;text-decoration:none;">
-      contact@ouhud.com
-    </a>
+  <p style="margin-top:1.5rem;font-size:0.9rem;color:#888;text-align:center;">{{ alt }}
+    <a href="mailto:contact@ouhud.com" style="color:#4f46e5;text-decoration:none;">contact@ouhud.com</a>
   </p>
 </main>
 {% endblock %}

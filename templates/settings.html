@@ -1,64 +1,167 @@
 {% extends "base.html" %}
-{% block title %}Kontoeinstellungen - Ouhud QR{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    Account Settings - Ouhud QR
+  {% elif request.state.lang == 'ar' %}
+    إعدادات الحساب - Ouhud QR
+  {% else %}
+    Kontoeinstellungen - Ouhud QR
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = current_language or (request.state.lang if request and request.state else 'de') %}
+{% if lang == 'en' %}
+  {% set s_title = 'Account Settings' %}
+  {% set s_sub = 'Manage account, email and password centrally.' %}
+  {% set s_profile_ok = 'Profile updated successfully.' %}
+  {% set s_profile_dup = 'Username or email is already in use.' %}
+  {% set s_profile_edit = 'Edit Profile' %}
+  {% set s_first = 'First name' %}
+  {% set s_last = 'Last name' %}
+  {% set s_user = 'Username *' %}
+  {% set s_email = 'Email *' %}
+  {% set s_save = 'Save profile' %}
+  {% set s_profile_page = 'Open profile page (image, QR list)' %}
+  {% set s_password = 'Change Password' %}
+  {% set s_old_pw = 'Current password *' %}
+  {% set s_new_pw = 'New password *' %}
+  {% set s_new_pw2 = 'Confirm new password *' %}
+  {% set s_update_pw = 'Update password' %}
+  {% set s_security = 'Advanced security' %}
+  {% set s_lang_title = 'Language' %}
+  {% set s_lang_sub = 'Choose your preferred language for the interface.' %}
+  {% set s_lang_save = 'Save language' %}
+  {% set s_plan_title = 'Plan and Usage' %}
+  {% set s_plan = 'Current plan:' %}
+  {% set s_price = 'Price:' %}
+  {% set s_qr = 'Created QR codes:' %}
+  {% set s_billing = 'Subscription and invoices' %}
+{% elif lang == 'ar' %}
+  {% set s_title = 'إعدادات الحساب' %}
+  {% set s_sub = 'إدارة الحساب والبريد وكلمة المرور من مكان واحد.' %}
+  {% set s_profile_ok = 'تم تحديث الملف الشخصي بنجاح.' %}
+  {% set s_profile_dup = 'اسم المستخدم أو البريد مستخدم بالفعل.' %}
+  {% set s_profile_edit = 'تعديل الملف الشخصي' %}
+  {% set s_first = 'الاسم الأول' %}
+  {% set s_last = 'اسم العائلة' %}
+  {% set s_user = 'اسم المستخدم *' %}
+  {% set s_email = 'البريد الإلكتروني *' %}
+  {% set s_save = 'حفظ الملف الشخصي' %}
+  {% set s_profile_page = 'فتح صفحة الملف الشخصي (الصورة، قائمة QR)' %}
+  {% set s_password = 'تغيير كلمة المرور' %}
+  {% set s_old_pw = 'كلمة المرور الحالية *' %}
+  {% set s_new_pw = 'كلمة المرور الجديدة *' %}
+  {% set s_new_pw2 = 'تأكيد كلمة المرور الجديدة *' %}
+  {% set s_update_pw = 'تحديث كلمة المرور' %}
+  {% set s_security = 'أمان متقدم' %}
+  {% set s_lang_title = 'اللغة' %}
+  {% set s_lang_sub = 'اختر لغتك المفضلة لواجهة النظام.' %}
+  {% set s_lang_save = 'حفظ اللغة' %}
+  {% set s_plan_title = 'الباقة والاستخدام' %}
+  {% set s_plan = 'الباقة الحالية:' %}
+  {% set s_price = 'السعر:' %}
+  {% set s_qr = 'رموز QR المنشأة:' %}
+  {% set s_billing = 'الاشتراك والفواتير' %}
+{% else %}
+  {% set s_title = 'Kontoeinstellungen' %}
+  {% set s_sub = 'Konto, E-Mail und Passwort zentral verwalten.' %}
+  {% set s_profile_ok = 'Profil wurde erfolgreich aktualisiert.' %}
+  {% set s_profile_dup = 'Benutzername oder E-Mail ist bereits vergeben.' %}
+  {% set s_profile_edit = 'Profil bearbeiten' %}
+  {% set s_first = 'Vorname' %}
+  {% set s_last = 'Nachname' %}
+  {% set s_user = 'Benutzername *' %}
+  {% set s_email = 'E-Mail *' %}
+  {% set s_save = 'Profil speichern' %}
+  {% set s_profile_page = 'Profilseite öffnen (Bild, QR-Liste)' %}
+  {% set s_password = 'Passwort ändern' %}
+  {% set s_old_pw = 'Aktuelles Passwort *' %}
+  {% set s_new_pw = 'Neues Passwort *' %}
+  {% set s_new_pw2 = 'Neues Passwort bestätigen *' %}
+  {% set s_update_pw = 'Passwort aktualisieren' %}
+  {% set s_security = 'Erweiterte Sicherheit' %}
+  {% set s_lang_title = 'Sprache' %}
+  {% set s_lang_sub = 'Wähle deine bevorzugte Sprache für die Oberfläche.' %}
+  {% set s_lang_save = 'Sprache speichern' %}
+  {% set s_plan_title = 'Plan und Nutzung' %}
+  {% set s_plan = 'Aktueller Plan:' %}
+  {% set s_price = 'Preis:' %}
+  {% set s_qr = 'Erstellte QR-Codes:' %}
+  {% set s_billing = 'Abonnement und Rechnungen' %}
+{% endif %}
 <section class="settings-wrap">
   <header class="head">
-    <h1>Kontoeinstellungen</h1>
-    <p>Konto, E-Mail und Passwort zentral verwalten.</p>
+    <h1>{{ s_title }}</h1>
+    <p>{{ s_sub }}</p>
   </header>
 
   {% if request.query_params.get("msg") == "profile_updated" %}
-    <div class="alert ok">Profil wurde erfolgreich aktualisiert.</div>
+    <div class="alert ok">{{ s_profile_ok }}</div>
   {% endif %}
   {% if request.query_params.get("error") == "duplicate_user" %}
-    <div class="alert err">Benutzername oder E-Mail ist bereits vergeben.</div>
+    <div class="alert err">{{ s_profile_dup }}</div>
   {% endif %}
 
   <div class="grid">
     <article class="card">
-      <h2>Profil bearbeiten</h2>
+      <h2>{{ s_profile_edit }}</h2>
       <form method="post" action="/settings/update-profile">
-        <label for="first_name">Vorname</label>
+        <label for="first_name">{{ s_first }}</label>
         <input id="first_name" name="first_name" type="text" value="{{ user.first_name or '' }}">
 
-        <label for="last_name">Nachname</label>
+        <label for="last_name">{{ s_last }}</label>
         <input id="last_name" name="last_name" type="text" value="{{ user.last_name or '' }}">
 
-        <label for="username">Benutzername *</label>
+        <label for="username">{{ s_user }}</label>
         <input id="username" name="username" type="text" value="{{ user.username or '' }}" required>
 
-        <label for="email">E-Mail *</label>
+        <label for="email">{{ s_email }}</label>
         <input id="email" name="email" type="email" value="{{ user.email or '' }}" required>
 
-        <button class="btn primary" type="submit">Profil speichern</button>
+        <button class="btn primary" type="submit">{{ s_save }}</button>
       </form>
-      <a class="btn ghost" href="/profile">Profilseite öffnen (Bild, QR-Liste)</a>
+      <a class="btn ghost" href="/profile">{{ s_profile_page }}</a>
     </article>
 
     <article class="card">
-      <h2>Passwort ändern</h2>
+      <h2>{{ s_password }}</h2>
       <form method="post" action="/settings/security/change-password">
-        <label for="old_password">Aktuelles Passwort *</label>
+        <label for="old_password">{{ s_old_pw }}</label>
         <input id="old_password" name="old_password" type="password" required>
 
-        <label for="new_password">Neues Passwort *</label>
+        <label for="new_password">{{ s_new_pw }}</label>
         <input id="new_password" name="new_password" type="password" required>
 
-        <label for="confirm_password">Neues Passwort bestätigen *</label>
+        <label for="confirm_password">{{ s_new_pw2 }}</label>
         <input id="confirm_password" name="confirm_password" type="password" required>
 
-        <button class="btn primary" type="submit">Passwort aktualisieren</button>
+        <button class="btn primary" type="submit">{{ s_update_pw }}</button>
       </form>
-      <a class="btn ghost" href="/settings/security">Erweiterte Sicherheit</a>
+      <a class="btn ghost" href="/settings/security">{{ s_security }}</a>
+    </article>
+
+    <article class="card">
+      <h2>{{ s_lang_title }}</h2>
+      <p class="hint">{{ s_lang_sub }}</p>
+      <form method="post" action="/language">
+        <input type="hidden" name="next" value="/settings/">
+        <label for="language">{{ s_lang_title }}</label>
+        <select id="language" name="language" required>
+          <option value="de" {% if lang == "de" %}selected{% endif %}>Deutsch</option>
+          <option value="en" {% if lang == "en" %}selected{% endif %}>English</option>
+          <option value="ar" {% if lang == "ar" %}selected{% endif %}>العربية</option>
+        </select>
+        <button class="btn primary" type="submit">{{ s_lang_save }}</button>
+      </form>
     </article>
   </div>
 
   <article class="card plan">
-    <h2>Plan und Nutzung</h2>
-    <p><strong>Aktueller Plan:</strong> {{ plan }}</p>
-    <p><strong>Preis:</strong> {{ price }}</p>
-    <p><strong>Erstellte QR-Codes:</strong> {{ qr_count }}</p>
+    <h2>{{ s_plan_title }}</h2>
+    <p><strong>{{ s_plan }}</strong> {{ plan }}</p>
+    <p><strong>{{ s_price }}</strong> {{ price }}</p>
+    <p><strong>{{ s_qr }}</strong> {{ qr_count }}</p>
     {% if features %}
       <ul>
         {% for f in features %}
@@ -66,7 +169,7 @@
         {% endfor %}
       </ul>
     {% endif %}
-    <a class="btn ghost" href="/settings/billing">Abonnement und Rechnungen</a>
+    <a class="btn ghost" href="/settings/billing">{{ s_billing }}</a>
   </article>
 </section>
 
@@ -74,6 +177,7 @@
 .settings-wrap { max-width: 980px; margin: 0 auto; }
 .head h1 { margin-bottom: .3rem; }
 .head p { margin-top: 0; color: #64748b; }
+.hint { margin: 0 0 .6rem; color: #64748b; }
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -87,7 +191,7 @@
 }
 .card h2 { margin-top: 0; color: #0d2a78; }
 label { display: block; margin: .6rem 0 .25rem; font-weight: 600; }
-input {
+input, select {
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #cbd5e1;

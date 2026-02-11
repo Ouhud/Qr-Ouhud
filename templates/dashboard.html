@@ -1,41 +1,133 @@
 {% extends "base.html" %}
-{% block title %}📊 Dashboard – Ouhud QR{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    📊 Dashboard – Ouhud QR
+  {% elif request.state.lang == 'ar' %}
+    📊 لوحة التحكم – Ouhud QR
+  {% else %}
+    📊 Dashboard – Ouhud QR
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set d_title = '📊 Dashboard' %}
+  {% set d_sub = 'Overview of your QR codes, scans and user activity in real time.' %}
+  {% set d_total_qr = 'Total QR Codes' %}
+  {% set d_total_scans = 'Total scans' %}
+  {% set d_active_qr = 'Active QR Codes' %}
+  {% set d_new_today = 'New scans today' %}
+  {% set d_plan = '💼 Subscription & QR Limit' %}
+  {% set d_used = 'Used:' %}
+  {% set d_available = 'Available:' %}
+  {% set d_util = 'Utilization:' %}
+  {% set d_scans = '📈 Scans' %}
+  {% set d_days7 = '7 days' %}
+  {% set d_days30 = '30 days' %}
+  {% set d_month6 = '6 months' %}
+  {% set d_funnel = '🧭 Conversion Funnel' %}
+  {% set d_rate = 'Conversion rate (Visits → Conversions):' %}
+  {% set d_top = '🔝 Top 10 QR Codes (Scans)' %}
+  {% set d_heat = '🔥 Scan Heatmap (day × hour)' %}
+  {% set d_types = '📊 QR Type Distribution' %}
+  {% set d_devices = '📱 Device Distribution' %}
+  {% set d_recent = '🕓 Latest scans' %}
+  {% set d_date = 'Date' %}
+  {% set d_type = 'Type' %}
+  {% set d_slug = 'Slug' %}
+  {% set d_location = 'Location' %}
+  {% set d_device = 'Device' %}
+  {% set d_no_scans = 'No scans in the selected period.' %}
+{% elif lang == 'ar' %}
+  {% set d_title = '📊 لوحة التحكم' %}
+  {% set d_sub = 'نظرة عامة على رموز QR وعمليات المسح ونشاط المستخدمين في الوقت الفعلي.' %}
+  {% set d_total_qr = 'إجمالي رموز QR' %}
+  {% set d_total_scans = 'إجمالي عمليات المسح' %}
+  {% set d_active_qr = 'رموز QR النشطة' %}
+  {% set d_new_today = 'عمليات مسح جديدة اليوم' %}
+  {% set d_plan = '💼 الاشتراك وحد QR' %}
+  {% set d_used = 'المستخدم:' %}
+  {% set d_available = 'المتاح:' %}
+  {% set d_util = 'نسبة الاستخدام:' %}
+  {% set d_scans = '📈 عمليات المسح' %}
+  {% set d_days7 = '7 أيام' %}
+  {% set d_days30 = '30 يومًا' %}
+  {% set d_month6 = '6 أشهر' %}
+  {% set d_funnel = '🧭 مسار التحويل' %}
+  {% set d_rate = 'معدل التحويل (زيارات ← تحويلات):' %}
+  {% set d_top = '🔝 أفضل 10 رموز QR (مسح)' %}
+  {% set d_heat = '🔥 خريطة الحرارة (اليوم × الساعة)' %}
+  {% set d_types = '📊 توزيع أنواع QR' %}
+  {% set d_devices = '📱 توزيع الأجهزة' %}
+  {% set d_recent = '🕓 أحدث عمليات المسح' %}
+  {% set d_date = 'التاريخ' %}
+  {% set d_type = 'النوع' %}
+  {% set d_slug = 'Slug' %}
+  {% set d_location = 'الموقع' %}
+  {% set d_device = 'الجهاز' %}
+  {% set d_no_scans = 'لا توجد عمليات مسح في الفترة المحددة.' %}
+{% else %}
+  {% set d_title = '📊 Dashboard' %}
+  {% set d_sub = 'Überblick über deine QR-Codes, Scans und Nutzeraktivität in Echtzeit.' %}
+  {% set d_total_qr = 'Gesamt-QR-Codes' %}
+  {% set d_total_scans = 'Gesamte Scans' %}
+  {% set d_active_qr = 'Aktive QR-Codes' %}
+  {% set d_new_today = 'Neue Scans heute' %}
+  {% set d_plan = '💼 Abo & QR-Limit' %}
+  {% set d_used = 'Verwendet:' %}
+  {% set d_available = 'Verfügbar:' %}
+  {% set d_util = 'Auslastung:' %}
+  {% set d_scans = '📈 Scans' %}
+  {% set d_days7 = '7 Tage' %}
+  {% set d_days30 = '30 Tage' %}
+  {% set d_month6 = '6 Monate' %}
+  {% set d_funnel = '🧭 Conversion-Funnel' %}
+  {% set d_rate = 'Conversion-Rate (Visits → Conversions):' %}
+  {% set d_top = '🔝 Top 10 QR-Codes (Scans)' %}
+  {% set d_heat = '🔥 Scan-Heatmap (Tag × Stunde)' %}
+  {% set d_types = '📊 Verteilung der QR-Typen' %}
+  {% set d_devices = '📱 Geräteverteilung' %}
+  {% set d_recent = '🕓 Letzte Scans' %}
+  {% set d_date = 'Datum' %}
+  {% set d_type = 'Typ' %}
+  {% set d_slug = 'Slug' %}
+  {% set d_location = 'Ort' %}
+  {% set d_device = 'Gerät' %}
+  {% set d_no_scans = 'Keine Scans im gewählten Zeitraum vorhanden' %}
+{% endif %}
 <section class="dashboard">
-  <h1 class="dashboard-title">📊 Dashboard</h1>
-  <p class="dashboard-subtitle">
-    Überblick über deine QR-Codes, Scans und Nutzeraktivität in Echtzeit.
-  </p>
+  <h1 class="dashboard-title">{{ d_title }}</h1>
+  <p class="dashboard-subtitle">{{ d_sub }}</p>
 
   <!-- === KPI-CARDS (OBEN) === -->
   <div class="dashboard-cards">
     <div class="card">
       <h2>{{ total_qrcodes }}</h2>
-      <p>Gesamt-QR-Codes</p>
+      <p>{{ d_total_qr }}</p>
     </div>
     <div class="card">
       <h2>{{ total_scans }}</h2>
-      <p>Gesamte Scans</p>
+      <p>{{ d_total_scans }}</p>
     </div>
     <div class="card">
       <h2>{{ active_qr_codes }}</h2>
-      <p>Aktive QR-Codes</p>
+      <p>{{ d_active_qr }}</p>
     </div>
     <div class="card">
       <h2>{{ scans_today }}</h2>
-      <p>Neue Scans heute</p>
+      <p>{{ d_new_today }}</p>
     </div>
   </div>
 
   <!-- === CHARTS === -->
   <div class="chart-grid">
     <div class="chart-card">
-      <h3>💼 Abo & QR-Limit ({{ plan_display_name }})</h3>
+      <h3>{{ d_plan }} ({{ plan_display_name }})</h3>
       <p class="usage-meta">
-        Verwendet: <strong>{{ qr_usage }}</strong>{% if not qr_unlimited %} / {{ qr_limit_display }}{% endif %} |
-        Verfügbar: <strong>{{ qr_remaining_display }}</strong> |
-        Auslastung: <strong>{{ qr_usage_percent_label }}</strong>
+        {{ d_used }} <strong>{{ qr_usage }}</strong>{% if not qr_unlimited %} / {{ qr_limit_display }}{% endif %} |
+        {{ d_available }} <strong>{{ qr_remaining_display }}</strong> |
+        {{ d_util }} <strong>{{ qr_usage_percent_label }}</strong>
       </p>
       <div class="chart-canvas chart-canvas-usage">
         <canvas id="usageChart"></canvas>
@@ -44,11 +136,11 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>📈 Scans ({{ range_title }})</h3>
+        <h3>{{ d_scans }} ({{ range_title }})</h3>
         <div class="range-filter">
-          <a href="/dashboard/?range=7d" class="{% if range_key == '7d' %}active{% endif %}">7 Tage</a>
-          <a href="/dashboard/?range=30d" class="{% if range_key == '30d' %}active{% endif %}">30 Tage</a>
-          <a href="/dashboard/?range=6m" class="{% if range_key == '6m' %}active{% endif %}">6 Monate</a>
+          <a href="/dashboard/?range=7d" class="{% if range_key == '7d' %}active{% endif %}">{{ d_days7 }}</a>
+          <a href="/dashboard/?range=30d" class="{% if range_key == '30d' %}active{% endif %}">{{ d_days30 }}</a>
+          <a href="/dashboard/?range=6m" class="{% if range_key == '6m' %}active{% endif %}">{{ d_month6 }}</a>
         </div>
       </div>
       <div class="chart-canvas chart-canvas-scans">
@@ -57,9 +149,9 @@
     </div>
 
     <div class="chart-card">
-      <h3>🧭 Conversion-Funnel</h3>
+      <h3>{{ d_funnel }}</h3>
       <p class="usage-meta">
-        Conversion-Rate (Visits → Conversions): <strong>{{ conversion_rate_label }}</strong>
+        {{ d_rate }} <strong>{{ conversion_rate_label }}</strong>
       </p>
       <div class="chart-canvas chart-canvas-funnel">
         <canvas id="funnelChart"></canvas>
@@ -67,28 +159,28 @@
     </div>
 
     <div class="chart-card">
-      <h3>🔝 Top 10 QR-Codes (Scans)</h3>
+      <h3>{{ d_top }}</h3>
       <div class="chart-canvas chart-canvas-top">
         <canvas id="topQrChart"></canvas>
       </div>
     </div>
 
     <div class="chart-card chart-card-wide">
-      <h3>🔥 Scan-Heatmap (Tag × Stunde)</h3>
+      <h3>{{ d_heat }}</h3>
       <div class="chart-canvas chart-canvas-heatmap">
         <canvas id="heatmapChart"></canvas>
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>📊 Verteilung der QR-Typen</h3>
+      <h3>{{ d_types }}</h3>
       <div class="chart-canvas chart-canvas-pie">
         <canvas id="typeChart"></canvas>
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>📱 Geräteverteilung</h3>
+      <h3>{{ d_devices }}</h3>
       <div class="chart-canvas chart-canvas-pie">
         <canvas id="deviceChart"></canvas>
       </div>
@@ -97,10 +189,10 @@
 
   <!-- === LETZTE SCANS === -->
   <div class="table-card">
-    <h3>🕓 Letzte Scans ({{ range_title }})</h3>
+    <h3>{{ d_recent }} ({{ range_title }})</h3>
     <table>
       <thead>
-        <tr><th>Datum</th><th>Typ</th><th>Slug</th><th>Ort</th><th>Gerät</th></tr>
+        <tr><th>{{ d_date }}</th><th>{{ d_type }}</th><th>{{ d_slug }}</th><th>{{ d_location }}</th><th>{{ d_device }}</th></tr>
       </thead>
       <tbody>
         {% for scan in recent_scans %}
@@ -112,7 +204,7 @@
           <td>{{ scan.device }}</td>
         </tr>
         {% else %}
-        <tr><td colspan="5">Keine Scans im gewählten Zeitraum vorhanden</td></tr>
+        <tr><td colspan="5">{{ d_no_scans }}</td></tr>
         {% endfor %}
       </tbody>
     </table>
@@ -128,6 +220,13 @@ const baseChartOptions = {
   maintainAspectRatio: false,
   animation: { duration: 450 }
 };
+const chartLabelCurrent = {{ ('Aktueller Zeitraum' if lang == 'de' else ('Current period' if lang == 'en' else 'الفترة الحالية')) | tojson }};
+const chartLabelPrev = {{ ('Vorzeitraum' if lang == 'de' else ('Previous period' if lang == 'en' else 'الفترة السابقة')) | tojson }};
+const chartLabelScans = {{ ('Scans' if lang == 'de' else ('Scans' if lang == 'en' else 'عمليات المسح')) | tojson }};
+const chartTrend = {{ ('Trend vs. Vorzeitraum' if lang == 'de' else ('Trend vs previous period' if lang == 'en' else 'الاتجاه مقارنة بالفترة السابقة')) | tojson }};
+const chartUsed = {{ ('Verwendet' if lang == 'de' else ('Used' if lang == 'en' else 'المستخدم')) | tojson }};
+const chartAvailable = {{ ('Verfügbar' if lang == 'de' else ('Available' if lang == 'en' else 'المتاح')) | tojson }};
+const chartInternalFree = {{ ('Intern frei' if lang == 'de' else ('Internal free' if lang == 'en' else 'مجاني داخلي')) | tojson }};
 
 /* === LINE CHART: Scans Zeitraum === */
 new Chart(document.getElementById("scansChart"), {
@@ -181,13 +280,13 @@ new Chart(document.getElementById("topQrChart"), {
     labels: {{ (top_qr_labels or []) | tojson }},
     datasets: [
       {
-        label: "Aktueller Zeitraum",
+        label: chartLabelCurrent,
         data: {{ (top_qr_current or []) | tojson }},
         backgroundColor: "#2563EB",
         borderRadius: 8,
       },
       {
-        label: "Vorzeitraum",
+        label: chartLabelPrev,
         data: {{ (top_qr_previous or []) | tojson }},
         backgroundColor: "#93c5fd",
         borderRadius: 8,
@@ -206,7 +305,7 @@ new Chart(document.getElementById("topQrChart"), {
             const deltas = {{ (top_qr_delta_pct or []) | tojson }};
             const delta = deltas[idx] ?? 0;
             const sign = delta > 0 ? "+" : "";
-            return `Trend vs. Vorzeitraum: ${sign}${delta}%`;
+            return `${chartTrend}: ${sign}${delta}%`;
           }
         }
       }
@@ -235,7 +334,7 @@ try {
     type: "matrix",
     data: {
       datasets: [{
-        label: "Scans",
+        label: chartLabelScans,
         data: heatmapData,
         width: ({ chart }) => {
           const area = chart.chartArea || { width: 600 };
@@ -266,7 +365,7 @@ try {
               const hour = String(p.x ?? 0).padStart(2, "0");
               return `${day} ${hour}:00`;
             },
-            label: (item) => `Scans: ${item.raw?.v || 0}`,
+            label: (item) => `${chartLabelScans}: ${item.raw?.v || 0}`,
           }
         }
       },
@@ -299,7 +398,7 @@ try {
     }
   });
 } catch (e) {
-  console.warn("Heatmap konnte nicht gerendert werden:", e);
+  console.warn("Heatmap render error:", e);
 }
 
 /* === FUNNEL (Bar) === */
@@ -340,7 +439,7 @@ new Chart(document.getElementById("deviceChart"), {
 
 /* === PROGRESS CHART: QR-Limit Nutzung === */
 const qrUnlimited = {{ (qr_unlimited or false) | tojson }};
-const usageLabels = qrUnlimited ? ["Intern frei"] : ["Verwendet", "Verfügbar"];
+const usageLabels = qrUnlimited ? [chartInternalFree] : [chartUsed, chartAvailable];
 const usageData = qrUnlimited ? [1] : [{{ qr_usage or 0 }}, {{ qr_remaining or 0 }}];
 const usageColors = qrUnlimited ? ["#10b981"] : ["#2563EB", "#e2e8f0"];
 

@@ -1,5 +1,7 @@
+{% set ui_lang = request.state.lang if request and request.state.lang else 'de' %}
+{% set ui_dir = 'rtl' if ui_lang == 'ar' else 'ltr' %}
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ ui_lang }}" dir="{{ ui_dir }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -87,6 +89,32 @@
     }
 
     .logo img { height: 36px; border-radius: 8px; }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .lang-form {
+      margin: 0;
+    }
+
+    .lang-select {
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.12);
+      color: #ffffff !important;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 64px;
+    }
+    .lang-select option {
+      color: #1e293b;
+      background: #ffffff;
+    }
 
     .menu-toggle {
       font-size: 1.5rem;
@@ -195,6 +223,11 @@
       body #sidebar.sidebar { transform: translateX(-100%); width: 220px; left: 0; }
       body #sidebar.sidebar.show { transform: translateX(0); }
       main.main-content { margin-left: 0; }
+      .lang-select {
+        min-width: 58px;
+        padding: 0.3rem 0.35rem;
+        font-size: 0.8rem;
+      }
     }
 
     /* === TRANSITION / THEME === */
@@ -215,19 +248,130 @@
 {% set is_qr_create_page = path.startswith('/qr/') and '/edit' not in path and '/v/' not in path and '/update' not in path and '/submit' not in path and '/redeem' not in path and '/list' not in path %}
 {% set is_auth_page = path.startswith('/auth/') %}
 {% set show_auth_chrome = request.session.get('user_id') and path != '/' and not is_auth_page %}
+{% if ui_lang == 'en' %}
+  {% set t_home = 'Home' %}
+  {% set t_toggle_menu = 'Toggle menu' %}
+  {% set t_qr_types = 'QR Code Types' %}
+  {% set t_account = 'Account & Admin' %}
+  {% set t_dashboard = 'Dashboard' %}
+  {% set t_profile = 'Profile' %}
+  {% set t_settings = 'Settings' %}
+  {% set t_billing = 'Subscription & Billing' %}
+  {% set t_security = 'Security' %}
+  {% set t_team = 'Team & Sharing' %}
+  {% set t_sla = 'SLA Monitoring' %}
+  {% set t_logout = 'Log out' %}
+  {% set t_qr_url = 'URL' %}
+  {% set t_qr_vcard = 'vCard' %}
+  {% set t_qr_pdf = 'PDF' %}
+  {% set t_qr_wifi = 'Wi-Fi' %}
+  {% set t_qr_email = 'Email' %}
+  {% set t_qr_sms = 'SMS' %}
+  {% set t_qr_tel = 'Phone' %}
+  {% set t_qr_social = 'Social Media' %}
+  {% set t_qr_event = 'Event / Appointment' %}
+  {% set t_qr_geo = 'Location / Geo' %}
+  {% set t_qr_payment = 'Payment' %}
+  {% set t_qr_multilink = 'Multi-Link / Bio-Link' %}
+  {% set t_qr_product = 'Product / Item' %}
+  {% set t_qr_wallet = 'Wallet Pass' %}
+  {% set t_qr_gs1 = 'GS1 Digital Link' %}
+  {% set t_qr_app = 'App Deep Link' %}
+  {% set t_qr_review = 'Review QR' %}
+  {% set t_qr_booking = 'Booking' %}
+  {% set t_qr_lead = 'Lead Form' %}
+  {% set t_qr_feedback = 'Feedback / NPS' %}
+  {% set t_qr_coupon = 'Voucher / Coupon' %}
+{% elif ui_lang == 'ar' %}
+  {% set t_home = 'الصفحة الرئيسية' %}
+  {% set t_toggle_menu = 'تبديل القائمة' %}
+  {% set t_qr_types = 'أنواع رمز QR' %}
+  {% set t_account = 'الحساب والإدارة' %}
+  {% set t_dashboard = 'لوحة التحكم' %}
+  {% set t_profile = 'الملف الشخصي' %}
+  {% set t_settings = 'الإعدادات' %}
+  {% set t_billing = 'الاشتراك والفواتير' %}
+  {% set t_security = 'الأمان' %}
+  {% set t_team = 'الفريق والمشاركة' %}
+  {% set t_sla = 'مراقبة SLA' %}
+  {% set t_logout = 'تسجيل الخروج' %}
+  {% set t_qr_url = 'رابط URL' %}
+  {% set t_qr_vcard = 'بطاقة vCard' %}
+  {% set t_qr_pdf = 'ملف PDF' %}
+  {% set t_qr_wifi = 'واي فاي' %}
+  {% set t_qr_email = 'بريد إلكتروني' %}
+  {% set t_qr_sms = 'رسالة SMS' %}
+  {% set t_qr_tel = 'هاتف' %}
+  {% set t_qr_social = 'وسائل التواصل' %}
+  {% set t_qr_event = 'حدث / موعد' %}
+  {% set t_qr_geo = 'موقع / جغرافي' %}
+  {% set t_qr_payment = 'الدفع' %}
+  {% set t_qr_multilink = 'روابط متعددة / بيو' %}
+  {% set t_qr_product = 'منتج / عنصر' %}
+  {% set t_qr_wallet = 'Wallet Pass' %}
+  {% set t_qr_gs1 = 'GS1 Digital Link' %}
+  {% set t_qr_app = 'رابط تطبيق عميق' %}
+  {% set t_qr_review = 'QR للتقييم' %}
+  {% set t_qr_booking = 'حجز موعد' %}
+  {% set t_qr_lead = 'نموذج عملاء محتملين' %}
+  {% set t_qr_feedback = 'ملاحظات / NPS' %}
+  {% set t_qr_coupon = 'قسيمة / كوبون' %}
+{% else %}
+  {% set t_home = 'Zur Startseite' %}
+  {% set t_toggle_menu = 'Menü umschalten' %}
+  {% set t_qr_types = 'QR-Code-Typen' %}
+  {% set t_account = 'Konto & Verwaltung' %}
+  {% set t_dashboard = 'Dashboard' %}
+  {% set t_profile = 'Profil' %}
+  {% set t_settings = 'Einstellungen' %}
+  {% set t_billing = 'Abonnement & Rechnungen' %}
+  {% set t_security = 'Sicherheit' %}
+  {% set t_team = 'Team & Freigaben' %}
+  {% set t_sla = 'SLA Monitoring' %}
+  {% set t_logout = 'Abmelden' %}
+  {% set t_qr_url = 'URL' %}
+  {% set t_qr_vcard = 'vCard' %}
+  {% set t_qr_pdf = 'PDF' %}
+  {% set t_qr_wifi = 'WLAN' %}
+  {% set t_qr_email = 'E-Mail' %}
+  {% set t_qr_sms = 'SMS' %}
+  {% set t_qr_tel = 'Telefon' %}
+  {% set t_qr_social = 'Social Media' %}
+  {% set t_qr_event = 'Event / Termin' %}
+  {% set t_qr_geo = 'Standort / Geo' %}
+  {% set t_qr_payment = 'Payment / Bezahlung' %}
+  {% set t_qr_multilink = 'Multi-Link / Bio-Link' %}
+  {% set t_qr_product = 'Produkt / Artikel' %}
+  {% set t_qr_wallet = 'Wallet Pass' %}
+  {% set t_qr_gs1 = 'GS1 Digital Link' %}
+  {% set t_qr_app = 'App Deep Link' %}
+  {% set t_qr_review = 'Bewertungs-QR' %}
+  {% set t_qr_booking = 'Terminbuchung' %}
+  {% set t_qr_lead = 'Lead Formular' %}
+  {% set t_qr_feedback = 'Feedback / NPS' %}
+  {% set t_qr_coupon = 'Gutschein / Coupon' %}
+{% endif %}
 <body class="{% if show_auth_chrome %}auth-layout{% endif %}{% if is_qr_create_page %} qr-create-page{% endif %}">
   <!-- === HEADER === -->
   <header class="header">
-    <a href="{% if show_auth_chrome %}/dashboard/{% else %}/{% endif %}" class="logo" aria-label="Zur Startseite">
+    <a href="{% if show_auth_chrome %}/dashboard/{% else %}/{% endif %}" class="logo" aria-label="{{ t_home }}">
       <img src="/static/logo.png" alt="Ouhud QR Logo" />
       <span>Ouhud QR</span>
     </a>
 
-    {% if show_auth_chrome %}
-    <div style="display:flex; align-items:center;">
-      <button class="menu-toggle" aria-label="Menü umschalten" onclick="toggleSidebar()">☰</button>
+    <div class="header-actions">
+      <form method="post" action="/language" class="lang-form">
+        <input type="hidden" name="next" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
+        <select name="language" class="lang-select" onchange="this.form.submit()" aria-label="Language selector">
+          <option value="de" {% if ui_lang == 'de' %}selected{% endif %}>DE</option>
+          <option value="en" {% if ui_lang == 'en' %}selected{% endif %}>EN</option>
+          <option value="ar" {% if ui_lang == 'ar' %}selected{% endif %}>AR</option>
+        </select>
+      </form>
+      {% if show_auth_chrome %}
+      <button class="menu-toggle" aria-label="{{ t_toggle_menu }}" onclick="toggleSidebar()">☰</button>
+      {% endif %}
     </div>
-    {% endif %}
   </header>
 
   <!-- === SIDEBAR === -->
@@ -236,75 +380,75 @@
     <div class="sidebar-inner">
       <ul>
         <!-- 📊 Navigation -->
-        <li onclick="location.href='/dashboard/'">📊 Dashboard</li>
+        <li onclick="location.href='/dashboard/'">📊 {{ t_dashboard }}</li>
 
         <li class="sidebar-divider" aria-hidden="true"></li>
-        <li class="sidebar-section-title">🧩 QR-Code-Typen</li>
+        <li class="sidebar-section-title">🧩 {{ t_qr_types }}</li>
 
-        <li onclick="location.href='/qr/url/'">🌐 URL</li>
-        <li onclick="location.href='/qr/vcard/new'">👤 vCard</li>
-        <li onclick="location.href='/qr/pdf/'">📄 PDF</li>
-        <li onclick="location.href='/qr/wifi/'">📶 WLAN</li>
-        <li onclick="location.href='/qr/email/'">✉️ E-Mail</li>
-        <li onclick="location.href='/qr/sms/'">💬 SMS</li>
-        <li onclick="location.href='/qr/tel/'">📞 Telefon</li>
-        <li onclick="location.href='/qr/social/'">📱 Social Media</li>
-        <li onclick="location.href='/qr/event/'">🕓 Event / Termin</li>
-        <li onclick="location.href='/qr/geo/'">🗺️ Standort / Geo</li>
-        <li onclick="location.href='/qr/payment/'">💰 Payment / Bezahlung</li>
-        <li onclick="location.href='/qr/multilink/'">🧾 Multi-Link / Bio-Link</li>
-        <li onclick="location.href='/qr/product/'">🏷️ Produkt / Artikel</li>
-        <li onclick="location.href='/qr/wallet/'">🎫 Wallet Pass</li>
-        <li onclick="location.href='/qr/gs1/'">🏷️ GS1 Digital Link</li>
-        <li onclick="location.href='/qr/app/'">📲 App Deep Link</li>
-        <li onclick="location.href='/qr/review/'">⭐ Bewertungs-QR</li>
-        <li onclick="location.href='/qr/booking/'">📅 Terminbuchung</li>
-        <li onclick="location.href='/qr/lead/'">🧾 Lead Formular</li>
-        <li onclick="location.href='/qr/feedback/'">📊 Feedback / NPS</li>
-        <li onclick="location.href='/qr/coupon/'">🎟️ Gutschein / Coupon</li>
+        <li onclick="location.href='/qr/url/'">🌐 {{ t_qr_url }}</li>
+        <li onclick="location.href='/qr/vcard/new'">👤 {{ t_qr_vcard }}</li>
+        <li onclick="location.href='/qr/pdf/'">📄 {{ t_qr_pdf }}</li>
+        <li onclick="location.href='/qr/wifi/'">📶 {{ t_qr_wifi }}</li>
+        <li onclick="location.href='/qr/email/'">✉️ {{ t_qr_email }}</li>
+        <li onclick="location.href='/qr/sms/'">💬 {{ t_qr_sms }}</li>
+        <li onclick="location.href='/qr/tel/'">📞 {{ t_qr_tel }}</li>
+        <li onclick="location.href='/qr/social/'">📱 {{ t_qr_social }}</li>
+        <li onclick="location.href='/qr/event/'">🕓 {{ t_qr_event }}</li>
+        <li onclick="location.href='/qr/geo/'">🗺️ {{ t_qr_geo }}</li>
+        <li onclick="location.href='/qr/payment/'">💰 {{ t_qr_payment }}</li>
+        <li onclick="location.href='/qr/multilink/'">🧾 {{ t_qr_multilink }}</li>
+        <li onclick="location.href='/qr/product/'">🏷️ {{ t_qr_product }}</li>
+        <li onclick="location.href='/qr/wallet/'">🎫 {{ t_qr_wallet }}</li>
+        <li onclick="location.href='/qr/gs1/'">🏷️ {{ t_qr_gs1 }}</li>
+        <li onclick="location.href='/qr/app/'">📲 {{ t_qr_app }}</li>
+        <li onclick="location.href='/qr/review/'">⭐ {{ t_qr_review }}</li>
+        <li onclick="location.href='/qr/booking/'">📅 {{ t_qr_booking }}</li>
+        <li onclick="location.href='/qr/lead/'">🧾 {{ t_qr_lead }}</li>
+        <li onclick="location.href='/qr/feedback/'">📊 {{ t_qr_feedback }}</li>
+        <li onclick="location.href='/qr/coupon/'">🎟️ {{ t_qr_coupon }}</li>
 <li class="sidebar-divider" aria-hidden="true"></li>
 
-<li class="sidebar-section-title">👤 Konto & Verwaltung</li>
+<li class="sidebar-section-title">👤 {{ t_account }}</li>
 
 <!-- 👤 PROFIL -->
 <li onclick="location.href='/profile'"
     class="{% if request.url.path.startswith('/profile') %}active{% endif %}">
-  👤 Profil
+  👤 {{ t_profile }}
 </li>
 
 <!-- ⚙️ EINSTELLUNGEN -->
 <li onclick="location.href='/settings/'"
     class="{% if request.url.path.startswith('/settings/') and 'billing' not in request.url.path and 'security' not in request.url.path %}active{% endif %}">
-  ⚙️ Einstellungen
+  ⚙️ {{ t_settings }}
 </li>
 
 <!-- 💳 ABONNEMENT -->
 <li onclick="location.href='/settings/billing'"
     class="{% if 'billing' in request.url.path %}active{% endif %}">
-  💳 Abonnement & Rechnungen
+  💳 {{ t_billing }}
 </li>
 
 <!-- 🔒 SICHERHEIT -->
 <li onclick="location.href='/settings/security'"
     class="{% if 'security' in request.url.path %}active{% endif %}">
-  🔒 Sicherheit
+  🔒 {{ t_security }}
 </li>
 
 <!-- 👥 TEAM -->
 <li onclick="location.href='/team/workspaces'"
     class="{% if request.url.path.startswith('/team/') %}active{% endif %}">
-  👥 Team & Freigaben
+  👥 {{ t_team }}
 </li>
 
 <!-- 📈 SLA -->
 <li onclick="location.href='/sla/status'"
     class="{% if request.url.path.startswith('/sla/') %}active{% endif %}">
-  📈 SLA Monitoring
+  📈 {{ t_sla }}
 </li>
 
 <!-- 🚪 ABMELDEN -->
 <li onclick="location.href='/auth/logout'" style="margin-top: 1rem; color: #fca5a5;">
-  🚪 Abmelden
+  🚪 {{ t_logout }}
 </li>
       </ul>
     </div>

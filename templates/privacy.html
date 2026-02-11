@@ -1,150 +1,333 @@
 {% extends "base.html" %}
-{% set title = "Datenschutzerklärung – Ouhud GmbH" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+
+{% block title %}
+  {% if lang == 'en' %}Privacy Policy – Ouhud GmbH{% elif lang == 'ar' %}سياسة الخصوصية – Ouhud GmbH{% else %}Datenschutzerklärung – Ouhud GmbH{% endif %}
+{% endblock %}
 
 {% block content %}
 <main class="legal-container">
   <article class="legal-content">
+    {% if lang == 'en' %}
+      <h1>🔒 Privacy Policy</h1>
+      <p class="intro">
+        This Privacy Policy explains how <strong>Ouhud GmbH</strong> processes personal data when you use our website and services,
+        especially <strong>Ouhud QR</strong>. We process your data confidentially in line with GDPR, Swiss revDSG and UAE requirements.
+      </p>
 
-    <h1>🔒 Datenschutzerklärung</h1>
-    <p class="intro">
-      Diese Datenschutzerklärung informiert Sie über die Verarbeitung personenbezogener Daten durch die
-      <strong>Ouhud GmbH</strong> im Rahmen der Nutzung unserer Website und unserer Dienste,
-      insbesondere des Produkts <strong>Ouhud QR</strong>.
-      Wir legen großen Wert auf den Schutz Ihrer Privatsphäre und behandeln Ihre Daten stets vertraulich
-      und gemäß den geltenden Datenschutzgesetzen Deutschlands, der Europäischen Union (DSGVO),
-      der Schweiz (revDSG) sowie der Vereinigten Arabischen Emirate (VAE, Dubai).
-    </p>
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 1. Controller</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Germany<br>
+            Represented by: Hamza Mehmalat<br>
+            E-mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            Website: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
 
-    <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>📋 2. Data Categories</h2>
+          <ul>
+            <li><strong>Registration:</strong> name, email, hashed password</li>
+            <li><strong>Usage:</strong> created QR codes, anonymized scan statistics</li>
+            <li><strong>Profile (optional):</strong> address, phone and related data</li>
+            <li><strong>Payments:</strong> transaction and billing data (Stripe)</li>
+            <li><strong>Server logs:</strong> IP, browser, date/time for security purposes</li>
+          </ul>
+        </section>
 
-      <!-- 1. Verantwortlicher -->
-      <section>
-        <h2>🏢 1. Verantwortlicher</h2>
-        <p>
-          <strong>Ouhud GmbH</strong><br>
-          Sundernholz 112<br>
-          45134 Essen, Deutschland<br>
-          Vertreten durch: Hamza Mehmalat<br>
-          E-Mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
-          Website: <a href="https://ouhud.com" target="_blank">https://ouhud.com</a>
-        </p>
-      </section>
+        <section>
+          <h2>⚖️ 3. Purposes and Legal Basis</h2>
+          <ul>
+            <li><strong>Contract performance</strong> (Art. 6(1)(b) GDPR)</li>
+            <li><strong>Legal obligations</strong> (Art. 6(1)(c) GDPR)</li>
+            <li><strong>Legitimate interests</strong> (Art. 6(1)(f) GDPR)</li>
+            <li><strong>Consent</strong> (Art. 6(1)(a) GDPR)</li>
+          </ul>
+        </section>
 
-      <!-- 2. Arten der verarbeiteten Daten -->
-      <section>
-        <h2>📋 2. Arten der verarbeiteten Daten</h2>
-        <ul>
-          <li><strong>Registrierung:</strong> Name, E-Mail, verschlüsseltes Passwort</li>
-          <li><strong>Nutzung:</strong> erstellte QR-Codes, Scan-Statistiken (anonymisiert)</li>
-          <li><strong>Profil (optional):</strong> Adresse, Telefonnummer u. ä.</li>
-          <li><strong>Zahlung:</strong> Transaktions- und Abrechnungsdaten (Stripe, PayPal, Klarna)</li>
-          <li><strong>Server-Logs:</strong> IP-Adresse, Browser, Datum & Uhrzeit (zu Sicherheitszwecken)</li>
-        </ul>
-      </section>
+        <section>
+          <h2>🌐 4. Recipients and Transfers</h2>
+          <ul>
+            <li><strong>Payment processor:</strong> Stripe Payments Europe Ltd.</li>
+            <li><strong>Hosting/IT:</strong> EU-based providers and contracted processors</li>
+            <li><strong>International transfer:</strong> only with adequate safeguards (e.g. SCCs)</li>
+            <li><strong>Authorities:</strong> only if legally required</li>
+          </ul>
+        </section>
 
-      <!-- 3. Zwecke & Rechtsgrundlagen -->
-      <section>
-        <h2>⚖️ 3. Zwecke & Rechtsgrundlagen</h2>
-        <ul>
-          <li><strong>Vertragserfüllung</strong> (Art. 6 Abs. 1 lit. b DSGVO) – Bereitstellung unserer Dienste</li>
-          <li><strong>Gesetzliche Pflichten</strong> (Art. 6 Abs. 1 lit. c) – z. B. Steuer- und Aufbewahrungspflichten</li>
-          <li><strong>Berechtigtes Interesse</strong> (Art. 6 Abs. 1 lit. f) – Sicherheit und Optimierung</li>
-          <li><strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a) – z. B. für Newsletter oder Tracking</li>
-        </ul>
-      </section>
+        <section>
+          <h2>⏳ 5. Retention</h2>
+          <ul>
+            <li>Data is stored only as long as needed for the purpose.</li>
+            <li>Accounts can be deleted via settings or support request.</li>
+            <li>Billing data may be retained based on statutory retention duties.</li>
+          </ul>
+        </section>
 
-      <!-- 4. Empfänger & Weitergabe -->
-      <section>
-        <h2>🌐 4. Empfänger und Weitergabe</h2>
-        <ul>
-          <li><strong>Zahlungsdienstleister:</strong> Stripe Payments Europe Ltd., PayPal Europe S.à r.l., Klarna Bank AB (SE)</li>
-          <li><strong>Hosting & IT:</strong> AWS (EU-Server), Infomaniak (🇨🇭), weitere Auftragsverarbeiter nach Art. 28 DSGVO</li>
-          <li><strong>Internationale Übermittlung:</strong> Übermittlung an Drittstaaten (inkl. VAE/Dubai) nur bei angemessenem Schutzniveau oder Standardvertragsklauseln (Art. 46 DSGVO)</li>
-          <li><strong>Behörden:</strong> nur bei gesetzlicher Verpflichtung</li>
-        </ul>
-      </section>
+        <section>
+          <h2>🧍 6. Your Rights</h2>
+          <ul>
+            <li>Access, rectification, erasure</li>
+            <li>Restriction, portability, objection</li>
+            <li>Withdrawal of consent at any time</li>
+          </ul>
+        </section>
 
-      <!-- 5. Speicherdauer -->
-      <section>
-        <h2>⏳ 5. Speicherdauer & Löschung</h2>
-        <ul>
-          <li>Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck erforderlich ist.</li>
-          <li>Konten können jederzeit gelöscht werden (via E-Mail oder Kontoeinstellungen).</li>
-          <li>Rechnungsdaten werden 10 Jahre aufbewahrt (§ 147 AO DE / Art. 957 OR CH).</li>
-          <li>Nach Ablauf werden die Daten gelöscht oder anonymisiert.</li>
-        </ul>
-      </section>
+        <section>
+          <h2>🍪 7. Cookies</h2>
+          <p>
+            We use essential cookies. Optional analytics/marketing cookies are only used with your consent.
+          </p>
+        </section>
 
-      <!-- 6. Rechte -->
-      <section>
-        <h2>🧍 6. Rechte der betroffenen Personen</h2>
-        <ul>
-          <li>Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17)</li>
-          <li>Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20)</li>
-          <li>Widerspruch (Art. 21) & Widerruf von Einwilligungen</li>
-          <li>Beschwerderecht:<br>
-            DE: <a href="https://www.ldi.nrw.de" target="_blank">LDI NRW</a><br>
-            CH: <a href="https://www.edoeb.admin.ch" target="_blank">EDÖB</a><br>
-            EU: <a href="https://edpb.europa.eu" target="_blank">EDPB</a><br>
-            UAE: <a href="https://u.ae/en/about-the-uae/digital-uae/data-protection" target="_blank">Data Protection Law Dubai</a>
-          </li>
-        </ul>
-      </section>
+        <section>
+          <h2>💳 8. Payments</h2>
+          <p>
+            Payments are processed by <strong>Stripe</strong>. We do not store full payment card data on our servers.
+            <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a>
+          </p>
+        </section>
 
-      <!-- 7. Cookies -->
-      <section>
-        <h2>🍪 7. Cookies & Tracking</h2>
-        <p>Wir verwenden nur technisch notwendige Cookies. Analyse- oder Marketing-Cookies
-          werden nur nach Ihrer Einwilligung gesetzt (Opt-In-Banner). Sie können Cookies
-          jederzeit über Ihren Browser oder das Banner verwalten.</p>
-      </section>
+        <section>
+          <h2>🔐 9. Security</h2>
+          <ul>
+            <li>SSL/TLS encryption</li>
+            <li>Password hashing (BCrypt)</li>
+            <li>Access control and regular security checks</li>
+          </ul>
+        </section>
 
-      <!-- 8. Zahlungsabwicklung -->
-      <section>
-        <h2>💳 8. Zahlungsabwicklung</h2>
-        <p>Die Zahlungsabwicklung erfolgt ausschließlich über <strong>Stripe</strong>.</p>
-        <ul>
-          <li><a href="https://stripe.com/de/privacy" target="_blank">Stripe Privacy Policy</a></li>
-        </ul>
-        <p>Wir speichern keine vollständigen Zahlungsdaten auf unseren Servern. Zahlungsdaten werden direkt von Stripe verarbeitet.</p>
-      </section>
+        <section>
+          <h2>📄 10. Updates</h2>
+          <p>This policy is updated when legal or technical changes require it.</p>
+        </section>
 
-      <!-- 9. Datensicherheit -->
-      <section>
-        <h2>🔐 9. Datensicherheit</h2>
-        <ul>
-          <li>SSL/TLS-Verschlüsselung aller Verbindungen</li>
-          <li>Passwörter werden mit BCrypt gehasht</li>
-          <li>Zugriff nur für autorisiertes Personal</li>
-          <li>Regelmäßige Backups und Sicherheitsaudits</li>
-        </ul>
-      </section>
+        <section>
+          <h2>📧 11. Contact</h2>
+          <p>For privacy requests, contact us at <a href="mailto:info@ouhud.com">info@ouhud.com</a>.</p>
+        </section>
+      </div>
 
-      <!-- 10. Änderungen -->
-      <section>
-        <h2>📄 10. Änderungen</h2>
-        <p>
-          Diese Erklärung wird bei rechtlichen oder technischen Änderungen aktualisiert.
-          Die aktuelle Version finden Sie unter:<br>
-          <a href="/datenschutz">https://ouhud.com/datenschutz</a>
-        </p>
-      </section>
+      <p class="legal-footer">
+        Last update: {{ privacy_last_updated or 'February 11, 2026' }} · Ouhud GmbH · All rights reserved
+      </p>
+    {% elif lang == 'ar' %}
+      <h1>🔒 سياسة الخصوصية</h1>
+      <p class="intro">
+        توضح هذه السياسة كيفية معالجة <strong>Ouhud GmbH</strong> للبيانات الشخصية عند استخدام الموقع والخدمات،
+        وخاصة <strong>Ouhud QR</strong>. تتم المعالجة بسرية ووفق القوانين المعمول بها.
+      </p>
 
-      <!-- 11. Datenschutz-Kontakt -->
-      <section>
-        <h2>📧 11. Datenschutz-Kontakt</h2>
-        <p>
-          Bei Fragen oder zur Geltendmachung Ihrer Rechte kontaktieren Sie uns unter:<br>
-          <a href="mailto:info@ouhud.com">info@ouhud.com</a>
-        </p>
-      </section>
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 1. الجهة المسؤولة</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Germany<br>
+            الممثل: Hamza Mehmalat<br>
+            البريد: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            الموقع: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
 
-    </div>
+        <section>
+          <h2>📋 2. أنواع البيانات</h2>
+          <ul>
+            <li><strong>التسجيل:</strong> الاسم، البريد، كلمة مرور مشفرة</li>
+            <li><strong>الاستخدام:</strong> رموز QR التي تم إنشاؤها وإحصاءات المسح المجهلة</li>
+            <li><strong>الملف الشخصي:</strong> بيانات اختيارية مثل العنوان والهاتف</li>
+            <li><strong>الدفع:</strong> بيانات الفوترة والمعاملات (Stripe)</li>
+            <li><strong>سجلات الخادم:</strong> عنوان IP والمتصفح والتوقيت لأسباب أمنية</li>
+          </ul>
+        </section>
 
-    <p class="legal-footer">
-      Letzte Aktualisierung: {{ privacy_last_updated or '11. Februar 2026' }} · Ouhud GmbH · Alle Rechte vorbehalten
-    </p>
+        <section>
+          <h2>⚖️ 3. الأغراض والأساس القانوني</h2>
+          <ul>
+            <li>تنفيذ العقد</li>
+            <li>الالتزامات القانونية</li>
+            <li>المصلحة المشروعة</li>
+            <li>الموافقة</li>
+          </ul>
+        </section>
 
+        <section>
+          <h2>🌐 4. المستلمون ونقل البيانات</h2>
+          <ul>
+            <li><strong>الدفع:</strong> Stripe Payments Europe Ltd.</li>
+            <li><strong>الاستضافة/تقنية المعلومات:</strong> مزودون متعاقدون</li>
+            <li><strong>النقل الدولي:</strong> فقط بضمانات مناسبة</li>
+            <li><strong>الجهات الرسمية:</strong> عند وجود التزام قانوني فقط</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>⏳ 5. مدة الاحتفاظ</h2>
+          <ul>
+            <li>نحتفظ بالبيانات للمدة اللازمة فقط.</li>
+            <li>يمكن حذف الحساب عبر الإعدادات أو الدعم.</li>
+            <li>قد تُحفظ بيانات الفواتير وفق الالتزامات القانونية.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>🧍 6. حقوقك</h2>
+          <ul>
+            <li>حق الوصول والتصحيح والحذف</li>
+            <li>تقييد المعالجة وقابلية النقل والاعتراض</li>
+            <li>سحب الموافقة في أي وقت</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>🍪 7. ملفات تعريف الارتباط</h2>
+          <p>نستخدم ملفات ضرورية فقط، والملفات الاختيارية تتطلب موافقتك.</p>
+        </section>
+
+        <section>
+          <h2>💳 8. معالجة الدفع</h2>
+          <p>
+            تتم المدفوعات عبر <strong>Stripe</strong> فقط، ولا نخزن بيانات بطاقات الدفع الكاملة.
+            <a href="https://stripe.com/privacy" target="_blank" rel="noopener">سياسة Stripe</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>🔐 9. الأمان</h2>
+          <ul>
+            <li>تشفير SSL/TLS</li>
+            <li>تجزئة كلمات المرور (BCrypt)</li>
+            <li>ضوابط وصول ومراجعات أمنية دورية</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>📄 10. التحديثات</h2>
+          <p>نقوم بتحديث السياسة عند وجود تغييرات قانونية أو تقنية.</p>
+        </section>
+
+        <section>
+          <h2>📧 11. التواصل</h2>
+          <p>للاستفسارات المتعلقة بالخصوصية: <a href="mailto:info@ouhud.com">info@ouhud.com</a></p>
+        </section>
+      </div>
+
+      <p class="legal-footer">
+        آخر تحديث: {{ privacy_last_updated or '11 فبراير 2026' }} · Ouhud GmbH · جميع الحقوق محفوظة
+      </p>
+    {% else %}
+      <h1>🔒 Datenschutzerklärung</h1>
+      <p class="intro">
+        Diese Datenschutzerklärung informiert Sie über die Verarbeitung personenbezogener Daten durch die
+        <strong>Ouhud GmbH</strong> bei der Nutzung unserer Website und Dienste, insbesondere <strong>Ouhud QR</strong>.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-10">
+        <section>
+          <h2>🏢 1. Verantwortlicher</h2>
+          <p>
+            <strong>Ouhud GmbH</strong><br>
+            Sundernholz 112<br>
+            45134 Essen, Deutschland<br>
+            Vertreten durch: Hamza Mehmalat<br>
+            E-Mail: <a href="mailto:info@ouhud.com">info@ouhud.com</a><br>
+            Website: <a href="https://ouhud.com" target="_blank" rel="noopener">https://ouhud.com</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>📋 2. Arten der verarbeiteten Daten</h2>
+          <ul>
+            <li><strong>Registrierung:</strong> Name, E-Mail, verschlüsseltes Passwort</li>
+            <li><strong>Nutzung:</strong> erstellte QR-Codes, anonymisierte Scan-Statistiken</li>
+            <li><strong>Profil (optional):</strong> Adresse, Telefonnummer und ähnliche Angaben</li>
+            <li><strong>Zahlung:</strong> Transaktions- und Abrechnungsdaten (Stripe)</li>
+            <li><strong>Server-Logs:</strong> IP-Adresse, Browser, Datum/Uhrzeit (Sicherheit)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>⚖️ 3. Zwecke & Rechtsgrundlagen</h2>
+          <ul>
+            <li><strong>Vertragserfüllung</strong> (Art. 6 Abs. 1 lit. b DSGVO)</li>
+            <li><strong>Gesetzliche Pflichten</strong> (Art. 6 Abs. 1 lit. c DSGVO)</li>
+            <li><strong>Berechtigtes Interesse</strong> (Art. 6 Abs. 1 lit. f DSGVO)</li>
+            <li><strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>🌐 4. Empfänger und Weitergabe</h2>
+          <ul>
+            <li><strong>Zahlungsdienstleister:</strong> Stripe Payments Europe Ltd.</li>
+            <li><strong>Hosting & IT:</strong> EU-basierte Anbieter und Auftragsverarbeiter</li>
+            <li><strong>Drittlandübermittlung:</strong> nur mit geeigneten Garantien (z. B. SCC)</li>
+            <li><strong>Behörden:</strong> nur bei gesetzlicher Verpflichtung</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>⏳ 5. Speicherdauer</h2>
+          <ul>
+            <li>Speicherung nur so lange, wie es für den Zweck erforderlich ist.</li>
+            <li>Konten können über Einstellungen oder Support gelöscht werden.</li>
+            <li>Rechnungsdaten können aufgrund gesetzlicher Pflichten länger gespeichert werden.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>🧍 6. Betroffenenrechte</h2>
+          <ul>
+            <li>Auskunft, Berichtigung, Löschung</li>
+            <li>Einschränkung, Datenübertragbarkeit, Widerspruch</li>
+            <li>Widerruf einer Einwilligung jederzeit möglich</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>🍪 7. Cookies</h2>
+          <p>
+            Wir verwenden technisch notwendige Cookies. Analyse- oder Marketing-Cookies werden nur mit Einwilligung gesetzt.
+          </p>
+        </section>
+
+        <section>
+          <h2>💳 8. Zahlungsabwicklung</h2>
+          <p>
+            Die Zahlungsabwicklung erfolgt über <strong>Stripe</strong>. Wir speichern keine vollständigen Kartendaten auf unseren Servern.
+            <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a>
+          </p>
+        </section>
+
+        <section>
+          <h2>🔐 9. Datensicherheit</h2>
+          <ul>
+            <li>SSL/TLS-Verschlüsselung</li>
+            <li>Passwort-Hashing mit BCrypt</li>
+            <li>Zugriffsschutz und regelmäßige Sicherheitsprüfungen</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>📄 10. Änderungen</h2>
+          <p>Diese Erklärung wird bei rechtlichen oder technischen Änderungen aktualisiert.</p>
+        </section>
+
+        <section>
+          <h2>📧 11. Datenschutz-Kontakt</h2>
+          <p>Bei Fragen wenden Sie sich bitte an <a href="mailto:info@ouhud.com">info@ouhud.com</a>.</p>
+        </section>
+      </div>
+
+      <p class="legal-footer">
+        Letzte Aktualisierung: {{ privacy_last_updated or '11. Februar 2026' }} · Ouhud GmbH · Alle Rechte vorbehalten
+      </p>
+    {% endif %}
   </article>
 </main>
 {% endblock %}
@@ -164,6 +347,7 @@
 .legal-content a {color:#2563eb;}
 .legal-footer {border-top:1px solid #e5e7eb;margin-top:2rem;padding-top:1rem;text-align:center;font-size:.9rem;color:#6b7280;}
 .intro {font-size:1rem;margin-bottom:1.5rem;}
+html[lang="ar"] .legal-content {direction: rtl; text-align: right;}
 @media(max-width:768px){.grid{display:block}.legal-content{padding:1.5rem}}
 </style>
 {% endblock %}

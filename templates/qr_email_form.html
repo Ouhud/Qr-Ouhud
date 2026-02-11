@@ -1,37 +1,59 @@
 {% extends "base.html" %}
-{% block title %}📧 E-Mail-QR-Code Generator – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📧 Email QR Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📧 Email QR Code Generator' %}
+  {% set t_sub = 'Create a QR code that opens a new email with recipient, subject, and message.' %}
+  {% set t_to = '✉️ Recipient address:' %}
+  {% set t_subject = '📝 Subject:' %}
+  {% set t_body = '💬 Message:' %}
+  {% set p_subject = 'Enter subject ...' %}
+  {% set p_body = 'Enter your message ...' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📧 مولد QR للبريد الإلكتروني – Ouhud QR' %}
+  {% set t_h1 = '📧 مولد QR للبريد الإلكتروني' %}
+  {% set t_sub = 'أنشئ رمز QR يفتح رسالة بريد جديدة مع المستلم والموضوع والمحتوى.' %}
+  {% set t_to = '✉️ بريد المستلم:' %}
+  {% set t_subject = '📝 الموضوع:' %}
+  {% set t_body = '💬 الرسالة:' %}
+  {% set p_subject = 'أدخل الموضوع ...' %}
+  {% set p_body = 'اكتب رسالتك هنا ...' %}
+{% else %}
+  {% set t_title = '📧 E-Mail-QR-Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📧 E-Mail-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle ganz einfach einen QR-Code, der beim Scannen automatisch eine neue E-Mail öffnet – inklusive Empfänger, Betreff und Nachricht.' %}
+  {% set t_to = '✉️ Empfängeradresse:' %}
+  {% set t_subject = '📝 Betreff:' %}
+  {% set t_body = '💬 Nachricht:' %}
+  {% set p_subject = 'Betreff eingeben …' %}
+  {% set p_body = 'Ihre Nachricht hier eingeben …' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
-  <h1>📧 E-Mail-QR-Code Generator</h1>
-  <p class="subtitle">
-    Erstelle ganz einfach einen QR-Code, der beim Scannen automatisch eine neue E-Mail öffnet –
-    inklusive Empfänger, Betreff und Nachricht.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <form method="post" action="/qr/email/generate" enctype="multipart/form-data" class="qr-form">
     <div class="form-group">
-      <label for="email_to">✉️ Empfängeradresse:</label>
+      <label for="email_to">{{ t_to }}</label>
       <input type="email" id="email_to" name="email_to" placeholder="example@ouhud.com" required>
     </div>
 
     <div class="form-group">
-      <label for="subject">📝 Betreff:</label>
-      <input type="text" id="subject" name="subject" placeholder="Betreff eingeben …">
+      <label for="subject">{{ t_subject }}</label>
+      <input type="text" id="subject" name="subject" placeholder="{{ p_subject }}">
     </div>
 
     <div class="form-group">
-      <label for="body">💬 Nachricht:</label>
-      <textarea id="body" name="body" rows="4" placeholder="Ihre Nachricht hier eingeben …"></textarea>
+      <label for="body">{{ t_body }}</label>
+      <textarea id="body" name="body" rows="4" placeholder="{{ p_body }}"></textarea>
     </div>
 
     <hr class="divider">
 
     {% include "partials/qr_style_selector.html" %}
-
-   
-
-    
   </form>
 </section>
 {% endblock %}

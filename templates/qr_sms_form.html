@@ -1,34 +1,51 @@
 {% extends "base.html" %}
-{% block title %}📱 SMS-QR-Code Generator – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📱 SMS QR Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📱 SMS QR Code Generator' %}
+  {% set t_sub = 'Create a QR code that opens an SMS with your message.' %}
+  {% set t_phone = '📞 Phone number:' %}
+  {% set t_msg = '💬 Message (optional):' %}
+  {% set p_phone = '+49...' %}
+  {% set p_msg = 'Type your message here...' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📱 مولد QR للرسائل SMS – Ouhud QR' %}
+  {% set t_h1 = '📱 مولد QR للرسائل SMS' %}
+  {% set t_sub = 'أنشئ رمز QR يفتح رسالة SMS تلقائيًا مع نصك.' %}
+  {% set t_phone = '📞 رقم الهاتف:' %}
+  {% set t_msg = '💬 الرسالة (اختياري):' %}
+  {% set p_phone = '+49...' %}
+  {% set p_msg = 'اكتب رسالتك هنا...' %}
+{% else %}
+  {% set t_title = '📱 SMS-QR-Code Generator – Ouhud QR' %}
+  {% set t_h1 = '📱 SMS-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der beim Scannen automatisch eine SMS mit deiner Nachricht öffnet.' %}
+  {% set t_phone = '📞 Telefonnummer:' %}
+  {% set t_msg = '💬 Nachricht (optional):' %}
+  {% set p_phone = '+49...' %}
+  {% set p_msg = 'Nachricht hier eingeben...' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
-  <h1>📱 SMS-QR-Code Generator</h1>
-  <p class="subtitle">
-    Erstelle einen QR-Code, der beim Scannen automatisch eine SMS mit deiner Nachricht öffnet.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <form method="post" action="/qr/sms/generate" enctype="multipart/form-data" class="qr-form">
-    <!-- 📞 Telefonnummer -->
     <div class="form-group">
-      <label for="phone">📞 Telefonnummer:</label>
-      <input type="tel" id="phone" name="phone" placeholder="+49..." required>
+      <label for="phone">{{ t_phone }}</label>
+      <input type="tel" id="phone" name="phone" placeholder="{{ p_phone }}" required>
     </div>
 
-    <!-- 💬 Nachricht -->
     <div class="form-group">
-      <label for="message">💬 Nachricht (optional):</label>
-      <textarea id="message" name="message" rows="3" placeholder="Nachricht hier eingeben..."></textarea>
+      <label for="message">{{ t_msg }}</label>
+      <textarea id="message" name="message" rows="3" placeholder="{{ p_msg }}"></textarea>
     </div>
 
     <hr class="divider">
 
-    <!-- 🎨 Stil-Auswahl -->
     {% include "partials/qr_style_selector.html" %}
-
-    
   </form>
 </section>
-
-
 {% endblock %}

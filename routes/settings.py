@@ -87,29 +87,60 @@ def settings_page(
     user=Depends(get_current_user)
 ):
     """Zeigt die Einstellungsseite mit Benutzerprofil, Tarifdetails und QR-Übersicht."""
+    lang = getattr(getattr(request, "state", None), "lang", "de")
     qrcodes = db.query(QRCode).filter(QRCode.user_id == user.id).all()
     qr_count = len(qrcodes)
+
+    if lang == "en":
+        basic_features = ["📦 Up to 10 QR codes", "🎁 1 month free", "🔒 No API access"]
+        pro_features = ["📦 Up to 50 QR codes", "🎁 3 months free", "🔒 No API access"]
+        business_features = ["📦 Up to 250 QR codes", "🎁 6 months free", "🔗 API access included"]
+        enterprise_features = ["📦 Unlimited QR codes", "🔗 API access included", "👨‍💼 Custom solutions & SLA"]
+        basic_price, pro_price, business_price, enterprise_price = (
+            "4.99 € / month",
+            "14.99 € / month",
+            "29.99 € / month",
+            "On request",
+        )
+    elif lang == "ar":
+        basic_features = ["📦 حتى 10 رموز QR", "🎁 شهر مجاني", "🔒 بدون API"]
+        pro_features = ["📦 حتى 50 رمز QR", "🎁 3 أشهر مجانية", "🔒 بدون API"]
+        business_features = ["📦 حتى 250 رمز QR", "🎁 6 أشهر مجانية", "🔗 API متاح"]
+        enterprise_features = ["📦 رموز QR غير محدودة", "🔗 API متاح", "👨‍💼 حلول مخصصة وSLA"]
+        basic_price, pro_price, business_price, enterprise_price = (
+            "4.99 € / شهريًا",
+            "14.99 € / شهريًا",
+            "29.99 € / شهريًا",
+            "حسب الطلب",
+        )
+    else:
+        basic_features = ["📦 Bis zu 10 QR-Codes", "🎁 1 Monat(e) gratis", "🔒 Kein API-Zugang"]
+        pro_features = ["📦 Bis zu 50 QR-Codes", "🎁 3 Monat(e) gratis", "🔒 Kein API-Zugang"]
+        business_features = ["📦 Bis zu 250 QR-Codes", "🎁 6 Monat(e) gratis", "🔗 API-Zugang inklusive"]
+        enterprise_features = ["📦 Unbegrenzte QR-Codes", "🔗 API-Zugang inklusive", "👨‍💼 Individuelle Lösungen & SLA"]
+        basic_price, pro_price, business_price, enterprise_price = (
+            "4,99 € / Monat",
+            "14,99 € / Monat",
+            "29,99 € / Monat",
+            "Auf Anfrage",
+        )
 
     # 💼 Dynamische Tariflogik
     if qr_count <= 10:
         plan, color, price, features = (
-            "Basic", "emerald", "4,99 € / Monat",
-            ["📦 Bis zu 10 QR-Codes", "🎁 1 Monat(e) gratis", "🔒 Kein API-Zugang"]
+            "Basic", "emerald", basic_price, basic_features
         )
     elif qr_count <= 50:
         plan, color, price, features = (
-            "Pro", "amber", "14,99 € / Monat",
-            ["📦 Bis zu 50 QR-Codes", "🎁 3 Monat(e) gratis", "🔒 Kein API-Zugang"]
+            "Pro", "amber", pro_price, pro_features
         )
     elif qr_count <= 250:
         plan, color, price, features = (
-            "Business", "blue", "29,99 € / Monat",
-            ["📦 Bis zu 250 QR-Codes", "🎁 6 Monat(e) gratis", "🔗 API-Zugang inklusive"]
+            "Business", "blue", business_price, business_features
         )
     else:
         plan, color, price, features = (
-            "Enterprise", "indigo", "Auf Anfrage",
-            ["📦 Unbegrenzte QR-Codes", "🔗 API-Zugang inklusive", "👨‍💼 Individuelle Lösungen & SLA"]
+            "Enterprise", "indigo", enterprise_price, enterprise_features
         )
 
     return templates.TemplateResponse(
@@ -123,6 +154,7 @@ def settings_page(
             "features": features,
             "qr_count": qr_count,
             "qrcodes": qrcodes,
+            "current_language": getattr(request.state, "lang", "de"),
         },
     )
 
@@ -161,14 +193,20 @@ def billing_page(
     user=Depends(get_current_user)
 ):
     """Zeigt Abonnementdetails und Rechnungsverlauf an."""
+    lang = getattr(getattr(request, "state", None), "lang", "de")
     current_plan = user.plan
     plan_name = current_plan.name if current_plan else "Basic"
     if current_plan and float(current_plan.price or 0) > 0:
-        price = f"{float(current_plan.price):.2f} € / Monat"
+        if lang == "en":
+            price = f"{float(current_plan.price):.2f} € / month"
+        elif lang == "ar":
+            price = f"{float(current_plan.price):.2f} € / شهريًا"
+        else:
+            price = f"{float(current_plan.price):.2f} € / Monat"
     elif current_plan:
-        price = "Auf Anfrage"
+        price = "On request" if lang == "en" else ("حسب الطلب" if lang == "ar" else "Auf Anfrage")
     else:
-        price = "4,99 € / Monat"
+        price = "4.99 € / month" if lang == "en" else ("4.99 € / شهريًا" if lang == "ar" else "4,99 € / Monat")
 
     raw_status = str(getattr(user, "plan_status", "active") or "active").lower()
     billing_exempt = is_billing_exempt_user(user)
@@ -176,24 +214,43 @@ def billing_page(
         raw_status = "active"
 
     if raw_status in {"active", "trialing"}:
-        status = "Aktiv"
+        status = "Active" if lang == "en" else ("نشط" if lang == "ar" else "Aktiv")
     elif raw_status in {"cancelled", "canceled", "unpaid"}:
-        status = "Gekündigt"
+        status = "Cancelled" if lang == "en" else ("ملغى" if lang == "ar" else "Gekündigt")
     else:
-        status = "In Bearbeitung"
+        status = "In progress" if lang == "en" else ("قيد المعالجة" if lang == "ar" else "In Bearbeitung")
 
     expiry = getattr(user, "plan_expiry", None)
     next_billing = expiry.strftime("%d.%m.%Y") if expiry else None
     if billing_exempt:
         next_billing = None
-        price = "0,00 € / Monat (Owner-Zugang)"
+        price = (
+            "0.00 € / month (Owner access)"
+            if lang == "en"
+            else ("0.00 € / شهريًا (وصول المالك)" if lang == "ar" else "0,00 € / Monat (Owner-Zugang)")
+        )
 
-    feature_map = {
-        "basic": ["📦 Bis zu 10 QR-Codes", "🎁 1 Monat kostenlos", "🔒 Kein API-Zugang"],
-        "pro": ["📦 Bis zu 50 QR-Codes", "🎁 3 Monate kostenlos", "🎨 Erweitertes Design"],
-        "business": ["📦 Bis zu 250 QR-Codes", "🔗 API-Zugang inklusive", "👥 Team-Funktionen"],
-        "enterprise": ["📦 Unbegrenzt", "🔗 API-Zugang", "🛠️ Individuelle Betreuung"],
-    }
+    if lang == "en":
+        feature_map = {
+            "basic": ["📦 Up to 10 QR codes", "🎁 1 month free", "🔒 No API access"],
+            "pro": ["📦 Up to 50 QR codes", "🎁 3 months free", "🎨 Advanced design"],
+            "business": ["📦 Up to 250 QR codes", "🔗 API access included", "👥 Team features"],
+            "enterprise": ["📦 Unlimited", "🔗 API access", "🛠️ Custom support"],
+        }
+    elif lang == "ar":
+        feature_map = {
+            "basic": ["📦 حتى 10 رموز QR", "🎁 شهر مجاني", "🔒 بدون API"],
+            "pro": ["📦 حتى 50 رمز QR", "🎁 3 أشهر مجانية", "🎨 تصميم متقدم"],
+            "business": ["📦 حتى 250 رمز QR", "🔗 API متاح", "👥 ميزات الفريق"],
+            "enterprise": ["📦 غير محدود", "🔗 API متاح", "🛠️ دعم مخصص"],
+        }
+    else:
+        feature_map = {
+            "basic": ["📦 Bis zu 10 QR-Codes", "🎁 1 Monat kostenlos", "🔒 Kein API-Zugang"],
+            "pro": ["📦 Bis zu 50 QR-Codes", "🎁 3 Monate kostenlos", "🎨 Erweitertes Design"],
+            "business": ["📦 Bis zu 250 QR-Codes", "🔗 API-Zugang inklusive", "👥 Team-Funktionen"],
+            "enterprise": ["📦 Unbegrenzt", "🔗 API-Zugang", "🛠️ Individuelle Betreuung"],
+        }
     features = feature_map.get(plan_name.lower(), feature_map["basic"])
 
     payment_required = raw_status in {"past_due", "incomplete", "incomplete_expired", "unpaid"}

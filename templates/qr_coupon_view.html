@@ -1,25 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Coupon einlösen{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Redeem coupon' %}
+  {% set t_offer = 'Offer:' %}
+  {% set t_redeem = 'Redemptions:' %}
+  {% set t_expiry = 'Expiry:' %}
+  {% set t_ok = '✅ Coupon redeemed successfully.' %}
+  {% set t_err_expired = '❌ Coupon has expired.' %}
+  {% set t_err_soldout = '❌ Maximum redemptions reached.' %}
+  {% set t_name = 'Name' %}
+  {% set t_email = 'Email' %}
+  {% set t_submit = 'Redeem now' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'استرداد القسيمة' %}
+  {% set t_offer = 'العرض:' %}
+  {% set t_redeem = 'عمليات الاسترداد:' %}
+  {% set t_expiry = 'الانتهاء:' %}
+  {% set t_ok = '✅ تم استرداد القسيمة بنجاح.' %}
+  {% set t_err_expired = '❌ القسيمة منتهية.' %}
+  {% set t_err_soldout = '❌ تم الوصول إلى الحد الأقصى للاسترداد.' %}
+  {% set t_name = 'الاسم' %}
+  {% set t_email = 'البريد الإلكتروني' %}
+  {% set t_submit = 'استرداد الآن' %}
+{% else %}
+  {% set t_title = 'Coupon einlösen' %}
+  {% set t_offer = 'Angebot:' %}
+  {% set t_redeem = 'Einlösungen:' %}
+  {% set t_expiry = 'Ablauf:' %}
+  {% set t_ok = '✅ Gutschein erfolgreich eingelöst.' %}
+  {% set t_err_expired = '❌ Gutschein ist abgelaufen.' %}
+  {% set t_err_soldout = '❌ Maximale Einlösungen erreicht.' %}
+  {% set t_name = 'Name' %}
+  {% set t_email = 'E-Mail' %}
+  {% set t_submit = 'Jetzt einlösen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="max-width:760px;">
   <h1>🎟️ Coupon: {{ data.code }}</h1>
-  <p><strong>Angebot:</strong> {{ data.offer }}</p>
-  <p><strong>Einlösungen:</strong> {{ redemptions }}{% if data.max_redemptions %} / {{ data.max_redemptions }}{% endif %}</p>
-  {% if data.expires_at %}<p><strong>Ablauf:</strong> {{ data.expires_at }}</p>{% endif %}
+  <p><strong>{{ t_offer }}</strong> {{ data.offer }}</p>
+  <p><strong>{{ t_redeem }}</strong> {{ redemptions }}{% if data.max_redemptions %} / {{ data.max_redemptions }}{% endif %}</p>
+  {% if data.expires_at %}<p><strong>{{ t_expiry }}</strong> {{ data.expires_at }}</p>{% endif %}
 
   {% if request.query_params.get("redeemed") == "1" %}
-    <div class="alert success">✅ Gutschein erfolgreich eingelöst.</div>
+    <div class="alert success">{{ t_ok }}</div>
   {% elif request.query_params.get("error") == "expired" %}
-    <div class="alert error">❌ Gutschein ist abgelaufen.</div>
+    <div class="alert error">{{ t_err_expired }}</div>
   {% elif request.query_params.get("error") == "soldout" %}
-    <div class="alert error">❌ Maximale Einlösungen erreicht.</div>
+    <div class="alert error">{{ t_err_soldout }}</div>
   {% endif %}
 
   {% if not expired and not sold_out %}
   <form method="post" action="/qr/coupon/redeem/{{ qr.slug }}" class="qr-form">
-    <label>Name</label><input type="text" name="name">
-    <label>E-Mail</label><input type="email" name="email">
-    <button class="btn-primary" type="submit">Jetzt einlösen</button>
+    <label>{{ t_name }}</label><input type="text" name="name">
+    <label>{{ t_email }}</label><input type="email" name="email">
+    <button class="btn-primary" type="submit">{{ t_submit }}</button>
   </form>
   {% endif %}
 </section>

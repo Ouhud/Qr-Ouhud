@@ -1,13 +1,36 @@
 {% extends "base.html" %}
-{% block title %}Feedback/NPS QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Feedback/NPS QR' %}
+  {% set t_h1 = '📊 Feedback/NPS QR' %}
+  {% set t_question = 'Question' %}
+  {% set t_low = 'Low label' %}
+  {% set t_high = 'High label' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Feedback/NPS QR' %}
+  {% set t_h1 = '📊 رمز QR للتغذية الراجعة / NPS' %}
+  {% set t_question = 'السؤال' %}
+  {% set t_low = 'التسمية اليسرى' %}
+  {% set t_high = 'التسمية اليمنى' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'Feedback/NPS QR' %}
+  {% set t_h1 = '📊 Feedback/NPS-QR' %}
+  {% set t_question = 'Frage' %}
+  {% set t_low = 'Label links' %}
+  {% set t_high = 'Label rechts' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>📊 Feedback/NPS-QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/feedback/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Frage</label><input type="text" name="question" value="Wie zufrieden sind Sie?">
-    <label>Label links</label><input type="text" name="low_label" value="Sehr unzufrieden">
-    <label>Label rechts</label><input type="text" name="high_label" value="Sehr zufrieden">
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_question }}</label><input type="text" name="question" value="Wie zufrieden sind Sie?">
+    <label>{{ t_low }}</label><input type="text" name="low_label" value="Sehr unzufrieden">
+    <label>{{ t_high }}</label><input type="text" name="high_label" value="Sehr zufrieden">
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

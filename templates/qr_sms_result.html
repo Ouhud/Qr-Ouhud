@@ -1,20 +1,41 @@
 {% extends "base.html" %}
-{% block title %}✅ SMS-QR-Code Ergebnis{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ SMS QR code result' %}
+  {% set t_h1 = '✅ SMS QR code created!' %}
+  {% set t_sub = 'Scan this code to send an SMS directly.' %}
+  {% set t_rec = 'Recipient:' %}
+  {% set t_msg = 'Message:' %}
+  {% set t_open = '📱 Open SMS' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ نتيجة QR للرسائل SMS' %}
+  {% set t_h1 = '✅ تم إنشاء QR للرسائل SMS!' %}
+  {% set t_sub = 'امسح هذا الرمز لإرسال رسالة SMS مباشرة.' %}
+  {% set t_rec = 'المستلم:' %}
+  {% set t_msg = 'الرسالة:' %}
+  {% set t_open = '📱 فتح SMS' %}
+{% else %}
+  {% set t_title = '✅ SMS-QR-Code Ergebnis' %}
+  {% set t_h1 = '✅ SMS-QR-Code erstellt!' %}
+  {% set t_sub = 'Scanne diesen Code, um direkt eine SMS zu senden.' %}
+  {% set t_rec = 'Empfänger:' %}
+  {% set t_msg = 'Nachricht:' %}
+  {% set t_open = '📱 SMS öffnen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-result">
-  <h1>✅ SMS-QR-Code erstellt!</h1>
-  <p class="subtitle">
-    Scanne diesen Code, um direkt eine SMS zu senden.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="qr-card">
     <img src="data:image/png;base64,{{ qr_image }}" alt="QR-Code" class="qr-preview">
-    <p><strong>Empfänger:</strong> {{ phone }}</p>
+    <p><strong>{{ t_rec }}</strong> {{ phone }}</p>
     {% if message %}
-    <p><strong>Nachricht:</strong> {{ message }}</p>
+    <p><strong>{{ t_msg }}</strong> {{ message }}</p>
     {% endif %}
-    <a href="sms:{{ phone }}?body={{ message|urlencode }}" class="btn-link">📱 SMS öffnen</a>
+    <a href="sms:{{ phone }}?body={{ message|urlencode }}" class="btn-link">{{ t_open }}</a>
   </div>
 </section>
 

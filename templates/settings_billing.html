@@ -1,169 +1,202 @@
 {% extends "base.html" %}
-{% block title %}💳 Abonnement & Rechnungen – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set b_title = '💳 Subscription & Billing – Ouhud QR' %}
+  {% set b_h1 = '💳 Subscription & Billing' %}
+  {% set b_sub = 'Manage your plan, payments, and full invoice history.' %}
+  {% set b_active = 'Active' %}
+  {% set b_cancelled = 'Cancelled' %}
+  {% set b_pending = 'In progress' %}
+  {% set b_success = '✅ Payment successful - your plan has been updated.' %}
+  {% set b_sync_ok = 'ℹ️ Plan synchronization completed.' %}
+  {% set b_sync_wait = '⚠️ Payment succeeded, plan sync continues in the background via webhook.' %}
+  {% set b_pay_cancelled = '❌ Payment cancelled.' %}
+  {% set b_abo_cancelled = 'ℹ️ Your subscription has been cancelled.' %}
+  {% set b_owner_exempt = 'ℹ️ Owner account: billing is exempt.' %}
+  {% set b_current = 'Your current plan' %}
+  {% set b_free = 'Free until' %}
+  {% set b_next = 'Next billing:' %}
+  {% set b_pay_now = 'Pay now' %}
+  {% set b_upgrade = 'Upgrade / Downgrade' %}
+  {% set b_cancel_btn = 'Cancel subscription' %}
+  {% set b_owner_badge = 'Owner access (no billing)' %}
+  {% set b_plans = 'Plans' %}
+  {% set b_plans_sub = 'Choose the plan that fits your project.' %}
+  {% set b_start = 'Start now' %}
+  {% set b_contact = 'Contact sales' %}
+  {% set b_invoices = 'Invoices' %}
+  {% set th_date = '📅 Date' %}
+  {% set th_desc = '🧾 Description' %}
+  {% set th_amount = '💶 Amount' %}
+  {% set th_status = '📌 Status' %}
+  {% set th_pdf = '⬇️ PDF' %}
+  {% set st_paid = 'Paid' %}
+  {% set st_open = 'Open' %}
+  {% set b_no_invoices = 'No invoices available.' %}
+  {% set enterprise_price = 'On request' %}
+  {% set feat_basic = ['📦 Up to 10 QR codes', '🎁 1 month free', '🔒 No API access'] %}
+  {% set feat_pro = ['📦 Up to 50 QR codes', '🎁 3 months free', '🔒 No API access'] %}
+  {% set feat_business = ['📦 Up to 250 QR codes', '🎁 6 months free', '🔗 API access included'] %}
+  {% set feat_enterprise = ['📦 Up to 999999 QR codes', '🔗 API access included'] %}
+{% elif lang == 'ar' %}
+  {% set b_title = '💳 الاشتراك والفواتير – Ouhud QR' %}
+  {% set b_h1 = '💳 الاشتراك والفواتير' %}
+  {% set b_sub = 'إدارة الباقة والمدفوعات وسجل الفواتير الكامل.' %}
+  {% set b_active = 'نشط' %}
+  {% set b_cancelled = 'ملغى' %}
+  {% set b_pending = 'قيد المعالجة' %}
+  {% set b_success = '✅ تمت عملية الدفع بنجاح - تم تحديث الباقة.' %}
+  {% set b_sync_ok = 'ℹ️ اكتملت مزامنة الباقة.' %}
+  {% set b_sync_wait = '⚠️ الدفع ناجح، مزامنة الباقة مستمرة في الخلفية عبر Webhook.' %}
+  {% set b_pay_cancelled = '❌ تم إلغاء الدفع.' %}
+  {% set b_abo_cancelled = 'ℹ️ تم إلغاء اشتراكك.' %}
+  {% set b_owner_exempt = 'ℹ️ حساب المالك: بدون فوترة.' %}
+  {% set b_current = 'الباقة الحالية' %}
+  {% set b_free = 'مجاني حتى' %}
+  {% set b_next = 'الفوترة القادمة:' %}
+  {% set b_pay_now = 'ادفع الآن' %}
+  {% set b_upgrade = 'ترقية / تخفيض' %}
+  {% set b_cancel_btn = 'إلغاء الاشتراك' %}
+  {% set b_owner_badge = 'صلاحية مالك (بدون فوترة)' %}
+  {% set b_plans = 'الباقات' %}
+  {% set b_plans_sub = 'اختر الباقة المناسبة لمشروعك.' %}
+  {% set b_start = 'ابدأ الآن' %}
+  {% set b_contact = 'تواصل مع المبيعات' %}
+  {% set b_invoices = 'الفواتير' %}
+  {% set th_date = '📅 التاريخ' %}
+  {% set th_desc = '🧾 الوصف' %}
+  {% set th_amount = '💶 المبلغ' %}
+  {% set th_status = '📌 الحالة' %}
+  {% set th_pdf = '⬇️ PDF' %}
+  {% set st_paid = 'مدفوع' %}
+  {% set st_open = 'مفتوح' %}
+  {% set b_no_invoices = 'لا توجد فواتير.' %}
+  {% set enterprise_price = 'حسب الطلب' %}
+  {% set feat_basic = ['📦 حتى 10 رموز QR', '🎁 شهر مجاني', '🔒 بدون API'] %}
+  {% set feat_pro = ['📦 حتى 50 رمز QR', '🎁 3 أشهر مجانية', '🔒 بدون API'] %}
+  {% set feat_business = ['📦 حتى 250 رمز QR', '🎁 6 أشهر مجانية', '🔗 API متاح'] %}
+  {% set feat_enterprise = ['📦 حتى 999999 رمز QR', '🔗 API متاح'] %}
+{% else %}
+  {% set b_title = '💳 Abonnement & Rechnungen – Ouhud QR' %}
+  {% set b_h1 = '💳 Abonnement & Rechnungen' %}
+  {% set b_sub = 'Verwalte deinen Tarif, Zahlungen und deinen kompletten Rechnungsverlauf.' %}
+  {% set b_active = 'Aktiv' %}
+  {% set b_cancelled = 'Gekündigt' %}
+  {% set b_pending = 'In Bearbeitung' %}
+  {% set b_success = '✅ Zahlung erfolgreich – dein Plan wurde aktualisiert.' %}
+  {% set b_sync_ok = 'ℹ️ Plan-Synchronisierung erfolgreich abgeschlossen.' %}
+  {% set b_sync_wait = '⚠️ Zahlung ist erfolgreich, Plan-Sync läuft im Hintergrund per Webhook.' %}
+  {% set b_pay_cancelled = '❌ Zahlung abgebrochen.' %}
+  {% set b_abo_cancelled = 'ℹ️ Dein Abonnement wurde beendet.' %}
+  {% set b_owner_exempt = 'ℹ️ Owner-Konto: keine Abrechnung aktiv.' %}
+  {% set b_current = 'Dein aktueller Plan' %}
+  {% set b_free = 'Kostenlos bis' %}
+  {% set b_next = 'Nächste Abrechnung:' %}
+  {% set b_pay_now = 'Jetzt bezahlen' %}
+  {% set b_upgrade = 'Upgrade / Downgrade' %}
+  {% set b_cancel_btn = 'Abo kündigen' %}
+  {% set b_owner_badge = 'Owner-Zugang (ohne Abrechnung)' %}
+  {% set b_plans = 'Tarife' %}
+  {% set b_plans_sub = 'Wähle den Tarif, der zu deinem Projekt passt.' %}
+  {% set b_start = 'Jetzt starten' %}
+  {% set b_contact = 'Kontakt aufnehmen' %}
+  {% set b_invoices = 'Rechnungen' %}
+  {% set th_date = '📅 Datum' %}
+  {% set th_desc = '🧾 Beschreibung' %}
+  {% set th_amount = '💶 Betrag' %}
+  {% set th_status = '📌 Status' %}
+  {% set th_pdf = '⬇️ PDF' %}
+  {% set st_paid = 'Bezahlt' %}
+  {% set st_open = 'Offen' %}
+  {% set b_no_invoices = 'Keine Rechnungen vorhanden.' %}
+  {% set enterprise_price = 'Auf Anfrage' %}
+  {% set feat_basic = ['📦 Bis zu 10 QR-Codes', '🎁 1 Monat kostenlos', '🔒 Kein API-Zugang'] %}
+  {% set feat_pro = ['📦 Bis zu 50 QR-Codes', '🎁 3 Monate kostenlos', '🔒 Kein API-Zugang'] %}
+  {% set feat_business = ['📦 Bis zu 250 QR-Codes', '🎁 6 Monate kostenlos', '🔗 API-Zugang inklusive'] %}
+  {% set feat_enterprise = ['📦 Bis zu 999999 QR-Codes', '🔗 API-Zugang inklusive'] %}
+{% endif %}
+{% block title %}{{ b_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator billing-generator">
+  <h1>{{ b_h1 }}</h1>
+  <p class="subtitle">{{ b_sub }}</p>
 
-  <!-- ✅ HEADER -->
-  <h1>💳 Abonnement & Rechnungen</h1>
-  <p class="subtitle">
-    Verwalte deinen Tarif, Zahlungen und deinen kompletten Rechnungsverlauf.
-  </p>
-
-  <!-- ✅ Status-Badge -->
   {% if status == "Aktiv" %}
-    <div class="status-badge success"><i class="bi bi-check-circle-fill"></i> Aktiv</div>
+    <div class="status-badge success">{{ b_active }}</div>
   {% elif status == "Gekündigt" %}
-    <div class="status-badge danger"><i class="bi bi-x-circle-fill"></i> Gekündigt</div>
+    <div class="status-badge danger">{{ b_cancelled }}</div>
   {% else %}
-    <div class="status-badge warn"><i class="bi bi-hourglass-split"></i> In Bearbeitung</div>
+    <div class="status-badge warn">{{ b_pending }}</div>
   {% endif %}
 
-  <!-- ✅ STRIPE FEEDBACK -->
   {% if request.query_params.get('status') == 'success' %}
-    <div class="alert success">✅ Zahlung erfolgreich – dein Plan wurde aktualisiert.</div>
-    {% if request.query_params.get('sync') == '1' %}
-      <div class="alert info">ℹ️ Plan-Synchronisierung erfolgreich abgeschlossen.</div>
-    {% elif request.query_params.get('sync') == '0' %}
-      <div class="alert warn">⚠️ Zahlung ist erfolgreich, Plan-Sync läuft im Hintergrund per Webhook.</div>
-    {% endif %}
+    <div class="alert success">{{ b_success }}</div>
+    {% if request.query_params.get('sync') == '1' %}<div class="alert info">{{ b_sync_ok }}</div>{% elif request.query_params.get('sync') == '0' %}<div class="alert warn">{{ b_sync_wait }}</div>{% endif %}
   {% elif request.query_params.get('status') == 'cancelled' %}
-    <div class="alert error">❌ Zahlung abgebrochen.</div>
+    <div class="alert error">{{ b_pay_cancelled }}</div>
   {% elif request.query_params.get('msg') == 'cancelled' %}
-    <div class="alert info">ℹ️ Dein Abonnement wurde beendet.</div>
+    <div class="alert info">{{ b_abo_cancelled }}</div>
   {% elif request.query_params.get('msg') == 'owner_exempt' %}
-    <div class="alert info">ℹ️ Owner-Konto: keine Abrechnung aktiv.</div>
+    <div class="alert info">{{ b_owner_exempt }}</div>
   {% endif %}
 
-  <!-- ✅ DEIN PLAN -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-box-seam"></i> Dein aktueller Plan</h2>
-
+    <h2 class="form-title">{{ b_current }}</h2>
     <div class="plan-wrapper">
       <div>
         <h3 class="plan-name">{{ plan }}</h3>
         <p class="plan-price">{{ price }}</p>
-
-        {% if trial_end %}
-        <p class="info-line highlight">
-          <i class="bi bi-gift-fill"></i> Kostenlos bis <strong>{{ trial_end }}</strong>
-        </p>
-        {% endif %}
-
-        <p class="info-line">
-          <i class="bi bi-calendar3"></i>
-          Nächste Abrechnung: <strong>{{ next_billing or "–" }}</strong>
-        </p>
+        {% if trial_end %}<p class="info-line highlight">{{ b_free }} <strong>{{ trial_end }}</strong></p>{% endif %}
+        <p class="info-line">{{ b_next }} <strong>{{ next_billing or "–" }}</strong></p>
       </div>
-
       <div class="btn-column">
-
-        {% if payment_required and not billing_exempt %}
-        <a class="btn-primary small w-full" href="/billing/pay-now">
-          <i class="bi bi-receipt"></i> Jetzt bezahlen
-        </a>
-        {% endif %}
-
-        {% if plan != "Enterprise" and not billing_exempt %}
-        <a class="btn-outline-success small w-full" href="/billing/upgrade/{{ plan|lower }}">
-          <i class="bi bi-chevron-double-up"></i> Upgrade / Downgrade
-        </a>
-        {% endif %}
-
-        {% if status == "Aktiv" and not billing_exempt %}
-        <a class="btn-outline-danger small w-full" href="/billing/cancel">
-          <i class="bi bi-x-circle"></i> Abo kündigen
-        </a>
-        {% endif %}
-
-        {% if billing_exempt %}
-        <span class="badge success">Owner-Zugang (ohne Abrechnung)</span>
-        {% endif %}
-
+        {% if payment_required and not billing_exempt %}<a class="btn-primary small w-full" href="/billing/pay-now">{{ b_pay_now }}</a>{% endif %}
+        {% if plan != "Enterprise" and not billing_exempt %}<a class="btn-outline-success small w-full" href="/billing/upgrade/{{ plan|lower }}">{{ b_upgrade }}</a>{% endif %}
+        {% if status == "Aktiv" and not billing_exempt %}<a class="btn-outline-danger small w-full" href="/billing/cancel">{{ b_cancel_btn }}</a>{% endif %}
+        {% if billing_exempt %}<span class="badge success">{{ b_owner_badge }}</span>{% endif %}
       </div>
     </div>
   </div>
 
-  <!-- ✅ TARIFE (GRID 2×2) -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-grid-3x3-gap"></i> Tarife</h2>
-    <p class="info-text">Wähle den Tarif, der zu deinem Projekt passt.</p>
+    <h2 class="form-title">{{ b_plans }}</h2>
+    <p class="info-text">{{ b_plans_sub }}</p>
 
     <div class="tariff-grid">
-
-      <!-- BASIC -->
       <div class="tariff-card {% if plan=='Basic' %}active{% endif %}">
-        <h3>Basic</h3>
-        <p class="price">4.99 €/Monat</p>
-        <ul>
-          <li>📦 Bis zu 10 QR-Codes</li>
-          <li>🎁 1 Monat kostenlos</li>
-          <li>🔒 Kein API-Zugang</li>
-        </ul>
-        {% if not billing_exempt %}
-        <a href="/billing/upgrade/basic" class="btn-primary w-full small">Jetzt starten</a>
-        {% endif %}
+        <h3>Basic</h3><p class="price">4.99 €/Monat</p>
+        <ul><li>{{ feat_basic[0] }}</li><li>{{ feat_basic[1] }}</li><li>{{ feat_basic[2] }}</li></ul>
+        {% if not billing_exempt %}<a href="/billing/upgrade/basic" class="btn-primary w-full small">{{ b_start }}</a>{% endif %}
       </div>
 
-      <!-- PRO -->
       <div class="tariff-card {% if plan=='Pro' %}active{% endif %}">
-        <h3>Pro</h3>
-        <p class="price">14.99 €/Monat</p>
-        <ul>
-          <li>📦 Bis zu 50 QR-Codes</li>
-          <li>🎁 3 Monate kostenlos</li>
-          <li>🔒 Kein API-Zugang</li>
-        </ul>
-        {% if not billing_exempt %}
-        <a href="/billing/upgrade/pro" class="btn-primary w-full small">Jetzt starten</a>
-        {% endif %}
+        <h3>Pro</h3><p class="price">14.99 €/Monat</p>
+        <ul><li>{{ feat_pro[0] }}</li><li>{{ feat_pro[1] }}</li><li>{{ feat_pro[2] }}</li></ul>
+        {% if not billing_exempt %}<a href="/billing/upgrade/pro" class="btn-primary w-full small">{{ b_start }}</a>{% endif %}
       </div>
 
-      <!-- BUSINESS -->
       <div class="tariff-card {% if plan=='Business' %}active{% endif %}">
-        <h3>Business</h3>
-        <p class="price">29.99 €/Monat</p>
-        <ul>
-          <li>📦 Bis zu 250 QR-Codes</li>
-          <li>🎁 6 Monate kostenlos</li>
-          <li>🔗 API-Zugang inklusive</li>
-        </ul>
-        {% if not billing_exempt %}
-        <a href="/billing/upgrade/business" class="btn-primary w-full small">Jetzt starten</a>
-        {% endif %}
+        <h3>Business</h3><p class="price">29.99 €/Monat</p>
+        <ul><li>{{ feat_business[0] }}</li><li>{{ feat_business[1] }}</li><li>{{ feat_business[2] }}</li></ul>
+        {% if not billing_exempt %}<a href="/billing/upgrade/business" class="btn-primary w-full small">{{ b_start }}</a>{% endif %}
       </div>
 
-      <!-- ENTERPRISE -->
       <div class="tariff-card">
-        <h3>Enterprise</h3>
-        <p class="price accent">Auf Anfrage</p>
-        <ul>
-          <li>📦 Bis zu 999999 QR-Codes</li>
-          <li>🔗 API-Zugang inklusive</li>
-        </ul>
-        {% if not billing_exempt %}
-        <a href="/contact?topic=enterprise" class="btn-primary w-full small">Kontakt aufnehmen</a>
-        {% endif %}
+        <h3>Enterprise</h3><p class="price accent">{{ enterprise_price }}</p>
+        <ul><li>{{ feat_enterprise[0] }}</li><li>{{ feat_enterprise[1] }}</li></ul>
+        {% if not billing_exempt %}<a href="/contact?topic=enterprise" class="btn-primary w-full small">{{ b_contact }}</a>{% endif %}
       </div>
-
     </div>
   </div>
 
-  <!-- ✅ RECHNUNGEN -->
   <div class="qr-form">
-    <h2 class="form-title"><i class="bi bi-receipt-cutoff"></i> Rechnungen</h2>
-
+    <h2 class="form-title">{{ b_invoices }}</h2>
     {% if invoices %}
     <div class="overflow-x-auto">
       <table class="billing-table">
         <thead>
-          <tr>
-            <th>📅 Datum</th>
-            <th>🧾 Beschreibung</th>
-            <th>💶 Betrag</th>
-            <th>📌 Status</th>
-            <th>⬇️ PDF</th>
-          </tr>
+          <tr><th>{{ th_date }}</th><th>{{ th_desc }}</th><th>{{ th_amount }}</th><th>{{ th_status }}</th><th>{{ th_pdf }}</th></tr>
         </thead>
         <tbody>
         {% for inv in invoices %}
@@ -171,190 +204,55 @@
             <td>{{ inv.date }}</td>
             <td>{{ inv.description }}</td>
             <td>{{ inv.amount }}</td>
-            <td>
-              {% if inv.status == 'Bezahlt' %}
-              <span class="badge success">Bezahlt</span>
-              {% else %}
-              <span class="badge warn">Offen</span>
-              {% endif %}
-            </td>
-            <td>
-              <a href="{{ inv.download_url }}" class="pdf-link">
-                <i class="bi bi-file-earmark-pdf-fill"></i>
-              </a>
-            </td>
+            <td>{% if inv.status == 'Bezahlt' %}<span class="badge success">{{ st_paid }}</span>{% else %}<span class="badge warn">{{ st_open }}</span>{% endif %}</td>
+            <td><a href="{{ inv.download_url }}" class="pdf-link">PDF</a></td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
     </div>
     {% else %}
-    <p class="info-text italic">Keine Rechnungen vorhanden.</p>
+    <p class="info-text italic">{{ b_no_invoices }}</p>
     {% endif %}
   </div>
-
 </section>
 
-
-<!-- ✅ STYLES — IDENTISCH MIT DEINEM SICHERHEITS & PDF STYLE -->
-
 <style>
-
-.qr-generator {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: .5rem;
-}
-
-.subtitle {
-  margin-bottom: 1.5rem;
-  color: #64748b;
-}
-
-.status-badge {
-  padding: .5rem .9rem;
-  border-radius: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-}
-
+.qr-generator { max-width: 880px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { font-size: 2rem; margin-bottom: .5rem; }
+.subtitle { margin-bottom: 1.5rem; color: #64748b; }
+.status-badge { padding: .5rem .9rem; border-radius: 10px; display: inline-flex; align-items: center; gap: .4rem; margin-bottom: 1.5rem; font-weight: 600; }
 .status-badge.success { background:#dcfce7; color:#15803d; }
 .status-badge.danger  { background:#fee2e2; color:#b91c1c; }
 .status-badge.warn    { background:#fef9c3; color:#854d0e; }
-
-.qr-form {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.6rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 3px 8px rgba(0,0,0,.05);
-}
-
-.form-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  display:flex;
-  align-items:center;
-  gap:.5rem;
-}
-
-.plan-wrapper {
-  display:flex;
-  justify-content:space-between;
-  gap:1rem;
-}
-
-.plan-name {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.plan-price {
-  font-weight: 600;
-  margin-bottom:.6rem;
-}
-
-.btn-column a {
-  display:block;
-}
-
-.btn-primary {
-  background: var(--accent);
-  padding:.55rem 1rem;
-  color:#fff;
-  border-radius:10px;
-  text-align:center;
-  font-weight:600;
-}
-
-.btn-outline-success {
-  border:1px solid #16a34a;
-  padding:.55rem 1rem;
-  border-radius:10px;
-  color:#15803d;
-}
-
-.btn-outline-danger {
-  border:1px solid #dc2626;
-  padding:.55rem 1rem;
-  border-radius:10px;
-  color:#b91c1c;
-}
-
-.tariff-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:1rem;
-}
-
-.tariff-card {
-  background:#fff;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  padding:1.2rem;
-  box-shadow:0 6px 18px rgba(0,0,0,.06);
-}
-
-.tariff-card.active {
-  outline:3px solid rgba(37,99,235,.6);
-}
-
-.tariff-card h3 {
-  font-size:1.25rem;
-  font-weight:700;
-  text-align:center;
-  margin-bottom:.4rem;
-}
-
-.tariff-card .price {
-  font-size:1rem;
-  font-weight:700;
-  color:#1d4ed8;
-  text-align:center;
-  margin-bottom:.6rem;
-}
-
-.tariff-card ul li {
-  margin:.35rem 0;
-}
-
-.badge {
-  padding:.2rem .5rem;
-  border-radius:6px;
-  font-weight:700;
-  font-size:.8rem;
-}
-
+.qr-form { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.6rem; margin-bottom: 2rem; box-shadow: 0 3px 8px rgba(0,0,0,.05); }
+.form-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; }
+.plan-wrapper { display:flex; justify-content:space-between; gap:1rem; }
+.plan-name { font-size:1.6rem; font-weight:700; color: var(--primary); }
+.plan-price { font-weight: 600; margin-bottom:.6rem; }
+.btn-column a { display:block; margin-bottom:.4rem; }
+.btn-primary { background: var(--accent); padding:.55rem 1rem; color:#fff; border-radius:10px; text-align:center; font-weight:600; display:inline-block; text-decoration:none; }
+.btn-outline-success { border:1px solid #16a34a; padding:.55rem 1rem; border-radius:10px; color:#15803d; display:inline-block; text-decoration:none; }
+.btn-outline-danger { border:1px solid #dc2626; padding:.55rem 1rem; border-radius:10px; color:#b91c1c; display:inline-block; text-decoration:none; }
+.tariff-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.tariff-card { background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:1.2rem; box-shadow:0 6px 18px rgba(0,0,0,.06); }
+.tariff-card.active { outline:3px solid rgba(37,99,235,.6); }
+.tariff-card h3 { font-size:1.25rem; font-weight:700; text-align:center; margin-bottom:.4rem; }
+.tariff-card .price { font-size:1rem; font-weight:700; color:#1d4ed8; text-align:center; margin-bottom:.6rem; }
+.tariff-card ul { margin:0; padding-left:1rem; }
+.tariff-card ul li { margin:.35rem 0; }
+.badge { padding:.2rem .5rem; border-radius:6px; font-weight:700; font-size:.8rem; }
 .badge.success { background:#dcfce7; color:#166534; }
 .badge.warn { background:#fef3c7; color:#92400e; }
-
-.billing-table th {
-  background:#f1f5f9;
-  font-weight:700;
-}
-
-.billing-table th,
-.billing-table td {
-  padding:.6rem;
-  border-bottom:1px solid #e5e7eb;
-}
-
-.pdf-link {
-  color:var(--accent);
-}
-
+.billing-table { width:100%; border-collapse:collapse; }
+.billing-table th { background:#f1f5f9; font-weight:700; }
+.billing-table th, .billing-table td { padding:.6rem; border-bottom:1px solid #e5e7eb; }
+.pdf-link { color:var(--accent); }
+.alert { margin-bottom:.8rem; padding:.65rem .8rem; border-radius:10px; font-weight:600; }
+.alert.success { background:#dcfce7; color:#15803d; }
+.alert.warn { background:#fef9c3; color:#854d0e; }
+.alert.error { background:#fee2e2; color:#b91c1c; }
+.alert.info { background:#dbeafe; color:#1d4ed8; }
+@media (max-width: 900px) { .tariff-grid { grid-template-columns:1fr; } .plan-wrapper { flex-direction:column; } }
 </style>
-
 {% endblock %}

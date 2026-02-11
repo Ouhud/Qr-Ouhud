@@ -1,34 +1,70 @@
 {% extends "base.html" %}
-{% block title %}🔗 Multi-Link-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '🔗 Multi-Link QR Code – Ouhud QR' %}
+  {% set t_h1 = '🔗 Multi-Link QR Code' %}
+  {% set t_sub = 'Create a QR code that opens a page with multiple links - ideal for social profiles or portfolios.' %}
+  {% set t_l1 = '🌍 Main link' %}
+  {% set t_l2 = '📸 Second link' %}
+  {% set t_l3 = '💼 Third link' %}
+  {% set t_l4 = '💬 Fourth link' %}
+  {% set p_l1 = 'https://your-site.com' %}
+  {% set p_l2 = 'https://instagram.com/yourprofile' %}
+  {% set p_l3 = 'https://linkedin.com/in/yourname' %}
+  {% set p_l4 = 'https://t.me/youruser' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '🔗 رمز QR لروابط متعددة – Ouhud QR' %}
+  {% set t_h1 = '🔗 رمز QR لروابط متعددة' %}
+  {% set t_sub = 'أنشئ رمز QR يفتح صفحة تحتوي عدة روابط، مناسب لحسابات التواصل أو الأعمال.' %}
+  {% set t_l1 = '🌍 الرابط الرئيسي' %}
+  {% set t_l2 = '📸 الرابط الثاني' %}
+  {% set t_l3 = '💼 الرابط الثالث' %}
+  {% set t_l4 = '💬 الرابط الرابع' %}
+  {% set p_l1 = 'https://your-site.com' %}
+  {% set p_l2 = 'https://instagram.com/yourprofile' %}
+  {% set p_l3 = 'https://linkedin.com/in/yourname' %}
+  {% set p_l4 = 'https://t.me/youruser' %}
+{% else %}
+  {% set t_title = '🔗 Multi-Link-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '🔗 Multi-Link-QR-Code' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der zu einer Seite mit mehreren Links führt – ideal für Social-Media-Profile oder Portfolios.' %}
+  {% set t_l1 = '🌍 Hauptlink' %}
+  {% set t_l2 = '📸 Zweiter Link' %}
+  {% set t_l3 = '💼 Dritter Link' %}
+  {% set t_l4 = '💬 Vierter Link' %}
+  {% set p_l1 = 'https://deine-seite.com' %}
+  {% set p_l2 = 'https://instagram.com/deinprofil' %}
+  {% set p_l3 = 'https://linkedin.com/in/deinname' %}
+  {% set p_l4 = 'https://t.me/deinuser' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
   <div class="container text-center">
-    <h1>🔗 Multi-Link-QR-Code</h1>
-    <p class="subtitle">
-      Erstelle einen QR-Code, der zu einer Seite mit mehreren Links führt – ideal für Social-Media-Profile oder Portfolios.
-    </p>
+    <h1>{{ t_h1 }}</h1>
+    <p class="subtitle">{{ t_sub }}</p>
 
     <form method="post" action="/qr/multilink/generate" enctype="multipart/form-data" class="qr-form">
       <div class="form-grid">
         <div class="form-group">
-          <label for="link1">🌍 Hauptlink</label>
-          <input type="url" id="link1" name="link1" placeholder="https://deine-seite.com" required>
+          <label for="link1">{{ t_l1 }}</label>
+          <input type="url" id="link1" name="link1" placeholder="{{ p_l1 }}" required>
         </div>
 
         <div class="form-group">
-          <label for="link2">📸 Zweiter Link</label>
-          <input type="url" id="link2" name="link2" placeholder="https://instagram.com/deinprofil">
+          <label for="link2">{{ t_l2 }}</label>
+          <input type="url" id="link2" name="link2" placeholder="{{ p_l2 }}">
         </div>
 
         <div class="form-group">
-          <label for="link3">💼 Dritter Link</label>
-          <input type="url" id="link3" name="link3" placeholder="https://linkedin.com/in/deinname">
+          <label for="link3">{{ t_l3 }}</label>
+          <input type="url" id="link3" name="link3" placeholder="{{ p_l3 }}">
         </div>
 
         <div class="form-group">
-          <label for="link4">💬 Vierter Link</label>
-          <input type="url" id="link4" name="link4" placeholder="https://t.me/deinuser">
+          <label for="link4">{{ t_l4 }}</label>
+          <input type="url" id="link4" name="link4" placeholder="{{ p_l4 }}">
         </div>
       </div>
 

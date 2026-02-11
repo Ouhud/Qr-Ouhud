@@ -1,42 +1,98 @@
 {% extends "base.html" %}
-{% block title %}Profil - Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = 'Profile - Ouhud QR' %}
+  {% set h1 = 'My profile' %}
+  {% set h2_img = 'Profile picture' %}
+  {% set choose = 'Choose image' %}
+  {% set h2_data = 'Personal data' %}
+  {% set username = 'Username' %}
+  {% set first = 'First name' %}
+  {% set last = 'Last name' %}
+  {% set email = 'Email' %}
+  {% set save = 'Save changes' %}
+  {% set h2_qr = 'My QR codes' %}
+  {% set meta_type = 'Type' %}
+  {% set meta_slug = 'Slug' %}
+  {% set meta_role = 'Role' %}
+  {% set open = 'Open' %}
+  {% set edit = 'Edit' %}
+  {% set empty = 'You have not created QR codes yet.' %}
+{% elif lang == 'ar' %}
+  {% set p_title = 'الملف الشخصي - Ouhud QR' %}
+  {% set h1 = 'ملفي الشخصي' %}
+  {% set h2_img = 'صورة الملف الشخصي' %}
+  {% set choose = 'اختيار صورة' %}
+  {% set h2_data = 'البيانات الشخصية' %}
+  {% set username = 'اسم المستخدم' %}
+  {% set first = 'الاسم الأول' %}
+  {% set last = 'اسم العائلة' %}
+  {% set email = 'البريد الإلكتروني' %}
+  {% set save = 'حفظ التغييرات' %}
+  {% set h2_qr = 'رموز QR الخاصة بي' %}
+  {% set meta_type = 'النوع' %}
+  {% set meta_slug = 'Slug' %}
+  {% set meta_role = 'الدور' %}
+  {% set open = 'فتح' %}
+  {% set edit = 'تعديل' %}
+  {% set empty = 'لم تقم بإنشاء أي رموز QR بعد.' %}
+{% else %}
+  {% set p_title = 'Profil - Ouhud QR' %}
+  {% set h1 = 'Mein Profil' %}
+  {% set h2_img = 'Profilbild' %}
+  {% set choose = 'Bild waehlen' %}
+  {% set h2_data = 'Persoenliche Daten' %}
+  {% set username = 'Benutzername' %}
+  {% set first = 'Vorname' %}
+  {% set last = 'Nachname' %}
+  {% set email = 'E-Mail' %}
+  {% set save = 'Aenderungen speichern' %}
+  {% set h2_qr = 'Meine QR-Codes' %}
+  {% set meta_type = 'Typ' %}
+  {% set meta_slug = 'Slug' %}
+  {% set meta_role = 'Rolle' %}
+  {% set open = 'Oeffnen' %}
+  {% set edit = 'Bearbeiten' %}
+  {% set empty = 'Du hast noch keine QR-Codes erstellt.' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 
 {% block content %}
 <section class="profile-page">
-  <h1>Mein Profil</h1>
+  <h1>{{ h1 }}</h1>
 
   <div class="card">
-    <h2>Profilbild</h2>
+    <h2>{{ h2_img }}</h2>
     <div class="avatar-row">
       <img class="avatar" src="{{ user.profile_image or '/static/default-avatar.png' }}" alt="Profilbild">
       <form id="avatar-form" action="/profile/update-image" method="post" enctype="multipart/form-data">
-        <label class="btn secondary" for="avatar-input">Bild waehlen</label>
+        <label class="btn secondary" for="avatar-input">{{ choose }}</label>
         <input id="avatar-input" type="file" name="file" accept="image/*" hidden>
       </form>
     </div>
   </div>
 
   <div class="card">
-    <h2>Persoenliche Daten</h2>
+    <h2>{{ h2_data }}</h2>
     <form action="/profile/update" method="post">
-      <label>Benutzername</label>
+      <label>{{ username }}</label>
       <input type="text" name="username" value="{{ user.username or '' }}">
 
-      <label>Vorname</label>
+      <label>{{ first }}</label>
       <input type="text" name="first_name" value="{{ user.first_name or '' }}">
 
-      <label>Nachname</label>
+      <label>{{ last }}</label>
       <input type="text" name="last_name" value="{{ user.last_name or '' }}">
 
-      <label>E-Mail</label>
+      <label>{{ email }}</label>
       <input type="email" name="email" value="{{ user.email or '' }}" required>
 
-      <button type="submit" class="btn primary">Aenderungen speichern</button>
+      <button type="submit" class="btn primary">{{ save }}</button>
     </form>
   </div>
 
   <div class="card">
-    <h2>Meine QR-Codes ({{ qr_count }})</h2>
+    <h2>{{ h2_qr }} ({{ qr_count }})</h2>
     {% if qr_items %}
       <div class="qr-list">
         {% for item in qr_items %}
@@ -44,80 +100,42 @@
             <img class="qr-img" src="{{ item.image_path }}" alt="QR">
             <div class="qr-main">
               <h3>{{ item.title }}</h3>
-              <p class="meta">
-                Typ: {{ item.type|upper }} | Slug: {{ item.slug }} | Rolle: {{ item.access_role|upper }}
-              </p>
+              <p class="meta">{{ meta_type }}: {{ item.type|upper }} | {{ meta_slug }}: {{ item.slug }} | {{ meta_role }}: {{ item.access_role|upper }}</p>
               {% if item.preview %}
                 <p class="preview">{{ item.preview }}</p>
               {% endif %}
             </div>
             <div class="actions">
-              <a class="btn secondary" href="{{ item.view_url }}" target="_blank" rel="noopener">Oeffnen</a>
-              <a class="btn primary" href="{{ item.edit_url }}">Bearbeiten</a>
+              <a class="btn secondary" href="{{ item.view_url }}" target="_blank" rel="noopener">{{ open }}</a>
+              <a class="btn primary" href="{{ item.edit_url }}">{{ edit }}</a>
             </div>
           </article>
         {% endfor %}
       </div>
     {% else %}
-      <p>Du hast noch keine QR-Codes erstellt.</p>
+      <p>{{ empty }}</p>
     {% endif %}
   </div>
 </section>
 
 <style>
 .profile-page { max-width: 980px; margin: 0 auto; }
-.card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.avatar-row { display: flex; align-items: center; gap: 1rem; }
-.avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  border: 2px solid #cbd5e1;
-  object-fit: cover;
-}
-label { display: block; margin: .5rem 0 .3rem; }
-input {
-  width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: .65rem;
-  margin-bottom: .5rem;
-  box-sizing: border-box;
-}
-.qr-list { display: grid; gap: .75rem; }
-.qr-item {
-  display: grid;
-  grid-template-columns: 64px 1fr auto;
-  gap: .75rem;
-  align-items: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: .65rem;
-}
-.qr-img { width: 64px; height: 64px; object-fit: contain; }
-.qr-main h3 { margin: 0; font-size: 1rem; }
-.meta { margin: .25rem 0; color: #475569; font-size: .9rem; }
-.preview { margin: 0; color: #0f172a; font-size: .92rem; }
-.actions { display: flex; gap: .5rem; }
-.btn {
-  display: inline-block;
-  border-radius: 8px;
-  padding: .45rem .7rem;
-  text-decoration: none;
-  border: 1px solid #2563eb;
-}
-.btn.primary { background: #2563eb; color: #fff; }
-.btn.secondary { background: #fff; color: #2563eb; }
-@media (max-width: 760px) {
-  .qr-item { grid-template-columns: 56px 1fr; }
-  .actions { grid-column: 1 / -1; justify-content: flex-end; }
-}
+.card { background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:1rem; margin-bottom:1rem; }
+.avatar-row { display:flex; align-items:center; gap:1rem; }
+.avatar { width:96px; height:96px; border-radius:50%; border:2px solid #cbd5e1; object-fit:cover; }
+label { display:block; margin:.5rem 0 .3rem; }
+input { width:100%; border:1px solid #cbd5e1; border-radius:10px; padding:.65rem; margin-bottom:.5rem; box-sizing:border-box; }
+.qr-list { display:grid; gap:.75rem; }
+.qr-item { display:grid; grid-template-columns:64px 1fr auto; gap:.75rem; align-items:center; border:1px solid #e2e8f0; border-radius:10px; padding:.65rem; }
+.qr-img { width:64px; height:64px; object-fit:contain; }
+.qr-main h3 { margin:0; font-size:1rem; }
+.meta { margin:.25rem 0; color:#475569; font-size:.9rem; }
+.preview { margin:0; color:#0f172a; font-size:.92rem; }
+.actions { display:flex; gap:.5rem; }
+.btn { display:inline-block; border-radius:8px; padding:.45rem .7rem; text-decoration:none; border:1px solid #2563eb; }
+.btn.primary { background:#2563eb; color:#fff; }
+.btn.secondary { background:#fff; color:#2563eb; }
+@media (max-width:760px) { .qr-item { grid-template-columns:56px 1fr; } .actions { grid-column:1 / -1; justify-content:flex-end; } }
 </style>
 
 <script>

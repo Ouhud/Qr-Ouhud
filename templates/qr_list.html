@@ -1,10 +1,45 @@
 {% extends "base.html" %}
-{% block title %}📋 Meine QR-Codes – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = '📋 My QR Codes – Ouhud QR' %}
+  {% set h1 = '📋 All saved QR codes' %}
+  {% set sub = 'Here you can find all QR codes you created.' %}
+  {% set th_product = 'Product' %}
+  {% set th_price = 'Price' %}
+  {% set th_link = 'Link' %}
+  {% set th_actions = 'Actions' %}
+  {% set view = '👁️ View' %}
+  {% set dl = '⬇️ Download' %}
+  {% set empty = '🕳️ No QR codes found.' %}
+{% elif lang == 'ar' %}
+  {% set p_title = '📋 رموز QR الخاصة بي – Ouhud QR' %}
+  {% set h1 = '📋 كل رموز QR المحفوظة' %}
+  {% set sub = 'هنا ستجد كل رموز QR التي أنشأتها.' %}
+  {% set th_product = 'المنتج' %}
+  {% set th_price = 'السعر' %}
+  {% set th_link = 'الرابط' %}
+  {% set th_actions = 'الإجراءات' %}
+  {% set view = '👁️ عرض' %}
+  {% set dl = '⬇️ تنزيل' %}
+  {% set empty = '🕳️ لا توجد رموز QR.' %}
+{% else %}
+  {% set p_title = '📋 Meine QR-Codes – Ouhud QR' %}
+  {% set h1 = '📋 Alle gespeicherten QR-Codes' %}
+  {% set sub = 'Hier findest du alle QR-Codes, die du erstellt hast.' %}
+  {% set th_product = 'Produkt' %}
+  {% set th_price = 'Preis' %}
+  {% set th_link = 'Link' %}
+  {% set th_actions = 'Aktionen' %}
+  {% set view = '👁️ Anzeigen' %}
+  {% set dl = '⬇️ Download' %}
+  {% set empty = '🕳️ Keine QR-Codes vorhanden.' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-list">
-  <h1>📋 Alle gespeicherten QR-Codes</h1>
-  <p class="subtitle">Hier findest du alle QR-Codes, die du erstellt hast.</p>
+  <h1>{{ h1 }}</h1>
+  <p class="subtitle">{{ sub }}</p>
 
   {% if products %}
   <table class="qr-table">
@@ -12,37 +47,23 @@
       <tr>
         <th>ID</th>
         <th>QR-Code</th>
-        <th>Produkt</th>
-        <th>Preis</th>
-        <th>Link</th>
-        <th>Aktionen</th>
+        <th>{{ th_product }}</th>
+        <th>{{ th_price }}</th>
+        <th>{{ th_link }}</th>
+        <th>{{ th_actions }}</th>
       </tr>
     </thead>
     <tbody>
       {% for p in products %}
       <tr>
         <td>{{ p.id }}</td>
-
-        <td>
-          {% if p.qr_image %}
-            <img src="/{{ p.qr_image }}" class="qr-thumb" alt="QR Code">
-          {% endif %}
-        </td>
-
+        <td>{% if p.qr_image %}<img src="/{{ p.qr_image }}" class="qr-thumb" alt="QR Code">{% endif %}</td>
         <td>{{ p.name }}</td>
         <td>{{ p.price }} €</td>
-
+        <td>{% if p.dynamic_url %}<a href="{{ p.dynamic_url }}" target="_blank">{{ p.dynamic_url }}</a>{% endif %}</td>
         <td>
-          {% if p.dynamic_url %}
-            <a href="{{ p.dynamic_url }}" target="_blank">
-              {{ p.dynamic_url }}
-            </a>
-          {% endif %}
-        </td>
-
-        <td>
-          <a href="/qr/product/v/{{ p.public_id }}" class="btn-edit">👁️ Anzeigen</a>
-          <a href="/{{ p.qr_image }}" download class="btn-download">⬇️ Download</a>
+          <a href="/qr/product/v/{{ p.public_id }}" class="btn-edit">{{ view }}</a>
+          <a href="/{{ p.qr_image }}" download class="btn-download">{{ dl }}</a>
         </td>
       </tr>
       {% endfor %}
@@ -50,63 +71,21 @@
   </table>
 
   {% else %}
-    <p>🕳️ Keine QR-Codes vorhanden.</p>
+    <p>{{ empty }}</p>
   {% endif %}
 </section>
 
 <style>
-.qr-list {
-  max-width: 1000px;
-  margin: 2rem auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  font-family: "Inter", sans-serif;
-  text-align: center;
-}
-.subtitle {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-.qr-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.qr-table th, .qr-table td {
-  padding: 0.8rem;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-  vertical-align: middle;
-}
-.qr-table th {
-  background: #f3f6ff;
-  color: #0D2A78;
-}
-.qr-thumb {
-  width: 80px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.btn-edit, .btn-download {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0.2rem;
-}
-.btn-edit {
-  background: #0D2A78;
-  color: #fff;
-}
-.btn-download {
-  background: #28a745;
-  color: #fff;
-}
-.btn-edit:hover { background: #09215d; }
-.btn-download:hover { background: #1e7a35; }
+.qr-list { max-width:1000px; margin:2rem auto; background:#fff; padding:2rem; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.08); font-family:"Inter",sans-serif; text-align:center; }
+.subtitle { color:#666; margin-bottom:1.5rem; }
+.qr-table { width:100%; border-collapse:collapse; }
+.qr-table th, .qr-table td { padding:0.8rem; border-bottom:1px solid #ddd; text-align:center; vertical-align:middle; }
+.qr-table th { background:#f3f6ff; color:#0D2A78; }
+.qr-thumb { width:80px; height:auto; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+.btn-edit, .btn-download { display:inline-block; padding:0.4rem 0.8rem; border-radius:8px; text-decoration:none; font-size:0.9rem; font-weight:600; margin:0 0.2rem; }
+.btn-edit { background:#0D2A78; color:#fff; }
+.btn-download { background:#28a745; color:#fff; }
+.btn-edit:hover { background:#09215d; }
+.btn-download:hover { background:#1e7a35; }
 </style>
 {% endblock %}

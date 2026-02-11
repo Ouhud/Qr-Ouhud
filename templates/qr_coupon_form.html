@@ -1,14 +1,40 @@
 {% extends "base.html" %}
-{% block title %}Coupon QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Coupon QR' %}
+  {% set t_h1 = '🎟️ Coupon QR' %}
+  {% set t_code = 'Coupon code *' %}
+  {% set t_offer = 'Offer *' %}
+  {% set t_expiry = 'Expiry date' %}
+  {% set t_max = 'Max redemptions' %}
+  {% set t_form_title = 'Title' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'Coupon QR' %}
+  {% set t_h1 = '🎟️ رمز QR للقسيمة' %}
+  {% set t_code = 'رمز القسيمة *' %}
+  {% set t_offer = 'العرض *' %}
+  {% set t_expiry = 'تاريخ الانتهاء' %}
+  {% set t_max = 'الحد الأقصى للاسترداد' %}
+  {% set t_form_title = 'العنوان' %}
+{% else %}
+  {% set t_title = 'Coupon QR' %}
+  {% set t_h1 = '🎟️ Gutschein/Coupon-QR' %}
+  {% set t_code = 'Coupon Code *' %}
+  {% set t_offer = 'Angebot *' %}
+  {% set t_expiry = 'Ablaufdatum' %}
+  {% set t_max = 'Max. Einlösungen' %}
+  {% set t_form_title = 'Titel' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator">
-  <h1>🎟️ Gutschein/Coupon-QR</h1>
+  <h1>{{ t_h1 }}</h1>
   <form method="post" action="/qr/coupon/generate" enctype="multipart/form-data" class="qr-form">
-    <label>Coupon Code *</label><input type="text" name="code" required>
-    <label>Angebot *</label><input type="text" name="offer" required placeholder="10% Rabatt">
-    <label>Ablaufdatum</label><input type="datetime-local" name="expires_at">
-    <label>Max. Einlösungen</label><input type="number" name="max_redemptions" value="100" min="0">
-    <label>Titel</label><input type="text" name="title">
+    <label>{{ t_code }}</label><input type="text" name="code" required>
+    <label>{{ t_offer }}</label><input type="text" name="offer" required placeholder="10% Rabatt">
+    <label>{{ t_expiry }}</label><input type="datetime-local" name="expires_at">
+    <label>{{ t_max }}</label><input type="number" name="max_redemptions" value="100" min="0">
+    <label>{{ t_form_title }}</label><input type="text" name="title">
     {% include "partials/qr_style_selector.html" %}
   </form>
 </section>

@@ -1,21 +1,42 @@
 {% extends "base.html" %}
-{% block title %}📄 PDF-QR-Code Ergebnis{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📄 PDF QR Code Result' %}
+  {% set t_h1 = '✅ QR code created successfully' %}
+  {% set t_sub = 'Your PDF has been saved and a dynamic QR code was created.' %}
+  {% set t_view = '📄 View PDF' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_download = '⬇️ Download QR code' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📄 نتيجة QR لملف PDF' %}
+  {% set t_h1 = '✅ تم إنشاء رمز QR بنجاح' %}
+  {% set t_sub = 'تم حفظ ملف PDF وإنشاء رمز QR ديناميكي.' %}
+  {% set t_view = '📄 عرض PDF' %}
+  {% set t_dyn = 'الرابط الديناميكي:' %}
+  {% set t_download = '⬇️ تنزيل رمز QR' %}
+{% else %}
+  {% set t_title = '📄 PDF-QR-Code Ergebnis' %}
+  {% set t_h1 = '✅ QR-Code erfolgreich erstellt' %}
+  {% set t_sub = 'Dein PDF wurde gespeichert und ein dynamischer QR-Code wurde erzeugt.' %}
+  {% set t_view = '📄 PDF ansehen' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_download = '⬇️ QR-Code herunterladen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-result-section">
-  <h1>✅ QR-Code erfolgreich erstellt</h1>
-  <p class="subtitle">
-    Dein PDF wurde gespeichert und ein dynamischer QR-Code wurde erzeugt.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="qr-result-card">
     <img src="data:image/png;base64,{{ qr_image }}" alt="QR-Code Vorschau" class="qr-preview">
     <p><strong>{{ qr.title if qr else '' }}</strong></p>
     {% if dynamic_url %}
-      <p><a href="{{ dynamic_url }}" target="_blank" class="btn-link">📄 PDF ansehen</a></p>
-      <p class="link-hint">Dynamischer Link: {{ dynamic_url }}</p>
+      <p><a href="{{ dynamic_url }}" target="_blank" class="btn-link">{{ t_view }}</a></p>
+      <p class="link-hint">{{ t_dyn }} {{ dynamic_url }}</p>
     {% endif %}
-    <p><a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="btn-link">⬇️ QR-Code herunterladen</a></p>
+    <p><a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="btn-link">{{ t_download }}</a></p>
   </div>
 </section>
 

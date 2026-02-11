@@ -1,17 +1,40 @@
 {% extends "base.html" %}
-{% block title %}Wallet QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Wallet QR created' %}
+  {% set t_h1 = '✅ Wallet QR created' %}
+  {% set t_sub = 'This QR uses a dynamic redirect and can open Apple or Google Wallet depending on the device.' %}
+  {% set t_open = 'Open wallet pass' %}
+  {% set t_edit = 'Edit' %}
+  {% set t_print = '🖨️ Print' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'تم إنشاء Wallet QR' %}
+  {% set t_h1 = '✅ تم إنشاء Wallet QR' %}
+  {% set t_sub = 'يستخدم هذا الرمز إعادة توجيه ديناميكية ويمكنه فتح Apple أو Google Wallet حسب الجهاز.' %}
+  {% set t_open = 'فتح بطاقة Wallet' %}
+  {% set t_edit = 'تعديل' %}
+  {% set t_print = '🖨️ طباعة' %}
+{% else %}
+  {% set t_title = 'Wallet QR erstellt' %}
+  {% set t_h1 = '✅ Wallet-QR erstellt' %}
+  {% set t_sub = 'Der QR-Code nutzt eine dynamische Weiterleitung und kann je nach Gerät Apple oder Google Wallet öffnen.' %}
+  {% set t_open = 'Wallet Pass öffnen' %}
+  {% set t_edit = 'Bearbeiten' %}
+  {% set t_print = '🖨️ Drucken' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 {% block content %}
 <section class="qr-generator" style="text-align:center;">
-  <h1>✅ Wallet-QR erstellt</h1>
+  <h1>{{ t_h1 }}</h1>
   {% if qr_image %}<img src="data:image/png;base64,{{ qr_image }}" style="max-width:300px;border-radius:12px;">{% endif %}
-  <p>Der QR-Code nutzt eine dynamische Weiterleitung und kann je nach Gerät Apple oder Google Wallet öffnen.</p>
+  <p>{{ t_sub }}</p>
   <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
   <div style="display:flex;justify-content:center;gap:0.8rem;flex-wrap:wrap;margin-top:1rem;">
-    <a href="{{ dynamic_url }}" target="_blank" rel="noopener" class="btn primary">Wallet Pass öffnen</a>
+    <a href="{{ dynamic_url }}" target="_blank" rel="noopener" class="btn primary">{{ t_open }}</a>
     {% if qr %}
-      <a href="/qr/edit/{{ qr.slug }}" class="btn secondary">Bearbeiten</a>
+      <a href="/qr/edit/{{ qr.slug }}" class="btn secondary">{{ t_edit }}</a>
     {% endif %}
-    <button type="button" class="btn secondary" onclick="window.print()">🖨️ Drucken</button>
+    <button type="button" class="btn secondary" onclick="window.print()">{{ t_print }}</button>
   </div>
 </section>
 {% endblock %}

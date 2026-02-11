@@ -1,34 +1,70 @@
 {% extends "base.html" %}
-{% block title %}🛍️ Produkt-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '🛍️ Product QR Code – Ouhud QR' %}
+  {% set t_h1 = '🛍️ Product QR Code Generator' %}
+  {% set t_sub = 'Create a QR code with key product information - ideal for online shops, labels, and catalogs.' %}
+  {% set t_name = '📦 Product name' %}
+  {% set t_price = '💰 Price' %}
+  {% set t_desc = '📝 Description' %}
+  {% set t_link = '🔗 Product link (optional)' %}
+  {% set p_name = 'e.g. Ouhud QR Premium License' %}
+  {% set p_price = 'e.g. 49.99 €' %}
+  {% set p_desc = 'Short product description ...' %}
+  {% set p_link = 'https://ouhud.com/shop/product' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '🛍️ رمز QR للمنتج – Ouhud QR' %}
+  {% set t_h1 = '🛍️ مولد QR للمنتج' %}
+  {% set t_sub = 'أنشئ رمز QR يحتوي أهم معلومات المنتج، مناسب للمتاجر والملصقات والكتالوجات.' %}
+  {% set t_name = '📦 اسم المنتج' %}
+  {% set t_price = '💰 السعر' %}
+  {% set t_desc = '📝 الوصف' %}
+  {% set t_link = '🔗 رابط المنتج (اختياري)' %}
+  {% set p_name = 'مثال: Ouhud QR Premium License' %}
+  {% set p_price = 'مثال: 49.99 €' %}
+  {% set p_desc = 'وصف قصير للمنتج ...' %}
+  {% set p_link = 'https://ouhud.com/shop/product' %}
+{% else %}
+  {% set t_title = '🛍️ Produkt-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '🛍️ Produkt-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der alle wichtigen Produktinformationen enthält – ideal für Online-Shops, Etiketten oder Kataloge.' %}
+  {% set t_name = '📦 Produktname' %}
+  {% set t_price = '💰 Preis' %}
+  {% set t_desc = '📝 Beschreibung' %}
+  {% set t_link = '🔗 Produktlink (optional)' %}
+  {% set p_name = 'z. B. Ouhud QR Premium Lizenz' %}
+  {% set p_price = 'z. B. 49.99 €' %}
+  {% set p_desc = 'Kurze Beschreibung des Produkts …' %}
+  {% set p_link = 'https://ouhud.com/shop/produkt' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
   <div class="container text-center">
-    <h1>🛍️ Produkt-QR-Code Generator</h1>
-    <p class="subtitle">
-      Erstelle einen QR-Code, der alle wichtigen Produktinformationen enthält – ideal für Online-Shops, Etiketten oder Kataloge.
-    </p>
+    <h1>{{ t_h1 }}</h1>
+    <p class="subtitle">{{ t_sub }}</p>
 
 <form method="post" action="/qr/product/create" enctype="multipart/form-data" class="qr-form">
         <div class="form-grid">
         <div class="form-group">
-          <label for="name">📦 Produktname</label>
-          <input type="text" id="name" name="name" placeholder="z. B. Ouhud QR Premium Lizenz" required>
+          <label for="name">{{ t_name }}</label>
+          <input type="text" id="name" name="name" placeholder="{{ p_name }}" required>
         </div>
 
         <div class="form-group">
-          <label for="price">💰 Preis</label>
-          <input type="text" id="price" name="price" placeholder="z. B. 49.99 €" required>
+          <label for="price">{{ t_price }}</label>
+          <input type="text" id="price" name="price" placeholder="{{ p_price }}" required>
         </div>
 
         <div class="form-group full">
-          <label for="description">📝 Beschreibung</label>
-          <textarea id="description" name="description" rows="3" placeholder="Kurze Beschreibung des Produkts …"></textarea>
+          <label for="description">{{ t_desc }}</label>
+          <textarea id="description" name="description" rows="3" placeholder="{{ p_desc }}"></textarea>
         </div>
 
         <div class="form-group full">
-          <label for="link">🔗 Produktlink (optional)</label>
-          <input type="url" id="link" name="link" placeholder="https://ouhud.com/shop/produkt">
+          <label for="link">{{ t_link }}</label>
+          <input type="url" id="link" name="link" placeholder="{{ p_link }}">
         </div>
       </div>
 

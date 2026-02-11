@@ -1,59 +1,59 @@
-<!-- ===========================================================
-     🔘 OUHUD QR – QR-Code Typen Sidebar (2025 Professional Version)
-=========================================================== -->
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set tab_url = '🌐 URL' %}
+  {% set tab_vcard = '💼 vCard' %}
+  {% set tab_pdf = '📄 PDF' %}
+  {% set tab_image = '🖼️ Image' %}
+  {% set tab_wifi = '📶 Wi-Fi' %}
+  {% set tab_email = '✉️ Email' %}
+  {% set tab_sms = '📱 SMS' %}
+  {% set tab_social = '💬 Social Media' %}
+  {% set tab_text = '📝 Text' %}
+  {% set tab_business = '🏢 Business Page' %}
+  {% set tab_app = '📲 App Link' %}
+{% elif lang == 'ar' %}
+  {% set tab_url = '🌐 رابط URL' %}
+  {% set tab_vcard = '💼 vCard' %}
+  {% set tab_pdf = '📄 PDF' %}
+  {% set tab_image = '🖼️ صورة' %}
+  {% set tab_wifi = '📶 واي فاي' %}
+  {% set tab_email = '✉️ بريد إلكتروني' %}
+  {% set tab_sms = '📱 SMS' %}
+  {% set tab_social = '💬 تواصل اجتماعي' %}
+  {% set tab_text = '📝 نص' %}
+  {% set tab_business = '🏢 صفحة أعمال' %}
+  {% set tab_app = '📲 رابط تطبيق' %}
+{% else %}
+  {% set tab_url = '🌐 URL' %}
+  {% set tab_vcard = '💼 vCard' %}
+  {% set tab_pdf = '📄 PDF' %}
+  {% set tab_image = '🖼️ Bild' %}
+  {% set tab_wifi = '📶 WLAN' %}
+  {% set tab_email = '✉️ E-Mail' %}
+  {% set tab_sms = '📱 SMS' %}
+  {% set tab_social = '💬 Social Media' %}
+  {% set tab_text = '📝 Text' %}
+  {% set tab_business = '🏢 Business-Seite' %}
+  {% set tab_app = '📲 App-Link' %}
+{% endif %}
 <style>
-  .qr-tabs {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 1rem 0;
-  }
-
-  .qr-tabs .tab {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.8rem 1.2rem;
-    color: #e2e8f0;
-    font-weight: 500;
-    text-decoration: none;
-    border-left: 3px solid transparent;
-    transition: all 0.25s ease;
-    border-radius: 0 8px 8px 0;
-  }
-
-  .qr-tabs .tab:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    transform: translateX(4px);
-  }
-
-  .qr-tabs .tab.active {
-    background: linear-gradient(90deg, #0b1742 0%, #0d2a78 100%);
-    border-left: 3px solid #2563eb;
-    color: white;
-    font-weight: 600;
-  }
-
-  /* Icons etwas größer auf Mobile */
-  @media (max-width: 900px) {
-    .qr-tabs .tab {
-      font-size: 1rem;
-      padding: 0.9rem 1.1rem;
-    }
-  }
+  .qr-tabs { display:flex; flex-direction:column; gap:0.4rem; padding:1rem 0; }
+  .qr-tabs .tab { display:flex; align-items:center; gap:0.7rem; padding:0.8rem 1.2rem; color:#e2e8f0; font-weight:500; text-decoration:none; border-left:3px solid transparent; transition:all 0.25s ease; border-radius:0 8px 8px 0; }
+  .qr-tabs .tab:hover { background:rgba(255,255,255,0.12); color:#fff; transform:translateX(4px); }
+  .qr-tabs .tab.active { background:linear-gradient(90deg,#0b1742 0%,#0d2a78 100%); border-left:3px solid #2563eb; color:white; font-weight:600; }
+  @media (max-width: 900px) { .qr-tabs .tab { font-size:1rem; padding:0.9rem 1.1rem; } }
 </style>
 
 <div class="qr-tabs">
-  <a href="/qr/url" class="tab {% if active_tab == 'url' %}active{% endif %}">🌐 URL</a>
-  <a href="/qr/vcard" class="tab {% if active_tab == 'vcard' %}active{% endif %}">💼 vCard</a>
-  <a href="/qr/pdf" class="tab {% if active_tab == 'pdf' %}active{% endif %}">📄 PDF</a>
-  <a href="/qr/image" class="tab {% if active_tab == 'image' %}active{% endif %}">🖼️ Bild</a>
-  <a href="/qr/wifi" class="tab {% if active_tab == 'wifi' %}active{% endif %}">📶 WLAN</a>
-  <a href="/qr/email" class="tab {% if active_tab == 'email' %}active{% endif %}">✉️ E-Mail</a>
-  <a href="/qr/sms" class="tab {% if active_tab == 'sms' %}active{% endif %}">📱 SMS</a>
-  <a href="/qr/social" class="tab {% if active_tab == 'social' %}active{% endif %}">💬 Social Media</a>
-  <a href="/qr/text" class="tab {% if active_tab == 'text' %}active{% endif %}">📝 Text</a>
-  <a href="/qr/business" class="tab {% if active_tab == 'business' %}active{% endif %}">🏢 Business-Seite</a>
-  <a href="/qr/app" class="tab {% if active_tab == 'app' %}active{% endif %}">📲 App-Link</a>
+  <a href="/qr/url" class="tab {% if active_tab == 'url' %}active{% endif %}">{{ tab_url }}</a>
+  <a href="/qr/vcard" class="tab {% if active_tab == 'vcard' %}active{% endif %}">{{ tab_vcard }}</a>
+  <a href="/qr/pdf" class="tab {% if active_tab == 'pdf' %}active{% endif %}">{{ tab_pdf }}</a>
+  <a href="/qr/image" class="tab {% if active_tab == 'image' %}active{% endif %}">{{ tab_image }}</a>
+  <a href="/qr/wifi" class="tab {% if active_tab == 'wifi' %}active{% endif %}">{{ tab_wifi }}</a>
+  <a href="/qr/email" class="tab {% if active_tab == 'email' %}active{% endif %}">{{ tab_email }}</a>
+  <a href="/qr/sms" class="tab {% if active_tab == 'sms' %}active{% endif %}">{{ tab_sms }}</a>
+  <a href="/qr/social" class="tab {% if active_tab == 'social' %}active{% endif %}">{{ tab_social }}</a>
+  <a href="/qr/text" class="tab {% if active_tab == 'text' %}active{% endif %}">{{ tab_text }}</a>
+  <a href="/qr/business" class="tab {% if active_tab == 'business' %}active{% endif %}">{{ tab_business }}</a>
+  <a href="/qr/app" class="tab {% if active_tab == 'app' %}active{% endif %}">{{ tab_app }}</a>
 </div>

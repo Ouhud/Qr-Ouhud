@@ -1,19 +1,335 @@
 {% extends "base.html" %}
-{% block title %}Ouhud QR – Dynamische QR-Codes für Teams{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    Ouhud QR – Dynamic QR Codes for Teams
+  {% elif request.state.lang == 'ar' %}
+    Ouhud QR – رموز QR ديناميكية للفرق
+  {% else %}
+    Ouhud QR – Dynamische QR-Codes für Teams
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set i_hero_title = 'Dynamic QR codes for ' %}
+  {% set i_hero_highlight = 'modern B2B teams' %}
+  {% set i_hero_sub = 'With Ouhud QR you manage QR codes centrally, securely, and measurably. Update content anytime without reprinting. Ideal for marketing, retail, events, and logistics.' %}
+  {% set i_start = 'Start free' %}
+  {% set i_login = 'Sign in' %}
+  {% set i_prices_badge = 'Pricing' %}
+  {% set i_prices_title = 'Flexible plans for every project' %}
+  {% set i_prices_sub = 'Transparent. Scalable. No hidden fees.' %}
+  {% set i_custom = 'Custom' %}
+  {% set i_month = '/month' %}
+  {% set i_up_to = 'Up to' %}
+  {% set i_qr_codes = 'QR codes' %}
+  {% set i_free_month = 'free month(s)' %}
+  {% set i_api_yes = 'Full API access' %}
+  {% set i_api_no = 'No API access' %}
+  {% set i_contact = 'Contact sales' %}
+  {% set i_choose = 'Choose now' %}
+  {% set i_popular = 'Recommended' %}
+  {% set i_badge_enterprise = 'Enterprise Ready' %}
+  {% set i_trust_title = 'One system for teams, processes and scale' %}
+  {% set i_trust_text = 'Central management, roles & permissions, audit logs and consistent branding. Ouhud QR is built for productive workflows.' %}
+  {% set i_stat_uptime = 'Uptime SLA' %}
+  {% set i_stat_onboarding = 'Onboarding' %}
+  {% set i_stat_monitoring = 'Monitoring' %}
+  {% set i_workflow_badge = 'Workflow' %}
+  {% set i_workflow_title = 'Live in 3 steps' %}
+  {% set i_workflow_sub = 'From idea to deployment in minutes.' %}
+  {% set i_step1_title = 'Create code' %}
+  {% set i_step1_text = 'Choose type, target and runtime. Branding optional.' %}
+  {% set i_step2_title = 'Publish' %}
+  {% set i_step2_text = 'Use in print, packaging or digital signage.' %}
+  {% set i_step3_title = 'Analyze' %}
+  {% set i_step3_text = 'Scans, regions and devices in real time.' %}
+  {% set i_types_badge = 'Features' %}
+  {% set i_types_title = 'Versatile QR code types' %}
+  {% set i_types_sub = 'More than 20 types for marketing, sales, operations and support.' %}
+  {% set i_styles_title = 'Your design, your brand' %}
+  {% set i_styles_sub = 'All styles at a glance. Choose presets, colors, shapes and brand kits.' %}
+  {% set i_analytics_badge = 'Analytics' %}
+  {% set i_analytics_title = 'Decisions based on data' %}
+  {% set i_analytics_sub = 'Real-time tracking for campaigns, regions and teams. Export reports or integrate directly into your BI tools.' %}
+  {% set i_analytics_l1 = 'Live heatmaps and device insights' %}
+  {% set i_analytics_l2 = 'CSV, webhooks and API access' %}
+  {% set i_analytics_l3 = 'Multilingual dashboards' %}
+  {% set i_metric_scans = 'Scans today' %}
+  {% set i_metric_scans_note = '+18% vs yesterday' %}
+  {% set i_metric_region = 'Top region' %}
+  {% set i_metric_region_note = 'Strongest channel' %}
+  {% set i_metric_conv = 'Conversion' %}
+  {% set i_metric_conv_note = 'Landing page / campaign' %}
+  {% set i_integrations_badge = 'Integrations' %}
+  {% set i_integrations_title = 'Fits your stack' %}
+  {% set i_integrations_sub = 'Easy integration into CRM, CMS and automations.' %}
+  {% set i_security_badge = 'Security' %}
+  {% set i_security_title = 'Compliance B2B needs' %}
+  {% set i_security_sub = 'GDPR-compliant, role-based, and with audit logs. Optional SSO and custom data residency.' %}
+  {% set i_security_1 = 'Roles & permissions for teams' %}
+  {% set i_security_2 = 'Audit logs and change history' %}
+  {% set i_security_3 = 'SSO / SAML on request' %}
+  {% set i_security_4 = 'Custom subdomains' %}
+  {% set i_testimonials_badge = 'Testimonials' %}
+  {% set i_testimonials_title = 'Teams that scale' %}
+  {% set i_testimonials_sub = 'Reliable QR infrastructure for growing companies.' %}
+  {% set i_testimonial_1 = '“We update campaigns without new print costs. Time-to-market is extremely fast.”' %}
+  {% set i_testimonial_1_author = 'Head of Marketing, Retail DACH' %}
+  {% set i_testimonial_2 = '“The API integration into our CRM was done in one day.”' %}
+  {% set i_testimonial_2_author = 'Operations, SaaS platform' %}
+  {% set i_testimonial_3 = '“Audit logs and team permissions give us the control we need.”' %}
+  {% set i_testimonial_3_author = 'IT Security, logistics group' %}
+  {% set i_faq_badge = 'FAQ' %}
+  {% set i_faq_title = 'Frequently asked questions' %}
+  {% set i_faq_sub = 'Quick answers before you start.' %}
+  {% set i_faq_q1 = 'Can I change the content after printing?' %}
+  {% set i_faq_a1 = 'Yes. With dynamic QR codes, the code stays the same while targets and content can be updated anytime.' %}
+  {% set i_faq_q2 = 'Which QR types are supported?' %}
+  {% set i_faq_a2 = 'URL, vCard, PDF, Wi-Fi, email, SMS, phone, social, event, geo, payment, multi-link, product plus wallet, GS1, app deep link, review, booking, lead, feedback and coupon.' %}
+  {% set i_faq_q3 = 'Are team roles and permissions available?' %}
+  {% set i_faq_a3 = 'Yes. With workspaces and sharing, teams can collaborate as admin, editor and viewer on the same QR resources.' %}
+  {% set i_faq_q4 = 'Can I connect the API with other software?' %}
+  {% set i_faq_a4 = 'Yes. API keys in the security area let you connect external systems and create/read/update/delete QR codes via API.' %}
+  {% set i_faq_q5 = 'How secure are API keys?' %}
+  {% set i_faq_a5 = 'New keys are shown fully only once. Afterwards you only see masked values. Keys can be named, renamed and deleted at any time.' %}
+  {% set i_faq_q6 = 'Is Ouhud QR GDPR compliant?' %}
+  {% set i_faq_a6 = 'Yes. Data processing is documented on legal pages. Privacy policy and imprint pages are directly available.' %}
+  {% set i_faq_q7 = 'How does payment work?' %}
+  {% set i_faq_a7 = 'Payment processing is handled via Stripe. Payment data is not fully stored on our servers.' %}
+  {% set i_faq_q8 = 'Where can I see scans and performance?' %}
+  {% set i_faq_a8 = 'In the dashboard with ranges (7 days, 30 days, 6 months), scan history, type distribution and device distribution.' %}
+  {% set i_cta_title = 'Ready for professional QR infrastructure?' %}
+  {% set i_cta_sub = 'Start in minutes or talk to our team.' %}
+  {% set i_cta_demo = 'Request demo' %}
+  {% set i_cta_contact_href = '/contact' %}
+  {% set i_style_tag_brand = 'Brand Kit' %}
+  {% set i_style_tag_standard = 'Standard' %}
+  {% set i_style_tag_shapes = 'Shapes' %}
+  {% set i_style_tag_colors = 'Colors' %}
+  {% set i_style_tag_themes = 'Themes' %}
+  {% set i_style_tag_premium = 'Premium' %}
+  {% set i_style_tag_pro = 'Pro' %}
+  {% set i_footer_rights = 'All rights reserved.' %}
+  {% set i_footer_impressum = 'Imprint' %}
+  {% set i_footer_privacy = 'Privacy' %}
+{% elif lang == 'ar' %}
+  {% set i_hero_title = 'رموز QR ديناميكية لـ ' %}
+  {% set i_hero_highlight = 'فرق B2B الحديثة' %}
+  {% set i_hero_sub = 'مع Ouhud QR يمكنك إدارة رموز QR بشكل مركزي وآمن وقابل للقياس. حدّث المحتوى في أي وقت دون إعادة الطباعة. مناسب للتسويق والتجزئة والفعاليات واللوجستيات.' %}
+  {% set i_start = 'ابدأ مجانًا' %}
+  {% set i_login = 'تسجيل الدخول' %}
+  {% set i_prices_badge = 'الأسعار' %}
+  {% set i_prices_title = 'باقات مرنة لكل مشروع' %}
+  {% set i_prices_sub = 'شفافة. قابلة للتوسع. بدون رسوم مخفية.' %}
+  {% set i_custom = 'مخصص' %}
+  {% set i_month = '/شهريًا' %}
+  {% set i_up_to = 'حتى' %}
+  {% set i_qr_codes = 'رمز QR' %}
+  {% set i_free_month = 'شهر/أشهر مجانية' %}
+  {% set i_api_yes = 'وصول كامل إلى API' %}
+  {% set i_api_no = 'بدون وصول API' %}
+  {% set i_contact = 'تواصل مع المبيعات' %}
+  {% set i_choose = 'اختر الآن' %}
+  {% set i_popular = 'موصى به' %}
+  {% set i_badge_enterprise = 'جاهز للمؤسسات' %}
+  {% set i_trust_title = 'نظام واحد للفرق والعمليات والتوسع' %}
+  {% set i_trust_text = 'إدارة مركزية، أدوار وصلاحيات، سجلات تدقيق وهوية علامة متسقة. Ouhud QR مبني لسير عمل إنتاجي.' %}
+  {% set i_stat_uptime = 'توفر الخدمة SLA' %}
+  {% set i_stat_onboarding = 'بدء التشغيل' %}
+  {% set i_stat_monitoring = 'المراقبة' %}
+  {% set i_workflow_badge = 'سير العمل' %}
+  {% set i_workflow_title = 'الانطلاق في 3 خطوات' %}
+  {% set i_workflow_sub = 'من الفكرة إلى التنفيذ خلال دقائق.' %}
+  {% set i_step1_title = 'إنشاء الرمز' %}
+  {% set i_step1_text = 'اختر النوع والهدف والمدة. مع العلامة التجارية اختياريًا.' %}
+  {% set i_step2_title = 'النشر' %}
+  {% set i_step2_text = 'استخدمه في الطباعة أو التغليف أو الشاشات الرقمية.' %}
+  {% set i_step3_title = 'التحليل' %}
+  {% set i_step3_text = 'عمليات المسح والمناطق والأجهزة في الوقت الفعلي.' %}
+  {% set i_types_badge = 'المزايا' %}
+  {% set i_types_title = 'أنواع QR متعددة الاستخدام' %}
+  {% set i_types_sub = 'أكثر من 20 نوعًا للتسويق والمبيعات والعمليات والدعم.' %}
+  {% set i_styles_title = 'تصميمك وهوية علامتك' %}
+  {% set i_styles_sub = 'كل الأنماط في مكان واحد. اختر قوالب وألوان وأشكال وحزم العلامة.' %}
+  {% set i_analytics_badge = 'التحليلات' %}
+  {% set i_analytics_title = 'قرارات مبنية على البيانات' %}
+  {% set i_analytics_sub = 'تتبع لحظي للحملات والمناطق والفرق. صدّر التقارير أو اربطها مباشرة بأدوات BI.' %}
+  {% set i_analytics_l1 = 'خرائط حرارة ورؤى الأجهزة مباشرة' %}
+  {% set i_analytics_l2 = 'CSV وWebhooks ووصول API' %}
+  {% set i_analytics_l3 = 'لوحات متعددة اللغات' %}
+  {% set i_metric_scans = 'عمليات المسح اليوم' %}
+  {% set i_metric_scans_note = '+18% مقارنة بالأمس' %}
+  {% set i_metric_region = 'أفضل منطقة' %}
+  {% set i_metric_region_note = 'أقوى قناة' %}
+  {% set i_metric_conv = 'التحويل' %}
+  {% set i_metric_conv_note = 'صفحة الهبوط / الحملة' %}
+  {% set i_integrations_badge = 'التكاملات' %}
+  {% set i_integrations_title = 'يناسب بيئتك التقنية' %}
+  {% set i_integrations_sub = 'تكامل سهل مع CRM وCMS والأتمتة.' %}
+  {% set i_security_badge = 'الأمان' %}
+  {% set i_security_title = 'التوافق الذي تحتاجه الشركات' %}
+  {% set i_security_sub = 'متوافق مع GDPR، قائم على الأدوار، مع سجلات تدقيق. وSSO اختياري واستضافة بيانات مخصصة.' %}
+  {% set i_security_1 = 'أدوار وصلاحيات للفرق' %}
+  {% set i_security_2 = 'سجلات تدقيق وسجل تغييرات' %}
+  {% set i_security_3 = 'SSO / SAML عند الطلب' %}
+  {% set i_security_4 = 'نطاقات فرعية مخصصة' %}
+  {% set i_testimonials_badge = 'آراء العملاء' %}
+  {% set i_testimonials_title = 'فرق تنمو وتتوسع' %}
+  {% set i_testimonials_sub = 'بنية QR موثوقة للشركات المتنامية.' %}
+  {% set i_testimonial_1 = '“نحدّث الحملات بدون تكاليف طباعة جديدة. سرعة الوصول للسوق ممتازة.”' %}
+  {% set i_testimonial_1_author = 'مدير التسويق، Retail DACH' %}
+  {% set i_testimonial_2 = '“تم دمج API مع CRM خلال يوم واحد.”' %}
+  {% set i_testimonial_2_author = 'العمليات، منصة SaaS' %}
+  {% set i_testimonial_3 = '“سجلات التدقيق وصلاحيات الفريق منحتنا التحكم المطلوب.”' %}
+  {% set i_testimonial_3_author = 'أمن المعلومات، مجموعة لوجستية' %}
+  {% set i_faq_badge = 'الأسئلة الشائعة' %}
+  {% set i_faq_title = 'أسئلة متكررة' %}
+  {% set i_faq_sub = 'إجابات سريعة قبل البدء.' %}
+  {% set i_faq_q1 = 'هل يمكن تغيير المحتوى بعد الطباعة؟' %}
+  {% set i_faq_a1 = 'نعم. مع QR الديناميكي يبقى الرمز نفسه ويمكن تحديث الوجهة والمحتوى في أي وقت.' %}
+  {% set i_faq_q2 = 'ما أنواع QR المدعومة؟' %}
+  {% set i_faq_a2 = 'URL وvCard وPDF وWi‑Fi والبريد وSMS والهاتف والسوشيال والحدث والموقع والدفع والروابط المتعددة والمنتج بالإضافة إلى Wallet وGS1 وApp Deep Link والتقييم والحجز والـLead والـFeedback والكوبون.' %}
+  {% set i_faq_q3 = 'هل توجد أدوار وصلاحيات للفرق؟' %}
+  {% set i_faq_a3 = 'نعم. عبر مساحات العمل والمشاركة يمكن للفرق العمل بأدوار Admin وEditor وViewer على نفس موارد QR.' %}
+  {% set i_faq_q4 = 'هل يمكن ربط API مع برامج أخرى؟' %}
+  {% set i_faq_a4 = 'نعم. عبر مفاتيح API في قسم الأمان يمكنك ربط الأنظمة الخارجية وإنشاء/قراءة/تحديث/حذف QR عبر API.' %}
+  {% set i_faq_q5 = 'ما مدى أمان مفاتيح API؟' %}
+  {% set i_faq_a5 = 'يظهر المفتاح كاملًا مرة واحدة فقط. بعد ذلك تظهر القيم المقنّعة فقط. يمكن تسمية المفاتيح وإعادة تسميتها وحذفها في أي وقت.' %}
+  {% set i_faq_q6 = 'هل Ouhud QR متوافق مع GDPR؟' %}
+  {% set i_faq_a6 = 'نعم. معالجة البيانات موثقة في الصفحات القانونية. صفحات الخصوصية والإشعار القانوني متاحة مباشرة.' %}
+  {% set i_faq_q7 = 'كيف تتم عملية الدفع؟' %}
+  {% set i_faq_a7 = 'تتم المعالجة عبر Stripe. بيانات الدفع لا يتم تخزينها بالكامل على خوادمنا.' %}
+  {% set i_faq_q8 = 'أين أرى المسح والأداء؟' %}
+  {% set i_faq_a8 = 'في لوحة التحكم عبر فترات زمنية (7 أيام، 30 يومًا، 6 أشهر) مع سجل المسح وتوزيع الأنواع والأجهزة.' %}
+  {% set i_cta_title = 'جاهز لبنية QR احترافية؟' %}
+  {% set i_cta_sub = 'ابدأ خلال دقائق أو تواصل مع فريقنا.' %}
+  {% set i_cta_demo = 'اطلب عرضًا تجريبيًا' %}
+  {% set i_cta_contact_href = '/contact' %}
+  {% set i_style_tag_brand = 'هوية العلامة' %}
+  {% set i_style_tag_standard = 'قياسي' %}
+  {% set i_style_tag_shapes = 'الأشكال' %}
+  {% set i_style_tag_colors = 'الألوان' %}
+  {% set i_style_tag_themes = 'الثيمات' %}
+  {% set i_style_tag_premium = 'بريميوم' %}
+  {% set i_style_tag_pro = 'احترافي' %}
+  {% set i_footer_rights = 'جميع الحقوق محفوظة.' %}
+  {% set i_footer_impressum = 'الإشعار القانوني' %}
+  {% set i_footer_privacy = 'الخصوصية' %}
+{% else %}
+  {% set i_hero_title = 'Dynamische QR-Codes für ' %}
+  {% set i_hero_highlight = 'moderne B2B-Teams' %}
+  {% set i_hero_sub = 'Mit Ouhud QR steuerst du QR-Codes zentral, sicher und messbar. Ändere Inhalte jederzeit, ohne neu zu drucken. Ideal für Marketing, Retail, Events und Logistik.' %}
+  {% set i_start = 'Kostenlos starten' %}
+  {% set i_login = 'Anmelden' %}
+  {% set i_prices_badge = 'Preise' %}
+  {% set i_prices_title = 'Flexible Tarife für jedes Projekt' %}
+  {% set i_prices_sub = 'Transparent. Skalierbar. Keine versteckten Gebühren.' %}
+  {% set i_custom = 'Individuell' %}
+  {% set i_month = '/Monat' %}
+  {% set i_up_to = 'Bis zu' %}
+  {% set i_qr_codes = 'QR-Codes' %}
+  {% set i_free_month = 'Monat(e) gratis' %}
+  {% set i_api_yes = 'Voller API-Zugang' %}
+  {% set i_api_no = 'Kein API-Zugang' %}
+  {% set i_contact = 'Kontakt aufnehmen' %}
+  {% set i_choose = 'Jetzt wählen' %}
+  {% set i_popular = 'Empfehlung' %}
+  {% set i_badge_enterprise = 'Enterprise Ready' %}
+  {% set i_trust_title = 'Ein System für Teams, Prozesse und Skalierung' %}
+  {% set i_trust_text = 'Zentrale Verwaltung, Rollen & Rechte, Audit-Logs und konsistente Markenführung. Ouhud QR ist für produktive Workflows gebaut.' %}
+  {% set i_stat_uptime = 'Uptime SLA' %}
+  {% set i_stat_onboarding = 'Onboarding' %}
+  {% set i_stat_monitoring = 'Monitoring' %}
+  {% set i_workflow_badge = 'Workflow' %}
+  {% set i_workflow_title = 'In 3 Schritten live' %}
+  {% set i_workflow_sub = 'Von der Idee bis zum Einsatz in Minuten.' %}
+  {% set i_step1_title = 'Code erstellen' %}
+  {% set i_step1_text = 'Wähle Typ, Ziel und Laufzeit. Optional mit Branding.' %}
+  {% set i_step2_title = 'Veröffentlichen' %}
+  {% set i_step2_text = 'Nutze Print, Packaging oder Digital Signage.' %}
+  {% set i_step3_title = 'Analysieren' %}
+  {% set i_step3_text = 'Scans, Regionen und Geräte in Echtzeit.' %}
+  {% set i_types_badge = 'Features' %}
+  {% set i_types_title = 'Vielseitige QR-Code Typen' %}
+  {% set i_types_sub = 'Mehr als 20 Typen für Marketing, Sales, Operations und Support.' %}
+  {% set i_styles_title = 'Dein Design, dein Brand' %}
+  {% set i_styles_sub = 'Alle Styles auf einen Blick. Wähle Presets, Farben, Formen und Brand-Kits.' %}
+  {% set i_analytics_badge = 'Analytics' %}
+  {% set i_analytics_title = 'Entscheidungen auf Datenbasis' %}
+  {% set i_analytics_sub = 'Echtzeit-Tracking für Kampagnen, Standorte und Teams. Exportiere Reports oder integriere Daten direkt in deine BI-Tools.' %}
+  {% set i_analytics_l1 = 'Live-Heatmaps und Geräte-Insights' %}
+  {% set i_analytics_l2 = 'CSV, Webhooks und API-Zugriff' %}
+  {% set i_analytics_l3 = 'Mehrsprachige Dashboards' %}
+  {% set i_metric_scans = 'Scans heute' %}
+  {% set i_metric_scans_note = '+18% vs. gestern' %}
+  {% set i_metric_region = 'Top Region' %}
+  {% set i_metric_region_note = 'Stärkster Kanal' %}
+  {% set i_metric_conv = 'Conversion' %}
+  {% set i_metric_conv_note = 'Zielseite / Kampagne' %}
+  {% set i_integrations_badge = 'Integrationen' %}
+  {% set i_integrations_title = 'Passt in deinen Stack' %}
+  {% set i_integrations_sub = 'Einfach integrieren in CRM, CMS und Automationen.' %}
+  {% set i_security_badge = 'Security' %}
+  {% set i_security_title = 'Compliance, die B2B braucht' %}
+  {% set i_security_sub = 'DSGVO-konform, rollenbasiert und mit Audit-Logs. Optional SSO und individuelle Datenhaltung.' %}
+  {% set i_security_1 = 'Rollen & Rechte für Teams' %}
+  {% set i_security_2 = 'Audit-Logs und Änderungsverlauf' %}
+  {% set i_security_3 = 'SSO / SAML auf Anfrage' %}
+  {% set i_security_4 = 'Individuelle Subdomains' %}
+  {% set i_testimonials_badge = 'Kundenstimmen' %}
+  {% set i_testimonials_title = 'Teams, die skalieren' %}
+  {% set i_testimonials_sub = 'Verlässliche QR-Infrastruktur für wachsende Unternehmen.' %}
+  {% set i_testimonial_1 = '„Wir aktualisieren Kampagnen ohne neue Druckkosten. Die Time-to-Market ist extrem schnell.“' %}
+  {% set i_testimonial_1_author = 'Leitung Marketing, Retail DACH' %}
+  {% set i_testimonial_2 = '„Die API-Integration in unser CRM war in einem Tag erledigt.“' %}
+  {% set i_testimonial_2_author = 'Operations, SaaS Plattform' %}
+  {% set i_testimonial_3 = '„Audit-Logs und Team-Rechte geben uns die Kontrolle, die wir brauchen.“' %}
+  {% set i_testimonial_3_author = 'IT Security, Logistikgruppe' %}
+  {% set i_faq_badge = 'FAQ' %}
+  {% set i_faq_title = 'Häufige Fragen' %}
+  {% set i_faq_sub = 'Schnell geklärt, bevor du startest.' %}
+  {% set i_faq_q1 = 'Kann ich den Inhalt nach dem Druck ändern?' %}
+  {% set i_faq_a1 = 'Ja. Bei dynamischen QR-Codes bleibt der QR gleich, während Ziel und Inhalte jederzeit aktualisiert werden können.' %}
+  {% set i_faq_q2 = 'Welche QR-Typen werden unterstützt?' %}
+  {% set i_faq_a2 = 'URL, vCard, PDF, WLAN, E-Mail, SMS, Telefon, Social, Event, Standort, Payment, Multi-Link, Produkt sowie Wallet, GS1, App Deep Link, Review, Booking, Lead, Feedback und Coupon.' %}
+  {% set i_faq_q3 = 'Gibt es Team-Rollen und Freigaben?' %}
+  {% set i_faq_a3 = 'Ja. Mit Workspaces und Freigaben arbeiten Teams mit Rollen wie Admin, Editor und Viewer auf denselben QR-Ressourcen.' %}
+  {% set i_faq_q4 = 'Kann ich eine API mit anderer Software verbinden?' %}
+  {% set i_faq_a4 = 'Ja. Über API-Schlüssel im Bereich Sicherheit kannst du externe Systeme anbinden und QR-Codes per API erstellen, lesen, aktualisieren und löschen.' %}
+  {% set i_faq_q5 = 'Wie sicher sind API-Schlüssel?' %}
+  {% set i_faq_a5 = 'Neue Schlüssel werden nur einmal vollständig angezeigt. Danach siehst du nur maskierte Werte. Schlüssel können benannt, umbenannt und jederzeit gelöscht werden.' %}
+  {% set i_faq_q6 = 'Ist Ouhud QR DSGVO-konform?' %}
+  {% set i_faq_a6 = 'Ja. Die Datenverarbeitung ist in den rechtlichen Seiten dokumentiert. Datenschutz- und Impressumsseiten sind direkt verfügbar.' %}
+  {% set i_faq_q7 = 'Wie läuft die Bezahlung?' %}
+  {% set i_faq_a7 = 'Die Zahlungsabwicklung erfolgt über Stripe. Zahlungsdaten werden nicht vollständig auf unseren Servern gespeichert.' %}
+  {% set i_faq_q8 = 'Wo sehe ich Scans und Performance?' %}
+  {% set i_faq_a8 = 'Im Dashboard mit Zeiträumen (7 Tage, 30 Tage, 6 Monate), Scan-Verlauf, Typ-Verteilung und Geräteverteilung.' %}
+  {% set i_cta_title = 'Bereit für professionelle QR-Infrastruktur?' %}
+  {% set i_cta_sub = 'Starte in Minuten oder sprich mit unserem Team.' %}
+  {% set i_cta_demo = 'Demo anfragen' %}
+  {% set i_cta_contact_href = '/kontakt' %}
+  {% set i_style_tag_brand = 'Brand-Kit' %}
+  {% set i_style_tag_standard = 'Standard' %}
+  {% set i_style_tag_shapes = 'Formen' %}
+  {% set i_style_tag_colors = 'Farben' %}
+  {% set i_style_tag_themes = 'Themes' %}
+  {% set i_style_tag_premium = 'Premium' %}
+  {% set i_style_tag_pro = 'Pro' %}
+  {% set i_footer_rights = 'Alle Rechte vorbehalten.' %}
+  {% set i_footer_impressum = 'Impressum' %}
+  {% set i_footer_privacy = 'Datenschutz' %}
+{% endif %}
 
 <section class="hero">
   <div class="hero-inner">
-    <h1>Dynamische QR-Codes für <span>moderne B2B-Teams</span></h1>
-    <p class="hero-subtitle">
-      Mit <strong>Ouhud QR</strong> steuerst du QR-Codes zentral, sicher und messbar.
-      Ändere Inhalte jederzeit, ohne neu zu drucken. Ideal für Marketing, Retail, Events und Logistik.
-    </p>
+    <h1>{{ i_hero_title }}<span>{{ i_hero_highlight }}</span></h1>
+    <p class="hero-subtitle">{{ i_hero_sub }}</p>
 
     <div class="hero-buttons">
-      <a href="/auth/register" class="btn primary">Kostenlos starten</a>
-      <a href="/auth/login" class="btn secondary">Anmelden</a>
+      <a href="/auth/register" class="btn primary">{{ i_start }}</a>
+      <a href="/auth/login" class="btn secondary">{{ i_login }}</a>
     </div>
   </div>
 </section>
@@ -21,25 +337,22 @@
 <section class="trust">
   <div class="container trust-inner">
     <div class="trust-text">
-      <span class="badge">Enterprise Ready</span>
-      <h2>Ein System für Teams, Prozesse und Skalierung</h2>
-      <p>
-        Zentrale Verwaltung, Rollen & Rechte, Audit-Logs und konsistente Markenführung.
-        Ouhud QR ist für produktive Workflows gebaut.
-      </p>
+      <span class="badge">{{ i_badge_enterprise }}</span>
+      <h2>{{ i_trust_title }}</h2>
+      <p>{{ i_trust_text }}</p>
     </div>
     <div class="trust-stats">
       <div class="stat-card">
         <span class="stat-number">99,9%</span>
-        <span class="stat-label">Uptime SLA</span>
+        <span class="stat-label">{{ i_stat_uptime }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-number">5 min</span>
-        <span class="stat-label">Onboarding</span>
+        <span class="stat-label">{{ i_stat_onboarding }}</span>
       </div>
       <div class="stat-card">
         <span class="stat-number">24/7</span>
-        <span class="stat-label">Monitoring</span>
+        <span class="stat-label">{{ i_stat_monitoring }}</span>
       </div>
     </div>
   </div>
@@ -48,25 +361,25 @@
 <section class="workflow">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Workflow</span>
-      <h2>In 3 Schritten live</h2>
-      <p>Von der Idee bis zum Einsatz in Minuten.</p>
+      <span class="badge">{{ i_workflow_badge }}</span>
+      <h2>{{ i_workflow_title }}</h2>
+      <p>{{ i_workflow_sub }}</p>
     </div>
     <div class="workflow-grid">
       <div class="workflow-card">
         <span class="step">01</span>
-        <h3>Code erstellen</h3>
-        <p>Wähle Typ, Ziel und Laufzeit. Optional mit Branding.</p>
+        <h3>{{ i_step1_title }}</h3>
+        <p>{{ i_step1_text }}</p>
       </div>
       <div class="workflow-card">
         <span class="step">02</span>
-        <h3>Veröffentlichen</h3>
-        <p>Nutze Print, Packaging oder Digital Signage.</p>
+        <h3>{{ i_step2_title }}</h3>
+        <p>{{ i_step2_text }}</p>
       </div>
       <div class="workflow-card">
         <span class="step">03</span>
-        <h3>Analysieren</h3>
-        <p>Scans, Regionen und Geräte in Echtzeit.</p>
+        <h3>{{ i_step3_title }}</h3>
+        <p>{{ i_step3_text }}</p>
       </div>
     </div>
   </div>
@@ -75,44 +388,44 @@
 <section class="pricing" id="pricing">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Preise</span>
-      <h2>Flexible Tarife für jedes Projekt</h2>
-      <p>Transparent. Skalierbar. Keine versteckten Gebühren.</p>
+      <span class="badge">{{ i_prices_badge }}</span>
+      <h2>{{ i_prices_title }}</h2>
+      <p>{{ i_prices_sub }}</p>
     </div>
 
     <div class="pricing-grid">
       {% for plan in plans %}
       <div class="plan-card {% if plan.name == 'Business' %}highlight{% endif %}">
-        {% if plan.name == 'Business' %}<div class="popular-badge">Empfehlung</div>{% endif %}
+        {% if plan.name == 'Business' %}<div class="popular-badge">{{ i_popular }}</div>{% endif %}
         <div class="plan-header">
           <h3>{{ plan.name }}</h3>
           <div class="price">
             {% if plan.price > 0 %}
-              <span class="currency">€</span><span class="amount">{{ "%.2f"|format(plan.price) }}</span><span class="period">/Monat</span>
+              <span class="currency">€</span><span class="amount">{{ "%.2f"|format(plan.price) }}</span><span class="period">{{ i_month }}</span>
             {% else %}
-              <span class="amount">Individuell</span>
+              <span class="amount">{{ i_custom }}</span>
             {% endif %}
           </div>
         </div>
 
         <ul class="plan-features">
-          <li><i class="feature-icon">✔</i> Bis zu <strong>{{ plan.qr_limit }}</strong> QR-Codes</li>
+          <li><i class="feature-icon">✔</i> {{ i_up_to }} <strong>{{ plan.qr_limit }}</strong> {{ i_qr_codes }}</li>
           {% if plan.free_months > 0 %}
-          <li><i class="feature-icon">🎁</i> {{ plan.free_months }} Monat(e) gratis</li>
+          <li><i class="feature-icon">🎁</i> {{ plan.free_months }} {{ i_free_month }}</li>
           {% endif %}
           <li>
             {% if plan.has_api_access %}
-              <i class="feature-icon">✔</i> Voller API-Zugang
+              <i class="feature-icon">✔</i> {{ i_api_yes }}
             {% else %}
-              <i class="feature-icon">✕</i> Kein API-Zugang
+              <i class="feature-icon">✕</i> {{ i_api_no }}
             {% endif %}
           </li>
         </ul>
 
         {% if plan.name|lower == "enterprise" %}
-        <a href="/contact?topic=enterprise" class="btn plan-btn">Kontakt aufnehmen</a>
+        <a href="/contact?topic=enterprise" class="btn plan-btn">{{ i_contact }}</a>
         {% else %}
-        <a href="/auth/register" class="btn plan-btn">Jetzt wählen</a>
+        <a href="/auth/register" class="btn plan-btn">{{ i_choose }}</a>
         {% endif %}
       </div>
       {% endfor %}
@@ -123,12 +436,61 @@
 <section class="qr-types">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Features</span>
-      <h2>Vielseitige QR-Code Typen</h2>
-      <p>Mehr als 20 Typen für Marketing, Sales, Operations und Support.</p>
+      <span class="badge">{{ i_types_badge }}</span>
+      <h2>{{ i_types_title }}</h2>
+      <p>{{ i_types_sub }}</p>
     </div>
 
     <div class="qr-type-grid">
+      {% if lang == 'en' %}
+      {% set types = [
+        {"icon":"🌐","title":"URL","desc":"Dynamic link to any website."},
+        {"icon":"👤","title":"vCard","desc":"Digital contact card to save."},
+        {"icon":"📄","title":"PDF","desc":"Share documents directly."},
+        {"icon":"📶","title":"Wi-Fi","desc":"Join Wi-Fi without typing."},
+        {"icon":"✉️","title":"Email","desc":"Pre-filled email with subject/body."},
+        {"icon":"💬","title":"SMS","desc":"SMS with number and message."},
+        {"icon":"📞","title":"Phone","desc":"Start a call by scanning."},
+        {"icon":"📱","title":"Social Media","desc":"Bundle profiles and channels."},
+        {"icon":"🕓","title":"Event / Appointment","desc":"Calendar event via QR."},
+        {"icon":"🗺️","title":"Location / Geo","desc":"Open location in maps."},
+        {"icon":"💰","title":"Payment","desc":"Send users directly to payment."},
+        {"icon":"🧾","title":"Multi-Link / Bio-Link","desc":"Multiple links on one page."},
+        {"icon":"🏷️","title":"Product / Item","desc":"Product info and shop links."},
+        {"icon":"🎫","title":"Wallet Pass","desc":"Open Apple/Google Wallet pass."},
+        {"icon":"🏷️","title":"GS1 Digital Link","desc":"Retail and packaging QR via GS1."},
+        {"icon":"📲","title":"App Deep Link","desc":"Open in app with store fallback."},
+        {"icon":"⭐","title":"Review QR","desc":"Collect Google/Trustpilot reviews."},
+        {"icon":"📅","title":"Booking","desc":"Go directly to booking page."},
+        {"icon":"🧾","title":"Lead Form","desc":"Capture leads and inquiries."},
+        {"icon":"📊","title":"Feedback / NPS","desc":"Measure customer satisfaction."},
+        {"icon":"🎟️","title":"Voucher / Coupon","desc":"Coupons with expiry and tracking."}
+      ] %}
+      {% elif lang == 'ar' %}
+      {% set types = [
+        {"icon":"🌐","title":"URL","desc":"رابط ديناميكي لأي موقع."},
+        {"icon":"👤","title":"vCard","desc":"بطاقة تواصل رقمية للحفظ."},
+        {"icon":"📄","title":"PDF","desc":"مشاركة المستندات مباشرة."},
+        {"icon":"📶","title":"Wi-Fi","desc":"اتصال بالشبكة بدون كتابة."},
+        {"icon":"✉️","title":"Email","desc":"بريد جاهز بالعنوان والمحتوى."},
+        {"icon":"💬","title":"SMS","desc":"رسالة SMS مع الرقم والنص."},
+        {"icon":"📞","title":"Phone","desc":"بدء اتصال عبر المسح."},
+        {"icon":"📱","title":"Social Media","desc":"تجميع الحسابات والقنوات."},
+        {"icon":"🕓","title":"Event / Appointment","desc":"موعد تقويم عبر QR."},
+        {"icon":"🗺️","title":"Location / Geo","desc":"فتح الموقع على الخرائط."},
+        {"icon":"💰","title":"Payment","desc":"توجيه مباشر لصفحة الدفع."},
+        {"icon":"🧾","title":"Multi-Link / Bio-Link","desc":"عدة روابط في صفحة واحدة."},
+        {"icon":"🏷️","title":"Product / Item","desc":"معلومات المنتج وروابط المتجر."},
+        {"icon":"🎫","title":"Wallet Pass","desc":"فتح بطاقة Apple/Google Wallet."},
+        {"icon":"🏷️","title":"GS1 Digital Link","desc":"QR للتجزئة والتغليف وفق GS1."},
+        {"icon":"📲","title":"App Deep Link","desc":"فتح داخل التطبيق مع متجر بديل."},
+        {"icon":"⭐","title":"Review QR","desc":"جمع التقييمات من Google/Trustpilot."},
+        {"icon":"📅","title":"Booking","desc":"الانتقال مباشرة لصفحة الحجز."},
+        {"icon":"🧾","title":"Lead Form","desc":"جمع العملاء المحتملين والطلبات."},
+        {"icon":"📊","title":"Feedback / NPS","desc":"قياس رضا العملاء."},
+        {"icon":"🎟️","title":"Voucher / Coupon","desc":"قسائم مع انتهاء وتتبع."}
+      ] %}
+      {% else %}
       {% set types = [
         {"icon":"🌐","title":"URL","desc":"Dynamischer Link auf jede Webseite."},
         {"icon":"👤","title":"vCard","desc":"Digitale Kontaktkarte zum Speichern."},
@@ -152,6 +514,7 @@
         {"icon":"📊","title":"Feedback / NPS","desc":"Kundenzufriedenheit messbar machen."},
         {"icon":"🎟️","title":"Gutschein / Coupon","desc":"Coupons mit Ablauf und Tracking."}
       ] %}
+      {% endif %}
       {% for t in types %}
       <div class="qr-type-card">
         <div class="type-icon">{{ t.icon }}</div>
@@ -166,30 +529,30 @@
 <section class="qr-styles">
   <div class="container">
     <div class="section-header">
-      <h2>Dein Design, dein Brand</h2>
-      <p>Alle Styles auf einen Blick. Wähle Presets, Farben, Formen und Brand-Kits.</p>
+      <h2>{{ i_styles_title }}</h2>
+      <p>{{ i_styles_sub }}</p>
     </div>
 
     <div class="style-gallery">
       {% set styles = [
-        {"file":"ouhud.png","label":"Ouhud","tag":"Brand-Kit"},
-        {"file":"classic.png","label":"Classic","tag":"Standard"},
-        {"file":"rounded.png","label":"Rounded","tag":"Formen"},
-        {"file":"dots.png","label":"Dots","tag":"Formen"},
-        {"file":"gradient.png","label":"Gradient","tag":"Farben"},
-        {"file":"dark.png","label":"Dark","tag":"Themes"},
-        {"file":"soft.png","label":"Soft","tag":"Themes"},
-        {"file":"neon.png","label":"Neon","tag":"Themes"},
-        {"file":"glass.png","label":"Glass","tag":"Premium"},
-        {"file":"metallic.png","label":"Metallic","tag":"Premium"},
-        {"file":"holo.png","label":"Holo","tag":"Premium"},
-        {"file":"3d_pro.png","label":"3D Pro","tag":"Premium"},
-        {"file":"forest.png","label":"Forest","tag":"Farben"},
-        {"file":"ocean.png","label":"Ocean","tag":"Farben"},
-        {"file":"sunset.png","label":"Sunset","tag":"Farben"},
-        {"file":"rose.png","label":"Rose","tag":"Farben"},
-        {"file":"futuristic.png","label":"Futuristic","tag":"Pro"},
-        {"file":"premium.png","label":"Premium","tag":"Pro"}
+        {"file":"ouhud.png","label":"Ouhud","tag":i_style_tag_brand},
+        {"file":"classic.png","label":"Classic","tag":i_style_tag_standard},
+        {"file":"rounded.png","label":"Rounded","tag":i_style_tag_shapes},
+        {"file":"dots.png","label":"Dots","tag":i_style_tag_shapes},
+        {"file":"gradient.png","label":"Gradient","tag":i_style_tag_colors},
+        {"file":"dark.png","label":"Dark","tag":i_style_tag_themes},
+        {"file":"soft.png","label":"Soft","tag":i_style_tag_themes},
+        {"file":"neon.png","label":"Neon","tag":i_style_tag_themes},
+        {"file":"glass.png","label":"Glass","tag":i_style_tag_premium},
+        {"file":"metallic.png","label":"Metallic","tag":i_style_tag_premium},
+        {"file":"holo.png","label":"Holo","tag":i_style_tag_premium},
+        {"file":"3d_pro.png","label":"3D Pro","tag":i_style_tag_premium},
+        {"file":"forest.png","label":"Forest","tag":i_style_tag_colors},
+        {"file":"ocean.png","label":"Ocean","tag":i_style_tag_colors},
+        {"file":"sunset.png","label":"Sunset","tag":i_style_tag_colors},
+        {"file":"rose.png","label":"Rose","tag":i_style_tag_colors},
+        {"file":"futuristic.png","label":"Futuristic","tag":i_style_tag_pro},
+        {"file":"premium.png","label":"Premium","tag":i_style_tag_pro}
       ] %}
       {% for s in styles %}
       <div class="style-card">
@@ -207,33 +570,30 @@
 <section class="insights">
   <div class="container insights-inner">
     <div class="insights-content">
-      <span class="badge">Analytics</span>
-      <h2>Entscheidungen auf Datenbasis</h2>
-      <p>
-        Echtzeit-Tracking für Kampagnen, Standorte und Teams. Exportiere Reports oder
-        integriere Daten direkt in deine BI-Tools.
-      </p>
+      <span class="badge">{{ i_analytics_badge }}</span>
+      <h2>{{ i_analytics_title }}</h2>
+      <p>{{ i_analytics_sub }}</p>
       <ul class="insights-list">
-        <li>Live-Heatmaps und Geräte-Insights</li>
-        <li>CSV, Webhooks und API-Zugriff</li>
-        <li>Mehrsprachige Dashboards</li>
+        <li>{{ i_analytics_l1 }}</li>
+        <li>{{ i_analytics_l2 }}</li>
+        <li>{{ i_analytics_l3 }}</li>
       </ul>
     </div>
     <div class="insights-panel">
       <div class="metric">
-        <span class="metric-title">Scans heute</span>
+        <span class="metric-title">{{ i_metric_scans }}</span>
         <span class="metric-value">12.840</span>
-        <span class="metric-note">+18% vs. gestern</span>
+        <span class="metric-note">{{ i_metric_scans_note }}</span>
       </div>
       <div class="metric">
-        <span class="metric-title">Top Region</span>
+        <span class="metric-title">{{ i_metric_region }}</span>
         <span class="metric-value">DACH</span>
-        <span class="metric-note">Stärkster Kanal</span>
+        <span class="metric-note">{{ i_metric_region_note }}</span>
       </div>
       <div class="metric">
-        <span class="metric-title">Conversion</span>
+        <span class="metric-title">{{ i_metric_conv }}</span>
         <span class="metric-value">6,4%</span>
-        <span class="metric-note">Zielseite / Kampagne</span>
+        <span class="metric-note">{{ i_metric_conv_note }}</span>
       </div>
     </div>
   </div>
@@ -242,9 +602,9 @@
 <section class="integrations">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Integrationen</span>
-      <h2>Passt in deinen Stack</h2>
-      <p>Einfach integrieren in CRM, CMS und Automationen.</p>
+      <span class="badge">{{ i_integrations_badge }}</span>
+      <h2>{{ i_integrations_title }}</h2>
+      <p>{{ i_integrations_sub }}</p>
     </div>
     <div class="integration-grid">
       <div class="integration-card">HubSpot</div>
@@ -260,18 +620,15 @@
 <section class="security">
   <div class="container security-inner">
     <div class="security-text">
-      <span class="badge">Security</span>
-      <h2>Compliance, die B2B braucht</h2>
-      <p>
-        DSGVO-konform, rollenbasiert und mit Audit-Logs. Optional SSO und
-        individuelle Datenhaltung.
-      </p>
+      <span class="badge">{{ i_security_badge }}</span>
+      <h2>{{ i_security_title }}</h2>
+      <p>{{ i_security_sub }}</p>
     </div>
     <div class="security-list">
-      <div class="security-item">Rollen & Rechte für Teams</div>
-      <div class="security-item">Audit-Logs und Änderungsverlauf</div>
-      <div class="security-item">SSO / SAML auf Anfrage</div>
-      <div class="security-item">Individuelle Subdomains</div>
+      <div class="security-item">{{ i_security_1 }}</div>
+      <div class="security-item">{{ i_security_2 }}</div>
+      <div class="security-item">{{ i_security_3 }}</div>
+      <div class="security-item">{{ i_security_4 }}</div>
     </div>
   </div>
 </section>
@@ -279,22 +636,22 @@
 <section class="testimonials">
   <div class="container">
     <div class="section-header">
-      <span class="badge">Kundenstimmen</span>
-      <h2>Teams, die skalieren</h2>
-      <p>Verlässliche QR-Infrastruktur für wachsende Unternehmen.</p>
+      <span class="badge">{{ i_testimonials_badge }}</span>
+      <h2>{{ i_testimonials_title }}</h2>
+      <p>{{ i_testimonials_sub }}</p>
     </div>
     <div class="testimonial-grid">
       <div class="testimonial-card">
-        <p>„Wir aktualisieren Kampagnen ohne neue Druckkosten. Die Time-to-Market ist extrem schnell.“</p>
-        <span class="testimonial-author">Leitung Marketing, Retail DACH</span>
+        <p>{{ i_testimonial_1 }}</p>
+        <span class="testimonial-author">{{ i_testimonial_1_author }}</span>
       </div>
       <div class="testimonial-card">
-        <p>„Die API-Integration in unser CRM war in einem Tag erledigt.“</p>
-        <span class="testimonial-author">Operations, SaaS Plattform</span>
+        <p>{{ i_testimonial_2 }}</p>
+        <span class="testimonial-author">{{ i_testimonial_2_author }}</span>
       </div>
       <div class="testimonial-card">
-        <p>„Audit-Logs und Team-Rechte geben uns die Kontrolle, die wir brauchen.“</p>
-        <span class="testimonial-author">IT Security, Logistikgruppe</span>
+        <p>{{ i_testimonial_3 }}</p>
+        <span class="testimonial-author">{{ i_testimonial_3_author }}</span>
       </div>
     </div>
   </div>
@@ -303,42 +660,42 @@
 <section class="faq" id="faq">
   <div class="container">
     <div class="section-header">
-      <span class="badge">FAQ</span>
-      <h2>Häufige Fragen</h2>
-      <p>Schnell geklärt, bevor du startest.</p>
+      <span class="badge">{{ i_faq_badge }}</span>
+      <h2>{{ i_faq_title }}</h2>
+      <p>{{ i_faq_sub }}</p>
     </div>
     <div class="faq-grid">
       <div class="faq-card">
-        <h3>Kann ich den Inhalt nach dem Druck ändern?</h3>
-        <p>Ja. Bei dynamischen QR-Codes bleibt der QR gleich, während Ziel und Inhalte jederzeit aktualisiert werden können.</p>
+        <h3>{{ i_faq_q1 }}</h3>
+        <p>{{ i_faq_a1 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Welche QR-Typen werden unterstützt?</h3>
-        <p>URL, vCard, PDF, WLAN, E-Mail, SMS, Telefon, Social, Event, Standort, Payment, Multi-Link, Produkt sowie Wallet, GS1, App Deep Link, Review, Booking, Lead, Feedback und Coupon.</p>
+        <h3>{{ i_faq_q2 }}</h3>
+        <p>{{ i_faq_a2 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Gibt es Team-Rollen und Freigaben?</h3>
-        <p>Ja. Mit Workspaces und Freigaben arbeiten Teams mit Rollen wie Admin, Editor und Viewer auf denselben QR-Ressourcen.</p>
+        <h3>{{ i_faq_q3 }}</h3>
+        <p>{{ i_faq_a3 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Kann ich eine API mit anderer Software verbinden?</h3>
-        <p>Ja. Über API-Schlüssel im Bereich Sicherheit kannst du externe Systeme anbinden und QR-Codes per API erstellen, lesen, aktualisieren und löschen.</p>
+        <h3>{{ i_faq_q4 }}</h3>
+        <p>{{ i_faq_a4 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Wie sicher sind API-Schlüssel?</h3>
-        <p>Neue Schlüssel werden nur einmal vollständig angezeigt. Danach siehst du nur maskierte Werte. Schlüssel können benannt, umbenannt und jederzeit gelöscht werden.</p>
+        <h3>{{ i_faq_q5 }}</h3>
+        <p>{{ i_faq_a5 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Ist Ouhud QR DSGVO-konform?</h3>
-        <p>Ja. Die Datenverarbeitung ist in den rechtlichen Seiten dokumentiert. Datenschutz- und Impressumsseiten sind direkt verfügbar.</p>
+        <h3>{{ i_faq_q6 }}</h3>
+        <p>{{ i_faq_a6 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Wie läuft die Bezahlung?</h3>
-        <p>Die Zahlungsabwicklung erfolgt über Stripe. Zahlungsdaten werden nicht vollständig auf unseren Servern gespeichert.</p>
+        <h3>{{ i_faq_q7 }}</h3>
+        <p>{{ i_faq_a7 }}</p>
       </div>
       <div class="faq-card">
-        <h3>Wo sehe ich Scans und Performance?</h3>
-        <p>Im Dashboard mit Zeiträumen (7 Tage, 30 Tage, 6 Monate), Scan-Verlauf, Typ-Verteilung und Geräteverteilung.</p>
+        <h3>{{ i_faq_q8 }}</h3>
+        <p>{{ i_faq_a8 }}</p>
       </div>
     </div>
   </div>
@@ -347,12 +704,12 @@
 <section class="cta">
   <div class="container cta-inner">
     <div class="cta-text">
-      <h2>Bereit für professionelle QR-Infrastruktur?</h2>
-      <p>Starte in Minuten oder sprich mit unserem Team.</p>
+      <h2>{{ i_cta_title }}</h2>
+      <p>{{ i_cta_sub }}</p>
     </div>
     <div class="cta-actions">
-      <a href="/auth/register" class="btn primary">Kostenlos starten</a>
-      <a href="/kontakt" class="btn ghost">Demo anfragen</a>
+      <a href="/auth/register" class="btn primary">{{ i_start }}</a>
+      <a href="{{ i_cta_contact_href }}" class="btn ghost">{{ i_cta_demo }}</a>
     </div>
   </div>
 </section>
@@ -365,12 +722,12 @@
       <div class="footer-links">
         <span class="footer-copy">
           © <script>document.write(new Date().getFullYear())</script>
-          Ouhud GmbH — Alle Rechte vorbehalten.
+          Ouhud GmbH — {{ i_footer_rights }}
         </span>
 
-        <a href="/impressum">Impressum</a>
-        <a href="/datenschutz">Datenschutz</a>
-        <a href="/faq">FAQ</a>
+        <a href="/impressum">{{ i_footer_impressum }}</a>
+        <a href="/datenschutz">{{ i_footer_privacy }}</a>
+        <a href="/faq">{{ i_faq_badge }}</a>
       </div>
     </div>
 

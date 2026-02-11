@@ -1,34 +1,46 @@
 {% extends "base.html" %}
-{% block title %}📞 Telefon-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📞 Phone QR Code – Ouhud QR' %}
+  {% set t_h1 = '📞 Create phone QR code' %}
+  {% set t_sub = 'Create a QR code that automatically starts a phone call.' %}
+  {% set t_phone = '📱 Phone number (with country code):' %}
+  {% set t_ttl = '📝 Title (optional):' %}
+  {% set p_phone = '+49 176 1234567' %}
+  {% set p_ttl = 'e.g. Hotline' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📞 رمز QR للهاتف – Ouhud QR' %}
+  {% set t_h1 = '📞 إنشاء رمز QR للهاتف' %}
+  {% set t_sub = 'أنشئ رمز QR يقوم بإجراء اتصال هاتفي تلقائيًا.' %}
+  {% set t_phone = '📱 رقم الهاتف (مع رمز الدولة):' %}
+  {% set t_ttl = '📝 العنوان (اختياري):' %}
+  {% set p_phone = '+49 176 1234567' %}
+  {% set p_ttl = 'مثال: Hotline' %}
+{% else %}
+  {% set t_title = '📞 Telefon-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '📞 Telefon-QR-Code erstellen' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der beim Scannen automatisch eine Telefonnummer anruft.' %}
+  {% set t_phone = '📱 Telefonnummer (mit Landesvorwahl):' %}
+  {% set t_ttl = '📝 Titel (optional):' %}
+  {% set p_phone = '+49 176 1234567' %}
+  {% set p_ttl = 'z. B. Hotline' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
-  <h1>📞 Telefon-QR-Code erstellen</h1>
-  <p class="subtitle">
-    Erstelle einen QR-Code, der beim Scannen automatisch eine Telefonnummer anruft.
-  </p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <form method="post" action="/qr/tel/" class="qr-form" enctype="multipart/form-data">
-    <!-- === Felder === -->
     <div class="form-group">
-      <label for="phone">📱 Telefonnummer (mit Landesvorwahl):</label>
-      <input
-        type="tel"
-        id="phone"
-        name="phone"
-        placeholder="+49 176 1234567"
-        required
-      />
+      <label for="phone">{{ t_phone }}</label>
+      <input type="tel" id="phone" name="phone" placeholder="{{ p_phone }}" required />
     </div>
 
     <div class="form-group">
-      <label for="title">📝 Titel (optional):</label>
-      <input
-        type="text"
-        id="title"
-        name="title"
-        placeholder="z. B. Hotline"
-      />
+      <label for="title">{{ t_ttl }}</label>
+      <input type="text" id="title" name="title" placeholder="{{ p_ttl }}" />
     </div>
 
     <hr class="divider">

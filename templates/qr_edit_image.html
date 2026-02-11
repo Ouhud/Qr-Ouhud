@@ -1,25 +1,58 @@
 {% extends "base.html" %}
-{% block title %}🎨 QR-Design bearbeiten – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set p_title = '🎨 Edit QR design – Ouhud QR' %}
+  {% set h1 = '🎨 Edit QR code design' %}
+  {% set sub = 'Adjust logo, colors, and style of your QR code.' %}
+  {% set ok = '✅ Changes saved successfully!' %}
+  {% set logo = '🏷️ Upload logo (optional):' %}
+  {% set current = 'Current logo:' %}
+  {% set fg = '🎨 Foreground color:' %}
+  {% set bg = '🖌️ Background color:' %}
+  {% set save = '💾 Save changes' %}
+  {% set back = '⬅️ Back to QR editor' %}
+{% elif lang == 'ar' %}
+  {% set p_title = '🎨 تعديل تصميم QR – Ouhud QR' %}
+  {% set h1 = '🎨 تعديل تصميم رمز QR' %}
+  {% set sub = 'يمكنك تعديل الشعار والألوان ونمط رمز QR.' %}
+  {% set ok = '✅ تم حفظ التغييرات بنجاح!' %}
+  {% set logo = '🏷️ رفع شعار (اختياري):' %}
+  {% set current = 'الشعار الحالي:' %}
+  {% set fg = '🎨 اللون الأمامي:' %}
+  {% set bg = '🖌️ لون الخلفية:' %}
+  {% set save = '💾 حفظ التغييرات' %}
+  {% set back = '⬅️ العودة إلى تعديل QR' %}
+{% else %}
+  {% set p_title = '🎨 QR-Design bearbeiten – Ouhud QR' %}
+  {% set h1 = '🎨 QR-Code Design bearbeiten' %}
+  {% set sub = 'Hier kannst du dein Logo, Farben oder Stil deines QR-Codes anpassen.' %}
+  {% set ok = '✅ Änderungen erfolgreich gespeichert!' %}
+  {% set logo = '🏷️ Logo hochladen (optional):' %}
+  {% set current = 'Aktuelles Logo:' %}
+  {% set fg = '🎨 Vordergrundfarbe:' %}
+  {% set bg = '🖌️ Hintergrundfarbe:' %}
+  {% set save = '💾 Änderungen speichern' %}
+  {% set back = '⬅️ Zurück zur QR-Bearbeitung' %}
+{% endif %}
+{% block title %}{{ p_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-design">
-  <h1>🎨 QR-Code Design bearbeiten</h1>
-  <p class="subtitle">
-    Hier kannst du dein Logo, Farben oder Stil deines QR-Codes anpassen.
-  </p>
+  <h1>{{ h1 }}</h1>
+  <p class="subtitle">{{ sub }}</p>
 
   {% if request.query_params.get("msg") == "ok" %}
-  <div class="alert success">✅ Änderungen erfolgreich gespeichert!</div>
+  <div class="alert success">{{ ok }}</div>
   {% endif %}
 
   <form method="post" action="/qr/image/{{ qr.slug }}/update-image" enctype="multipart/form-data">
     <div class="form-grid">
       <div>
-        <label for="logo">🏷️ Logo hochladen (optional):</label>
+        <label for="logo">{{ logo }}</label>
         <input type="file" id="logo" name="logo" accept="image/*" onchange="previewLogo(event)">
 
         <div id="logoPreviewContainer" {% if not data.logo %}style="display:none;"{% endif %}>
-          <p>Aktuelles Logo:</p>
+          <p>{{ current }}</p>
           {% if data.logo %}
             <img id="logoPreview" src="{{ data.logo }}" alt="Logo-Vorschau" class="preview">
           {% endif %}
@@ -27,63 +60,35 @@
       </div>
 
       <div>
-        <label for="fg_color">🎨 Vordergrundfarbe:</label>
+        <label for="fg_color">{{ fg }}</label>
         <input type="color" id="fg_color" name="fg_color" value="{{ data.fg_color or '#000000' }}">
       </div>
 
       <div>
-        <label for="bg_color">🖌️ Hintergrundfarbe:</label>
+        <label for="bg_color">{{ bg }}</label>
         <input type="color" id="bg_color" name="bg_color" value="{{ data.bg_color or '#ffffff' }}">
       </div>
     </div>
 
-    <button type="submit" class="btn full">💾 Änderungen speichern</button>
-    <a href="/qr/edit/{{ qr.slug }}" class="btn secondary">⬅️ Zurück zur QR-Bearbeitung</a>
+    <button type="submit" class="btn full">{{ save }}</button>
+    <a href="/qr/edit/{{ qr.slug }}" class="btn secondary">{{ back }}</a>
   </form>
 </section>
 
-<!-- 🌈 STYLES -->
 <style>
-.qr-design {
-  max-width: 800px;
-  margin: 3rem auto;
-  padding: 2.5rem;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(13, 42, 120, 0.08);
-  font-family: "Inter", system-ui, sans-serif;
-}
+.qr-design { max-width: 800px; margin: 3rem auto; padding: 2.5rem; background: #fff; border-radius: 20px; box-shadow: 0 8px 30px rgba(13, 42, 120, 0.08); font-family: "Inter", system-ui, sans-serif; }
 h1 { text-align:center; color:#0d2a78; margin-bottom:.5rem; }
 .subtitle { text-align:center; color:#475569; margin-bottom:2rem; }
-.form-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:1.5rem;
-}
+.form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
 label { display:block; font-weight:600; color:#0d2a78; margin-bottom:.5rem; }
-input[type="color"], input[type="file"] {
-  width:100%; padding:.5rem; border:1px solid #cbd5e1;
-  border-radius:10px; background:#f9fafb;
-}
-.btn {
-  display:inline-block; background:linear-gradient(135deg,#0d2a78,#2563eb);
-  color:white; border:none; border-radius:10px; padding:.8rem 1.6rem;
-  font-weight:600; text-decoration:none; cursor:pointer; margin-top:1.5rem;
-  transition:all .2s ease-in-out;
-}
+input[type="color"], input[type="file"] { width:100%; padding:.5rem; border:1px solid #cbd5e1; border-radius:10px; background:#f9fafb; }
+.btn { display:inline-block; background:linear-gradient(135deg,#0d2a78,#2563eb); color:white; border:none; border-radius:10px; padding:.8rem 1.6rem; font-weight:600; text-decoration:none; cursor:pointer; margin-top:1.5rem; transition:all .2s ease-in-out; }
 .btn.full { display:block; width:100%; text-align:center; }
 .btn.secondary { background:#2563eb; text-align:center; display:block; margin-top:1rem; }
-.alert.success {
-  background:#dcfce7; color:#166534; padding:.8rem 1rem; border-radius:10px;
-  margin-bottom:1rem; text-align:center; font-weight:500;
-}
-.preview {
-  max-width:120px; margin-top:.5rem; border-radius:8px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
+.alert.success { background:#dcfce7; color:#166534; padding:.8rem 1rem; border-radius:10px; margin-bottom:1rem; text-align:center; font-weight:500; }
+.preview { max-width:120px; margin-top:.5rem; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
 </style>
 
-<!-- 💡 SCRIPT -->
 <script>
 function previewLogo(event) {
   const container = document.getElementById('logoPreviewContainer');
@@ -91,7 +96,7 @@ function previewLogo(event) {
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = (e) => {
       img.src = e.target.result;
       img.classList.add('preview');
       container.style.display = 'block';

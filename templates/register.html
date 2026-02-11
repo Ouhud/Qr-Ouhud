@@ -1,7 +1,74 @@
 {% extends "base.html" %}
-{% block title %}📝 Registrierung – Ouhud QR{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    📝 Register – Ouhud QR
+  {% elif request.state.lang == 'ar' %}
+    📝 إنشاء حساب – Ouhud QR
+  {% else %}
+    📝 Registrierung – Ouhud QR
+  {% endif %}
+{% endblock %}
 
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set r_title = 'Create account' %}
+  {% set r_sub = 'Join Ouhud QR and get started today.' %}
+  {% set r_username = 'Username' %}
+  {% set r_username_ph = 'Your full name' %}
+  {% set r_email = 'Email address' %}
+  {% set r_email_ph = 'name@example.com' %}
+  {% set r_plan = 'Choose subscription' %}
+  {% set r_password = 'Choose password' %}
+  {% set r_password_ph = 'Min. 6 characters' %}
+  {% set r_confirm = 'Confirm password' %}
+  {% set r_confirm_ph = 'Repeat password' %}
+  {% set r_privacy = 'I accept the' %}
+  {% set r_privacy_link = 'privacy policy' %}
+  {% set r_submit = 'Register now' %}
+  {% set r_has_account = 'Already have an account?' %}
+  {% set r_login = 'Back to login' %}
+  {% set r_enterprise = 'Enterprise or custom offer?' %}
+  {% set r_enterprise_btn = 'Contact sales' %}
+{% elif lang == 'ar' %}
+  {% set r_title = 'إنشاء حساب' %}
+  {% set r_sub = 'انضم إلى Ouhud QR وابدأ اليوم.' %}
+  {% set r_username = 'اسم المستخدم' %}
+  {% set r_username_ph = 'اسمك الكامل' %}
+  {% set r_email = 'البريد الإلكتروني' %}
+  {% set r_email_ph = 'name@example.com' %}
+  {% set r_plan = 'اختر الباقة' %}
+  {% set r_password = 'اختر كلمة المرور' %}
+  {% set r_password_ph = '6 أحرف على الأقل' %}
+  {% set r_confirm = 'تأكيد كلمة المرور' %}
+  {% set r_confirm_ph = 'أعد كتابة كلمة المرور' %}
+  {% set r_privacy = 'أوافق على' %}
+  {% set r_privacy_link = 'سياسة الخصوصية' %}
+  {% set r_submit = 'إنشاء الحساب' %}
+  {% set r_has_account = 'هل لديك حساب بالفعل؟' %}
+  {% set r_login = 'العودة إلى تسجيل الدخول' %}
+  {% set r_enterprise = 'Enterprise أو عرض مخصص؟' %}
+  {% set r_enterprise_btn = 'تواصل مع المبيعات' %}
+{% else %}
+  {% set r_title = 'Konto erstellen' %}
+  {% set r_sub = 'Werde Teil von Ouhud QR und starte noch heute.' %}
+  {% set r_username = 'Benutzername' %}
+  {% set r_username_ph = 'Dein vollständiger Name' %}
+  {% set r_email = 'E-Mail-Adresse' %}
+  {% set r_email_ph = 'name@beispiel.de' %}
+  {% set r_plan = 'Abo auswählen' %}
+  {% set r_password = 'Passwort wählen' %}
+  {% set r_password_ph = 'Mind. 6 Zeichen' %}
+  {% set r_confirm = 'Passwort bestätigen' %}
+  {% set r_confirm_ph = 'Wiederholen' %}
+  {% set r_privacy = 'Ich akzeptiere die' %}
+  {% set r_privacy_link = 'Datenschutzbestimmungen' %}
+  {% set r_submit = 'Jetzt registrieren' %}
+  {% set r_has_account = 'Bereits ein Konto?' %}
+  {% set r_login = 'Zurück zum Login' %}
+  {% set r_enterprise = 'Enterprise oder individuelles Angebot?' %}
+  {% set r_enterprise_btn = 'Kontakt aufnehmen' %}
+{% endif %}
 <div class="auth-page-wrapper">
   <div class="auth-container">
     <div class="auth-card">
@@ -10,8 +77,8 @@
         <a href="/" class="auth-logo">
           <img src="/static/logo.png" alt="Ouhud QR Logo">
         </a>
-        <h1>Konto erstellen</h1>
-        <p>Werde Teil von Ouhud QR und starte noch heute.</p>
+        <h1>{{ r_title }}</h1>
+        <p>{{ r_sub }}</p>
       </header>
 
       {% if error %}
@@ -24,23 +91,23 @@
       <form method="post" action="/auth/register" class="auth-form">
         
         <div class="input-group">
-          <label for="username">Benutzername</label>
+          <label for="username">{{ r_username }}</label>
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
-            <input type="text" id="username" name="username" placeholder="Dein vollständiger Name" value="{{ prefill_username or '' }}" required autofocus>
+            <input type="text" id="username" name="username" placeholder="{{ r_username_ph }}" value="{{ prefill_username or '' }}" required autofocus>
           </div>
         </div>
 
         <div class="input-group">
-          <label for="email">E-Mail-Adresse</label>
+          <label for="email">{{ r_email }}</label>
           <div class="input-wrapper">
             <span class="input-icon">✉️</span>
-            <input type="email" id="email" name="email" placeholder="name@beispiel.de" value="{{ prefill_email or '' }}" required>
+            <input type="email" id="email" name="email" placeholder="{{ r_email_ph }}" value="{{ prefill_email or '' }}" required>
           </div>
         </div>
 
         <div class="input-group plan-choice-group">
-          <label>Abo auswählen</label>
+          <label>{{ r_plan }}</label>
           <div class="plan-grid">
             {% for plan in plans or [] %}
             {% set key = (plan.name or '')|lower %}
@@ -69,25 +136,25 @@
             {% endfor %}
           </div>
           <div class="enterprise-contact">
-            <span class="enterprise-contact-text">Enterprise oder individuelles Angebot?</span>
-            <a href="/contact?topic=enterprise" class="enterprise-contact-btn">Kontakt aufnehmen</a>
+            <span class="enterprise-contact-text">{{ r_enterprise }}</span>
+            <a href="/contact?topic=enterprise" class="enterprise-contact-btn">{{ r_enterprise_btn }}</a>
           </div>
         </div>
 
         <div class="input-group">
-          <label for="password">Passwort wählen</label>
+          <label for="password">{{ r_password }}</label>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input type="password" id="password" name="password" placeholder="Mind. 6 Zeichen" minlength="6" required>
+            <input type="password" id="password" name="password" placeholder="{{ r_password_ph }}" minlength="6" required>
             <button type="button" class="eye-toggle" onclick="togglePassword('password')" title="Passwort anzeigen">👁️</button>
           </div>
         </div>
 
         <div class="input-group">
-          <label for="confirm_password">Passwort bestätigen</label>
+          <label for="confirm_password">{{ r_confirm }}</label>
           <div class="input-wrapper">
             <span class="input-icon">🔄</span>
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Wiederholen" minlength="6" required>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="{{ r_confirm_ph }}" minlength="6" required>
             <button type="button" class="eye-toggle" onclick="togglePassword('confirm_password')" title="Passwort anzeigen">👁️</button>
           </div>
         </div>
@@ -96,19 +163,19 @@
           <label class="custom-checkbox">
             <input type="checkbox" name="privacy_accepted" required>
             <span class="label-text">
-              Ich akzeptiere die <a href="/privacy-policy">Datenschutzbestimmungen</a>
+              {{ r_privacy }} <a href="/privacy-policy">{{ r_privacy_link }}</a>
             </span>
           </label>
         </div>
 
         <button type="submit" class="auth-submit-btn">
-          Jetzt registrieren <span>→</span>
+          {{ r_submit }} <span>→</span>
         </button>
       </form>
 
       <footer class="auth-footer">
-        <div class="divider"><span>Bereits ein Konto?</span></div>
-        <p><a href="/auth/login" class="login-link">Zurück zum Login</a></p>
+        <div class="divider"><span>{{ r_has_account }}</span></div>
+        <p><a href="/auth/login" class="login-link">{{ r_login }}</a></p>
       </footer>
 
     </div>

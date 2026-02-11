@@ -1,24 +1,48 @@
 {% extends "base.html" %}
-{% block title %}📍 Geo-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '📍 Geo QR Code – Ouhud QR' %}
+  {% set t_h1 = '📍 Geo QR Code Generator' %}
+  {% set t_sub = 'Create a QR code that opens a specific geographic position - ideal for meeting points, events, or locations.' %}
+  {% set t_lat = '🧭 Latitude' %}
+  {% set t_lon = '🧭 Longitude' %}
+  {% set p_lat = 'e.g. 47.3769' %}
+  {% set p_lon = 'e.g. 8.5417' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '📍 رمز QR للموقع – Ouhud QR' %}
+  {% set t_h1 = '📍 مولد QR للموقع الجغرافي' %}
+  {% set t_sub = 'أنشئ رمز QR يفتح موقعًا جغرافيًا محددًا، مناسب لنقاط الالتقاء والفعاليات والأماكن.' %}
+  {% set t_lat = '🧭 خط العرض' %}
+  {% set t_lon = '🧭 خط الطول' %}
+  {% set p_lat = 'مثال: 47.3769' %}
+  {% set p_lon = 'مثال: 8.5417' %}
+{% else %}
+  {% set t_title = '📍 Geo-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '📍 Geo-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der direkt zu einer bestimmten geografischen Position führt – ideal für Treffpunkte, Events oder Orte.' %}
+  {% set t_lat = '🧭 Breitengrad (Latitude)' %}
+  {% set t_lon = '🧭 Längengrad (Longitude)' %}
+  {% set p_lat = 'z. B. 47.3769' %}
+  {% set p_lon = 'z. B. 8.5417' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
   <div class="container text-center">
-    <h1>📍 Geo-QR-Code Generator</h1>
-    <p class="subtitle">
-      Erstelle einen QR-Code, der direkt zu einer bestimmten geografischen Position führt – ideal für Treffpunkte, Events oder Orte.
-    </p>
+    <h1>{{ t_h1 }}</h1>
+    <p class="subtitle">{{ t_sub }}</p>
 
     <form method="post" action="/qr/geo/generate" enctype="multipart/form-data" class="qr-form">
       <div class="form-grid">
         <div class="form-group">
-          <label for="latitude">🧭 Breitengrad (Latitude)</label>
-          <input type="text" id="latitude" name="latitude" placeholder="z. B. 47.3769" required>
+          <label for="latitude">{{ t_lat }}</label>
+          <input type="text" id="latitude" name="latitude" placeholder="{{ p_lat }}" required>
         </div>
 
         <div class="form-group">
-          <label for="longitude">🧭 Längengrad (Longitude)</label>
-          <input type="text" id="longitude" name="longitude" placeholder="z. B. 8.5417" required>
+          <label for="longitude">{{ t_lon }}</label>
+          <input type="text" id="longitude" name="longitude" placeholder="{{ p_lon }}" required>
         </div>
       </div>
 

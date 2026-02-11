@@ -1,16 +1,36 @@
 {% extends "base.html" %}
-{% block title %}✅ Social QR erstellt{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '✅ Social QR created' %}
+  {% set t_h1 = '✅ QR code created' %}
+  {% set t_sub = 'Scan the code to open your social profile.' %}
+  {% set t_preview = '🌐 Open preview' %}
+  {% set t_download = '⬇️ Download' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '✅ تم إنشاء Social QR' %}
+  {% set t_h1 = '✅ تم إنشاء رمز QR' %}
+  {% set t_sub = 'امسح الرمز لفتح ملفك الاجتماعي.' %}
+  {% set t_preview = '🌐 فتح المعاينة' %}
+  {% set t_download = '⬇️ تنزيل' %}
+{% else %}
+  {% set t_title = '✅ Social QR erstellt' %}
+  {% set t_h1 = '✅ QR-Code erstellt' %}
+  {% set t_sub = 'Scanne den Code, um dein Social-Profil zu öffnen.' %}
+  {% set t_preview = '🌐 Vorschau öffnen' %}
+  {% set t_download = '⬇️ Herunterladen' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-result">
-  <h1>✅ QR-Code erstellt</h1>
-  <p class="subtitle">Scanne den Code, um dein Social-Profil zu öffnen.</p>
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
 
   <div class="qr-preview-box">
-    <img src="data:image/png;base64,{{ qr_image }}" alt="QR-Code Vorschau" class="qr-preview">
+    <img src="data:image/png;base64,{{ qr_image }}" alt="QR preview" class="qr-preview">
     <p><strong>{{ name }}</strong></p>
-    <a href="{{ dynamic_url }}" target="_blank" class="btn-link">🌐 Vorschau öffnen</a>
-    <a href="data:image/png;base64,{{ qr_image }}" download="social_qr.png" class="btn-link">⬇️ Herunterladen</a>
+    <a href="{{ dynamic_url }}" target="_blank" class="btn-link">{{ t_preview }}</a>
+    <a href="data:image/png;base64,{{ qr_image }}" download="social_qr.png" class="btn-link">{{ t_download }}</a>
   </div>
 </section>
 

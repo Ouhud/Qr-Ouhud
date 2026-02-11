@@ -1,39 +1,75 @@
 {% extends "base.html" %}
-{% block title %}🎟️ Event-QR-Code – Ouhud QR{% endblock %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = '🎟️ Event QR Code – Ouhud QR' %}
+  {% set t_h1 = '🎟️ Event QR Code Generator' %}
+  {% set t_sub = 'Create a QR code with event details - ideal for invitations, flyers, and websites.' %}
+  {% set t_event = '📌 Event title' %}
+  {% set t_loc = '📍 Location' %}
+  {% set t_start = '🕒 Start time' %}
+  {% set t_end = '🏁 End time' %}
+  {% set t_desc = '💬 Description' %}
+  {% set p_event = 'e.g. Ouhud Launch Party' %}
+  {% set p_loc = 'e.g. Zurich, Switzerland' %}
+  {% set p_desc = 'Short description of your event ...' %}
+{% elif lang == 'ar' %}
+  {% set t_title = '🎟️ رمز QR للفعالية – Ouhud QR' %}
+  {% set t_h1 = '🎟️ مولد QR للفعالية' %}
+  {% set t_sub = 'أنشئ رمز QR يحتوي معلومات الفعالية، مناسب للدعوات والمنشورات والمواقع.' %}
+  {% set t_event = '📌 عنوان الفعالية' %}
+  {% set t_loc = '📍 المكان' %}
+  {% set t_start = '🕒 وقت البداية' %}
+  {% set t_end = '🏁 وقت النهاية' %}
+  {% set t_desc = '💬 الوصف' %}
+  {% set p_event = 'مثال: Ouhud Launch Party' %}
+  {% set p_loc = 'مثال: زيورخ، سويسرا' %}
+  {% set p_desc = 'وصف قصير للفعالية ...' %}
+{% else %}
+  {% set t_title = '🎟️ Event-QR-Code – Ouhud QR' %}
+  {% set t_h1 = '🎟️ Event-QR-Code Generator' %}
+  {% set t_sub = 'Erstelle einen QR-Code, der Informationen zu deinem Event enthält – ideal für Einladungen, Flyer oder Websites.' %}
+  {% set t_event = '📌 Event-Titel' %}
+  {% set t_loc = '📍 Ort' %}
+  {% set t_start = '🕒 Startzeit' %}
+  {% set t_end = '🏁 Endzeit' %}
+  {% set t_desc = '💬 Beschreibung' %}
+  {% set p_event = 'z. B. Ouhud Launch Party' %}
+  {% set p_loc = 'z. B. Zürich, Schweiz' %}
+  {% set p_desc = 'Kurze Beschreibung deines Events …' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
 <section class="qr-generator">
   <div class="qr-page-inner text-center">
-    <h1>🎟️ Event-QR-Code Generator</h1>
-    <p class="subtitle">
-      Erstelle einen QR-Code, der Informationen zu deinem Event enthält – ideal für Einladungen, Flyer oder Websites.
-    </p>
+    <h1>{{ t_h1 }}</h1>
+    <p class="subtitle">{{ t_sub }}</p>
 
     <form method="post" action="/qr/event/generate" enctype="multipart/form-data" class="qr-form">
       <div class="form-grid">
         <div class="form-group">
-          <label for="title">📌 Event-Titel</label>
-          <input type="text" id="title" name="title" placeholder="z. B. Ouhud Launch Party" required />
+          <label for="title">{{ t_event }}</label>
+          <input type="text" id="title" name="title" placeholder="{{ p_event }}" required />
         </div>
 
         <div class="form-group">
-          <label for="location">📍 Ort</label>
-          <input type="text" id="location" name="location" placeholder="z. B. Zürich, Schweiz" required />
+          <label for="location">{{ t_loc }}</label>
+          <input type="text" id="location" name="location" placeholder="{{ p_loc }}" required />
         </div>
 
         <div class="form-group">
-          <label for="start">🕒 Startzeit</label>
+          <label for="start">{{ t_start }}</label>
           <input type="datetime-local" id="start" name="start" required />
         </div>
 
         <div class="form-group">
-          <label for="end">🏁 Endzeit</label>
+          <label for="end">{{ t_end }}</label>
           <input type="datetime-local" id="end" name="end" required />
         </div>
 
         <div class="form-group full">
-          <label for="description">💬 Beschreibung</label>
-          <textarea id="description" name="description" rows="4" placeholder="Kurze Beschreibung deines Events …"></textarea>
+          <label for="description">{{ t_desc }}</label>
+          <textarea id="description" name="description" rows="4" placeholder="{{ p_desc }}"></textarea>
         </div>
       </div>
 

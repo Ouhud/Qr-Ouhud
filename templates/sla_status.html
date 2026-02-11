@@ -1,22 +1,71 @@
 {% extends "base.html" %}
-{% block title %}SLA Monitoring{% endblock %}
+{% block title %}
+  {% if request.state.lang == 'en' %}
+    SLA Monitoring
+  {% elif request.state.lang == 'ar' %}
+    مراقبة SLA
+  {% else %}
+    SLA Monitoring
+  {% endif %}
+{% endblock %}
 {% block content %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set s_title = '📈 SLA & Link Health' %}
+  {% set s_done = 'Check run completed. Checked:' %}
+  {% set s_uptime = 'Uptime:' %}
+  {% set s_latency = 'Avg latency:' %}
+  {% set s_check = 'Run check now' %}
+  {% set s_recent = 'Latest health checks' %}
+  {% set s_time = 'Time' %}
+  {% set s_url = 'URL' %}
+  {% set s_status = 'Status' %}
+  {% set s_latency_col = 'Latency' %}
+  {% set s_ok = 'OK' %}
+  {% set s_error = 'Error' %}
+{% elif lang == 'ar' %}
+  {% set s_title = '📈 SLA وصحة الروابط' %}
+  {% set s_done = 'اكتمل الفحص. تم فحص:' %}
+  {% set s_uptime = 'وقت التشغيل:' %}
+  {% set s_latency = 'متوسط زمن الاستجابة:' %}
+  {% set s_check = 'إجراء فحص الآن' %}
+  {% set s_recent = 'آخر فحوصات الصحة' %}
+  {% set s_time = 'الوقت' %}
+  {% set s_url = 'الرابط' %}
+  {% set s_status = 'الحالة' %}
+  {% set s_latency_col = 'الاستجابة' %}
+  {% set s_ok = 'سليم' %}
+  {% set s_error = 'الخطأ' %}
+{% else %}
+  {% set s_title = '📈 SLA & Link Health' %}
+  {% set s_done = 'Check-Lauf beendet. Geprüft:' %}
+  {% set s_uptime = 'Uptime:' %}
+  {% set s_latency = 'Ø Latenz:' %}
+  {% set s_check = 'Jetzt prüfen' %}
+  {% set s_recent = 'Letzte Health Checks' %}
+  {% set s_time = 'Zeit' %}
+  {% set s_url = 'URL' %}
+  {% set s_status = 'Status' %}
+  {% set s_latency_col = 'Latenz' %}
+  {% set s_ok = 'OK' %}
+  {% set s_error = 'Fehler' %}
+{% endif %}
 <section class="qr-generator" style="max-width:1100px;">
-  <h1>📈 SLA & Link Health</h1>
-  {% if checked %}<div class="alert success">Check-Lauf beendet. Geprüft: {{ checked }}</div>{% endif %}
+  <h1>{{ s_title }}</h1>
+  {% if checked %}<div class="alert success">{{ s_done }} {{ checked }}</div>{% endif %}
 
   <div class="qr-form" style="display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap;">
-    <div><strong>Uptime:</strong> {{ uptime }}%</div>
-    <div><strong>Ø Latenz:</strong> {{ avg_latency }} ms</div>
-    <form method="post" action="/sla/check"><button class="btn-primary" type="submit">Jetzt prüfen</button></form>
+    <div><strong>{{ s_uptime }}</strong> {{ uptime }}%</div>
+    <div><strong>{{ s_latency }}</strong> {{ avg_latency }} ms</div>
+    <form method="post" action="/sla/check"><button class="btn-primary" type="submit">{{ s_check }}</button></form>
   </div>
 
   <div class="qr-form">
-    <h2>Letzte Health Checks</h2>
+    <h2>{{ s_recent }}</h2>
     <div style="overflow:auto;">
       <table style="width:100%;border-collapse:collapse;">
         <thead>
-          <tr><th style="text-align:left;">Zeit</th><th style="text-align:left;">URL</th><th>Status</th><th>Latenz</th><th>OK</th><th>Fehler</th></tr>
+          <tr><th style="text-align:left;">{{ s_time }}</th><th style="text-align:left;">{{ s_url }}</th><th>{{ s_status }}</th><th>{{ s_latency_col }}</th><th>{{ s_ok }}</th><th>{{ s_error }}</th></tr>
         </thead>
         <tbody>
           {% for r in rows %}
