@@ -364,6 +364,83 @@
         width: 100%;
       }
     }
+
+    .cookie-consent {
+      position: fixed;
+      inset-inline: 1rem;
+      bottom: 1rem;
+      z-index: 3000;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.18);
+      border-radius: 14px;
+      padding: 1rem;
+      display: none;
+      max-width: 620px;
+      margin: 0 auto;
+      color: #1e293b;
+    }
+    .cookie-consent.show {
+      display: block;
+    }
+    .cookie-consent h3 {
+      margin: 0 0 0.45rem;
+      color: #0d2a78;
+      font-size: 1rem;
+    }
+    .cookie-consent p {
+      margin: 0;
+      color: #334155;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+    .cookie-consent p a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .cookie-consent p a:hover {
+      text-decoration: underline;
+    }
+    .cookie-consent-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.85rem;
+    }
+    .cookie-consent-actions button {
+      border-radius: 10px;
+      border: 1px solid #1d4ed8;
+      min-height: 40px;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .cookie-consent-actions .cookie-accept {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .cookie-consent-actions .cookie-accept:hover {
+      background: #1d4ed8;
+    }
+    .cookie-consent-actions .cookie-essential {
+      background: #ffffff;
+      color: #1e293b;
+      border-color: #94a3b8;
+    }
+    .cookie-consent-actions .cookie-essential:hover {
+      background: #f8fafc;
+    }
+    @media (max-width: 700px) {
+      .cookie-consent {
+        inset-inline: 0.6rem;
+        bottom: 0.6rem;
+      }
+      .cookie-consent-actions button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -405,6 +482,11 @@
   {% set t_qr_lead = 'Lead Form' %}
   {% set t_qr_feedback = 'Feedback / NPS' %}
   {% set t_qr_coupon = 'Voucher / Coupon' %}
+  {% set t_cookie_title = 'Cookie settings' %}
+  {% set t_cookie_text = 'We use cookies to run this website reliably and improve your experience. You can choose your preference.' %}
+  {% set t_cookie_privacy = 'Privacy policy' %}
+  {% set t_cookie_accept = 'Accept all' %}
+  {% set t_cookie_essential = 'Essential only' %}
 {% elif ui_lang == 'ar' %}
   {% set t_home = 'الصفحة الرئيسية' %}
   {% set t_toggle_menu = 'تبديل القائمة' %}
@@ -439,6 +521,11 @@
   {% set t_qr_lead = 'نموذج عملاء محتملين' %}
   {% set t_qr_feedback = 'ملاحظات / NPS' %}
   {% set t_qr_coupon = 'قسيمة / كوبون' %}
+  {% set t_cookie_title = 'إعدادات ملفات تعريف الارتباط' %}
+  {% set t_cookie_text = 'نستخدم ملفات تعريف الارتباط لتشغيل الموقع بشكل موثوق وتحسين تجربتك. يمكنك اختيار التفضيل المناسب.' %}
+  {% set t_cookie_privacy = 'سياسة الخصوصية' %}
+  {% set t_cookie_accept = 'قبول الكل' %}
+  {% set t_cookie_essential = 'الأساسية فقط' %}
 {% else %}
   {% set t_home = 'Zur Startseite' %}
   {% set t_toggle_menu = 'Menü umschalten' %}
@@ -473,6 +560,11 @@
   {% set t_qr_lead = 'Lead Formular' %}
   {% set t_qr_feedback = 'Feedback / NPS' %}
   {% set t_qr_coupon = 'Gutschein / Coupon' %}
+  {% set t_cookie_title = 'Cookie-Einstellungen' %}
+  {% set t_cookie_text = 'Wir verwenden Cookies, um diese Website zuverlässig zu betreiben und dein Nutzungserlebnis zu verbessern. Du kannst deine Auswahl festlegen.' %}
+  {% set t_cookie_privacy = 'Datenschutzerklärung' %}
+  {% set t_cookie_accept = 'Alle akzeptieren' %}
+  {% set t_cookie_essential = 'Nur notwendige' %}
 {% endif %}
 <body class="{% if show_auth_chrome %}auth-layout{% endif %}{% if is_qr_create_page %} qr-create-page{% endif %}">
   <!-- === HEADER === -->
@@ -584,9 +676,40 @@
     {% block content %}{% endblock %}
   </main>
 
+  <section
+    id="cookieConsent"
+    class="cookie-consent"
+    role="dialog"
+    aria-live="polite"
+    aria-label="{{ t_cookie_title }}"
+  >
+    <h3>{{ t_cookie_title }}</h3>
+    <p>
+      {{ t_cookie_text }}
+      <a href="/privacy-policy">{{ t_cookie_privacy }}</a>
+    </p>
+    <div class="cookie-consent-actions">
+      <button type="button" class="cookie-accept" id="cookieAcceptAll">{{ t_cookie_accept }}</button>
+      <button type="button" class="cookie-essential" id="cookieEssentialOnly">{{ t_cookie_essential }}</button>
+    </div>
+  </section>
+
   <script>
     const sidebar = document.getElementById("sidebar");
     const themeToggle = document.getElementById("themeToggle");
+    const cookieConsent = document.getElementById("cookieConsent");
+    const cookieAcceptAll = document.getElementById("cookieAcceptAll");
+    const cookieEssentialOnly = document.getElementById("cookieEssentialOnly");
+
+    function hasCookieConsent() {
+      return document.cookie.split("; ").some((entry) => entry.startsWith("cookie_consent="));
+    }
+
+    function setCookieConsent(value) {
+      document.cookie = `cookie_consent=${value}; Max-Age=${60 * 60 * 24 * 180}; Path=/; SameSite=Lax`;
+      localStorage.setItem("cookie_consent", value);
+      cookieConsent?.classList.remove("show");
+    }
 
     function toggleSidebar() { if (sidebar) sidebar.classList.toggle("show"); }
 
@@ -600,6 +723,14 @@
     window.addEventListener("DOMContentLoaded", () => {
       const saved = localStorage.getItem("theme") || "light";
       document.documentElement.setAttribute("data-theme", saved);
+
+      const hasConsentCookie = hasCookieConsent();
+      const hasConsentStorage = Boolean(localStorage.getItem("cookie_consent"));
+      if (!hasConsentCookie && !hasConsentStorage) {
+        cookieConsent?.classList.add("show");
+      } else {
+        cookieConsent?.classList.remove("show");
+      }
 
       if (document.body.classList.contains("auth-layout")) {
         document.documentElement.style.overflow = "hidden";
@@ -633,6 +764,9 @@
         }
       });
     });
+
+    cookieAcceptAll?.addEventListener("click", () => setCookieConsent("all"));
+    cookieEssentialOnly?.addEventListener("click", () => setCookieConsent("essential"));
 
     window.addEventListener("load", () => document.body.classList.add("loaded"));
     document.addEventListener("beforeunload", () => document.body.classList.add("fade"));

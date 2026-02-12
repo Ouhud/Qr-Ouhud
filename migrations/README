@@ -25,3 +25,18 @@ PY
 
 
 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
+
+
+
+ssh root@77.42.79.183
+
+cd /home/hamza/projects/qr-cod
+
+
+git pull origin main
+
+
+source venv/bin/activate
+pip install -r requirements.txt
+
+systemctl restart qr-ouhud
