@@ -11,6 +11,7 @@ from models.plan import Plan
 from models.login_device import LoginDevice
 from utils.two_factor import verify_totp
 from utils.app_url import resolve_app_base_url
+from auth_utils import make_reset_token, verify_reset_token
 
 # 📧 Mail-Funktion importieren (für Passwort-Reset)
 # type: ignore
@@ -356,7 +357,7 @@ def forgot_password(
         )
 
     # 🔑 Reset-Link erzeugen (lokal: localhost, server: APP_DOMAIN)
-    token = secrets.token_urlsafe(32)
+    token = make_reset_token(str(user.id))
     app_base = resolve_app_base_url(request)
     reset_link = f"{app_base}/auth/reset-password?token={token}"
 
@@ -373,6 +374,76 @@ def forgot_password(
             {"request": request, "error": "❌ Fehler beim Senden der E-Mail."},
             status_code=500,
         )
+
+
+@router.get("/reset-password", response_class=HTMLResponse)
+def reset_password_page(request: Request, token: str = ""):
+    """Zeigt die Seite zum Zurücksetzen des Passworts an."""
+    is_valid, _ = verify_reset_token(token)
+    if not is_valid:
+        return templates.TemplateResponse(
+            "reset-password.html",
+            {
+                "request": request,
+                "token": token,
+                "error": "❌ Ungültiger oder abgelaufener Reset-Link.",
+            },
+            status_code=400,
+        )
+
+    return templates.TemplateResponse(
+        "reset-password.html",
+        {"request": request, "token": token},
+    )
+
+
+@router.post("/reset-password")
+def reset_password_submit(
+    request: Request,
+    token: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    """Setzt das Passwort mit gültigem Reset-Token zurück."""
+    if new_password != confirm_password:
+        return templates.TemplateResponse(
+            "reset-password.html",
+            {
+                "request": request,
+                "token": token,
+                "error": "❌ Die Passwörter stimmen nicht überein.",
+            },
+            status_code=400,
+        )
+
+    is_valid, user_id = verify_reset_token(token)
+    if not is_valid or not user_id:
+        return templates.TemplateResponse(
+            "reset-password.html",
+            {
+                "request": request,
+                "token": token,
+                "error": "❌ Ungültiger oder abgelaufener Reset-Link.",
+            },
+            status_code=400,
+        )
+
+    user = db.query(User).filter(User.id == int(user_id)).first()
+    if not user:
+        return templates.TemplateResponse(
+            "reset-password.html",
+            {
+                "request": request,
+                "token": token,
+                "error": "❌ Benutzer nicht gefunden.",
+            },
+            status_code=404,
+        )
+
+    user.password_hash = bcrypt.hash(new_password)
+    db.commit()
+    return RedirectResponse("/auth/login?msg=pass_reset_ok", status_code=303)
 # ─────────────────────────────────────────────
 # 🧩 Hilfsfunktion: aktuellen Benutzer abrufen
 # ─────────────────────────────────────────────
