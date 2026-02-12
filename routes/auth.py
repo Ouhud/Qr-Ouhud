@@ -10,6 +10,7 @@ from models.user import User
 from models.plan import Plan
 from models.login_device import LoginDevice
 from utils.two_factor import verify_totp
+from utils.app_url import resolve_app_base_url
 
 # 📧 Mail-Funktion importieren (für Passwort-Reset)
 # type: ignore
@@ -354,9 +355,10 @@ def forgot_password(
             status_code=400,
         )
 
-    # 🔑 Reset-Link erzeugen (hier nur Demo — später Token speichern!)
+    # 🔑 Reset-Link erzeugen (lokal: localhost, server: APP_DOMAIN)
     token = secrets.token_urlsafe(32)
-    reset_link = f"https://ouhud.com/auth/reset-password?token={token}"
+    app_base = resolve_app_base_url(request)
+    reset_link = f"{app_base}/auth/reset-password?token={token}"
 
     try:
         # 📧 Mail senden (funktioniert über mail_service.py)

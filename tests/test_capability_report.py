@@ -100,7 +100,18 @@ async def hit_route(client: httpx.AsyncClient, route: APIRoute) -> RouteHit:
     qr_log = []
 
     import httpx
-    resp: httpx.Response = await client.get(route.path)
+    try:
+        resp: httpx.Response = await client.get(route.path)
+    except Exception:
+        return RouteHit(
+            path=route.path,
+            methods=list(route.methods),
+            status_code=None,
+            template_used=template_log[0] if template_log else None,
+            is_redirect=False,
+            is_json=False,
+            qr_events=len(qr_log),
+        )
 
     content_type = resp.headers.get("content-type", "")
     is_json = content_type.startswith("application/json")

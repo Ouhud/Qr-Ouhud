@@ -1,59 +1,121 @@
 {% set lang = request.state.lang if request and request.state else 'de' %}
 {% if lang == 'en' %}
-  {% set tab_url = '🌐 URL' %}
-  {% set tab_vcard = '💼 vCard' %}
-  {% set tab_pdf = '📄 PDF' %}
-  {% set tab_image = '🖼️ Image' %}
-  {% set tab_wifi = '📶 Wi-Fi' %}
-  {% set tab_email = '✉️ Email' %}
-  {% set tab_sms = '📱 SMS' %}
-  {% set tab_social = '💬 Social Media' %}
-  {% set tab_text = '📝 Text' %}
-  {% set tab_business = '🏢 Business Page' %}
-  {% set tab_app = '📲 App Link' %}
+  {% set tab_url = 'URL' %}
+  {% set tab_vcard = 'vCard' %}
+  {% set tab_pdf = 'PDF' %}
+  {% set tab_wifi = 'Wi-Fi' %}
+  {% set tab_email = 'Email' %}
+  {% set tab_sms = 'SMS' %}
+  {% set tab_tel = 'Phone' %}
+  {% set tab_social = 'Social' %}
+  {% set tab_event = 'Event' %}
+  {% set tab_geo = 'Geo' %}
+  {% set tab_payment = 'Payment' %}
+  {% set tab_multilink = 'Multi Link' %}
+  {% set tab_product = 'Product' %}
+  {% set tab_wallet = 'Wallet' %}
+  {% set tab_gs1 = 'GS1' %}
+  {% set tab_app = 'App Link' %}
+  {% set tab_review = 'Review' %}
+  {% set tab_booking = 'Booking' %}
+  {% set tab_lead = 'Lead Form' %}
+  {% set tab_feedback = 'Feedback' %}
+  {% set tab_coupon = 'Coupon' %}
 {% elif lang == 'ar' %}
-  {% set tab_url = '🌐 رابط URL' %}
-  {% set tab_vcard = '💼 vCard' %}
-  {% set tab_pdf = '📄 PDF' %}
-  {% set tab_image = '🖼️ صورة' %}
-  {% set tab_wifi = '📶 واي فاي' %}
-  {% set tab_email = '✉️ بريد إلكتروني' %}
-  {% set tab_sms = '📱 SMS' %}
-  {% set tab_social = '💬 تواصل اجتماعي' %}
-  {% set tab_text = '📝 نص' %}
-  {% set tab_business = '🏢 صفحة أعمال' %}
-  {% set tab_app = '📲 رابط تطبيق' %}
+  {% set tab_url = 'رابط URL' %}
+  {% set tab_vcard = 'vCard' %}
+  {% set tab_pdf = 'PDF' %}
+  {% set tab_wifi = 'واي فاي' %}
+  {% set tab_email = 'بريد' %}
+  {% set tab_sms = 'SMS' %}
+  {% set tab_tel = 'هاتف' %}
+  {% set tab_social = 'سوشيال' %}
+  {% set tab_event = 'حدث' %}
+  {% set tab_geo = 'موقع' %}
+  {% set tab_payment = 'دفع' %}
+  {% set tab_multilink = 'روابط متعددة' %}
+  {% set tab_product = 'منتج' %}
+  {% set tab_wallet = 'محفظة' %}
+  {% set tab_gs1 = 'GS1' %}
+  {% set tab_app = 'رابط تطبيق' %}
+  {% set tab_review = 'تقييم' %}
+  {% set tab_booking = 'حجز' %}
+  {% set tab_lead = 'نموذج عميل' %}
+  {% set tab_feedback = 'ملاحظات' %}
+  {% set tab_coupon = 'قسيمة' %}
 {% else %}
-  {% set tab_url = '🌐 URL' %}
-  {% set tab_vcard = '💼 vCard' %}
-  {% set tab_pdf = '📄 PDF' %}
-  {% set tab_image = '🖼️ Bild' %}
-  {% set tab_wifi = '📶 WLAN' %}
-  {% set tab_email = '✉️ E-Mail' %}
-  {% set tab_sms = '📱 SMS' %}
-  {% set tab_social = '💬 Social Media' %}
-  {% set tab_text = '📝 Text' %}
-  {% set tab_business = '🏢 Business-Seite' %}
-  {% set tab_app = '📲 App-Link' %}
+  {% set tab_url = 'URL' %}
+  {% set tab_vcard = 'vCard' %}
+  {% set tab_pdf = 'PDF' %}
+  {% set tab_wifi = 'WLAN' %}
+  {% set tab_email = 'E-Mail' %}
+  {% set tab_sms = 'SMS' %}
+  {% set tab_tel = 'Telefon' %}
+  {% set tab_social = 'Social' %}
+  {% set tab_event = 'Event' %}
+  {% set tab_geo = 'Geo' %}
+  {% set tab_payment = 'Zahlung' %}
+  {% set tab_multilink = 'Multi-Link' %}
+  {% set tab_product = 'Produkt' %}
+  {% set tab_wallet = 'Wallet' %}
+  {% set tab_gs1 = 'GS1' %}
+  {% set tab_app = 'App-Link' %}
+  {% set tab_review = 'Bewertung' %}
+  {% set tab_booking = 'Buchung' %}
+  {% set tab_lead = 'Lead-Formular' %}
+  {% set tab_feedback = 'Feedback' %}
+  {% set tab_coupon = 'Coupon' %}
 {% endif %}
+
 <style>
-  .qr-tabs { display:flex; flex-direction:column; gap:0.4rem; padding:1rem 0; }
-  .qr-tabs .tab { display:flex; align-items:center; gap:0.7rem; padding:0.8rem 1.2rem; color:#e2e8f0; font-weight:500; text-decoration:none; border-left:3px solid transparent; transition:all 0.25s ease; border-radius:0 8px 8px 0; }
-  .qr-tabs .tab:hover { background:rgba(255,255,255,0.12); color:#fff; transform:translateX(4px); }
-  .qr-tabs .tab.active { background:linear-gradient(90deg,#0b1742 0%,#0d2a78 100%); border-left:3px solid #2563eb; color:white; font-weight:600; }
-  @media (max-width: 900px) { .qr-tabs .tab { font-size:1rem; padding:0.9rem 1.1rem; } }
+  .qr-tabs { display:grid; gap:.45rem; padding:1rem 0; }
+  .qr-tabs .tab {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:.72rem .95rem;
+    color:#e2e8f0;
+    font-weight:600;
+    text-decoration:none;
+    border:1px solid rgba(255,255,255,.1);
+    border-left:3px solid transparent;
+    border-radius:12px;
+    transition:all .2s ease;
+    background:rgba(2,6,23,.12);
+  }
+  .qr-tabs .tab:hover { background:rgba(255,255,255,.14); color:#fff; transform:translateX(3px); }
+  .qr-tabs .tab.active {
+    background:linear-gradient(90deg,#0b1742 0%,#0d2a78 100%);
+    border-left-color:#38bdf8;
+    color:#fff;
+    box-shadow:0 8px 16px rgba(13,42,120,.32);
+  }
+  .qr-tabs .emoji { opacity:.9; margin-right:.5rem; }
+  @media (max-width: 900px) {
+    .qr-tabs .tab { font-size:.96rem; padding:.8rem .95rem; }
+  }
 </style>
 
 <div class="qr-tabs">
-  <a href="/qr/url" class="tab {% if active_tab == 'url' %}active{% endif %}">{{ tab_url }}</a>
-  <a href="/qr/vcard" class="tab {% if active_tab == 'vcard' %}active{% endif %}">{{ tab_vcard }}</a>
-  <a href="/qr/pdf" class="tab {% if active_tab == 'pdf' %}active{% endif %}">{{ tab_pdf }}</a>
-  <a href="/qr/image" class="tab {% if active_tab == 'image' %}active{% endif %}">{{ tab_image }}</a>
-  <a href="/qr/wifi" class="tab {% if active_tab == 'wifi' %}active{% endif %}">{{ tab_wifi }}</a>
-  <a href="/qr/email" class="tab {% if active_tab == 'email' %}active{% endif %}">{{ tab_email }}</a>
-  <a href="/qr/sms" class="tab {% if active_tab == 'sms' %}active{% endif %}">{{ tab_sms }}</a>
-  <a href="/qr/social" class="tab {% if active_tab == 'social' %}active{% endif %}">{{ tab_social }}</a>
-  <a href="/qr/text" class="tab {% if active_tab == 'text' %}active{% endif %}">{{ tab_text }}</a>
-  <a href="/qr/business" class="tab {% if active_tab == 'business' %}active{% endif %}">{{ tab_business }}</a>
-  <a href="/qr/app" class="tab {% if active_tab == 'app' %}active{% endif %}">{{ tab_app }}</a>
+  <a href="/qr/url" class="tab {% if active_tab == 'url' %}active{% endif %}"><span><span class="emoji">🌐</span>{{ tab_url }}</span></a>
+  <a href="/qr/vcard" class="tab {% if active_tab == 'vcard' %}active{% endif %}"><span><span class="emoji">💼</span>{{ tab_vcard }}</span></a>
+  <a href="/qr/pdf" class="tab {% if active_tab == 'pdf' %}active{% endif %}"><span><span class="emoji">📄</span>{{ tab_pdf }}</span></a>
+  <a href="/qr/wifi" class="tab {% if active_tab == 'wifi' %}active{% endif %}"><span><span class="emoji">📶</span>{{ tab_wifi }}</span></a>
+  <a href="/qr/email" class="tab {% if active_tab == 'email' %}active{% endif %}"><span><span class="emoji">✉️</span>{{ tab_email }}</span></a>
+  <a href="/qr/sms" class="tab {% if active_tab == 'sms' %}active{% endif %}"><span><span class="emoji">💬</span>{{ tab_sms }}</span></a>
+  <a href="/qr/tel" class="tab {% if active_tab == 'tel' %}active{% endif %}"><span><span class="emoji">📞</span>{{ tab_tel }}</span></a>
+  <a href="/qr/social" class="tab {% if active_tab == 'social' %}active{% endif %}"><span><span class="emoji">📱</span>{{ tab_social }}</span></a>
+  <a href="/qr/event" class="tab {% if active_tab == 'event' %}active{% endif %}"><span><span class="emoji">🗓️</span>{{ tab_event }}</span></a>
+  <a href="/qr/geo" class="tab {% if active_tab == 'geo' %}active{% endif %}"><span><span class="emoji">🗺️</span>{{ tab_geo }}</span></a>
+  <a href="/qr/payment" class="tab {% if active_tab == 'payment' %}active{% endif %}"><span><span class="emoji">💳</span>{{ tab_payment }}</span></a>
+  <a href="/qr/multilink" class="tab {% if active_tab == 'multilink' %}active{% endif %}"><span><span class="emoji">🔗</span>{{ tab_multilink }}</span></a>
+  <a href="/qr/product" class="tab {% if active_tab == 'product' %}active{% endif %}"><span><span class="emoji">🏷️</span>{{ tab_product }}</span></a>
+  <a href="/qr/wallet" class="tab {% if active_tab == 'wallet' %}active{% endif %}"><span><span class="emoji">🎫</span>{{ tab_wallet }}</span></a>
+  <a href="/qr/gs1" class="tab {% if active_tab == 'gs1' %}active{% endif %}"><span><span class="emoji">📦</span>{{ tab_gs1 }}</span></a>
+  <a href="/qr/app" class="tab {% if active_tab == 'app' %}active{% endif %}"><span><span class="emoji">📲</span>{{ tab_app }}</span></a>
+  <a href="/qr/review" class="tab {% if active_tab == 'review' %}active{% endif %}"><span><span class="emoji">⭐</span>{{ tab_review }}</span></a>
+  <a href="/qr/booking" class="tab {% if active_tab == 'booking' %}active{% endif %}"><span><span class="emoji">📅</span>{{ tab_booking }}</span></a>
+  <a href="/qr/lead" class="tab {% if active_tab == 'lead' %}active{% endif %}"><span><span class="emoji">🧾</span>{{ tab_lead }}</span></a>
+  <a href="/qr/feedback" class="tab {% if active_tab == 'feedback' %}active{% endif %}"><span><span class="emoji">📊</span>{{ tab_feedback }}</span></a>
+  <a href="/qr/coupon" class="tab {% if active_tab == 'coupon' %}active{% endif %}"><span><span class="emoji">🎟️</span>{{ tab_coupon }}</span></a>
 </div>

@@ -292,21 +292,28 @@ def set_language(
     return response
 
 # -------------------------------------------------------------------------
-# 6.1️⃣ Example QR Image
+# 6.1️⃣ Favicon
+# -------------------------------------------------------------------------
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return FileResponse("static/favicon.ico", media_type="image/x-icon")
+
+# -------------------------------------------------------------------------
+# 6.2️⃣ Example QR Image
 # -------------------------------------------------------------------------
 @app.get("/example-qr")
 def example_qr():
     return FileResponse("static/default-qr.png", media_type="image/png")
 
 # -------------------------------------------------------------------------
-# 6.2️⃣ Service Worker
+# 6.3️⃣ Service Worker
 # -------------------------------------------------------------------------
 @app.get("/sw.js")
 def service_worker():
     return FileResponse("static/sw.js", media_type="application/javascript")
 
 # -------------------------------------------------------------------------
-# 6.3️⃣ Chrome DevTools Well-Known Probe (noise-free logs)
+# 6.4️⃣ Chrome DevTools Well-Known Probe (noise-free logs)
 # -------------------------------------------------------------------------
 @app.get("/.well-known/appspecific/com.chrome.devtools.json", include_in_schema=False)
 def chrome_devtools_probe() -> Response:

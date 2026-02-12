@@ -21,8 +21,8 @@ from models.qrcode import QRCode
 from routes.auth import get_current_user
 from routes.utils import normalize_url
 from utils.access_control import can_edit_qr
+from utils.qr_design import resolve_design
 from utils.qr_generator import generate_qr_png
-from utils.qr_config import get_qr_style, QR_THEMES
 
 router = APIRouter(prefix="/qr/vcard", tags=["vCard QR"])
 
@@ -184,6 +184,15 @@ async def create_vcard_qr(
     style: str = Form("modern"),
     fg_color: str = Form("#0D2A78"),
     bg_color: str = Form("#FFFFFF"),
+    module_style: Optional[str] = Form(None),
+    eye_style: Optional[str] = Form(None),
+    qr_size: Optional[int] = Form(None),
+    output_preset: Optional[str] = Form(None),
+    export_format: Optional[str] = Form(None),
+    frame_style: Optional[str] = Form(None),
+    logo_scale: Optional[int] = Form(None),
+    logo_bg_mode: Optional[str] = Form(None),
+    safe_mode: Optional[str] = Form(None),
     profile_image: Optional[UploadFile] = File(None),
     qr_logo: Optional[UploadFile] = File(None),
     logo: Optional[UploadFile] = File(None),  # Backward compatibility
@@ -238,28 +247,34 @@ async def create_vcard_qr(
     qr_logo_upload = qr_logo or logo
     qr_logo_fs_path, qr_logo_public_path = _save_logo(qr_logo_upload, slug, "vcard_qr_logo")
     
-    # QR-Code generieren mit Style
-    style_conf = get_qr_style(style)
-    
-    # Bestimme ob Custom Colors verwendet werden sollen
-    use_custom = style == "custom" or style not in QR_THEMES
-    qr_fg = fg_color if use_custom else style_conf.get("fg", "#0D2A78")
-    qr_bg = bg_color if use_custom else style_conf.get("bg", "#FFFFFF")
-    
-    # Gradient nur für bestimmte Styles
-    use_gradient = style in ["modern", "gradient", "ouhud", "neon", "sunset", "ocean", "forest", "rose"]
-    qr_gradient = style_conf.get("gradient") if use_gradient else None
-    
+    design = resolve_design(
+        style=style,
+        fg_color=fg_color,
+        bg_color=bg_color,
+        module_style=module_style,
+        eye_style=eye_style,
+        qr_size=qr_size,
+        output_preset=output_preset,
+        export_format=export_format,
+        frame_style=frame_style,
+        logo_scale=logo_scale,
+        logo_bg_mode=logo_bg_mode,
+        safe_mode=safe_mode,
+    )
+
     result = generate_qr_png(
         payload=dynamic_url,
-        size=600,
-        fg=qr_fg,
-        bg=qr_bg,
-        gradient=qr_gradient,
-        frame_color=style_conf.get("frame_color", "#4F46E5"),
-        module_style=style_conf.get("module_style", "square"),
-        eye_style=style_conf.get("eye_style", "square"),
+        size=design.qr_size,
+        fg=design.fg,
+        bg=design.bg,
+        module_style=design.module_style,
+        eye_style=design.eye_style,
         logo_path=qr_logo_fs_path,
+        frame_style=design.frame_style,
+        logo_scale=design.logo_scale,
+        logo_bg_mode=design.logo_bg_mode,
+        quiet_zone=design.quiet_zone,
+        dpi=design.dpi,
     )
     
     qr_bytes = result if isinstance(result, bytes) else result.get("bytes", b"")
@@ -294,6 +309,25 @@ async def create_vcard_qr(
         "profile_image_path": profile_public_path,
         "qr_logo_path": qr_logo_public_path,
         "logo_path": qr_logo_public_path,
+        "design": {
+            "style": design.style,
+            "fg": design.fg,
+            "bg": design.bg,
+            "module_style": design.module_style,
+            "eye_style": design.eye_style,
+            "frame_style": design.frame_style,
+            "output_preset": design.output_preset,
+            "export_format": design.export_format,
+            "logo_scale": design.logo_scale,
+            "logo_bg_mode": design.logo_bg_mode,
+            "qr_size": design.qr_size,
+            "quiet_zone": design.quiet_zone,
+            "dpi": design.dpi,
+            "contrast_ratio": design.contrast_ratio,
+            "warnings": list(design.warnings),
+                "safe_mode": design.safe_mode,
+                "safe_mode_applied": design.safe_mode_applied,
+        },
     }
     
     # Temporäres QR-Objekt erstellen um Daten zu verschlüsseln
@@ -310,7 +344,11 @@ async def create_vcard_qr(
         dynamic_url=dynamic_url,
         image_path=str(qr_file),
         logo_path=qr_logo_public_path,
-        style=style,
+        style=design.style,
+        color_fg=design.fg,
+        color_bg=design.bg,
+        qr_size=design.qr_size,
+        frame_style=design.frame_style,
         title=f"{first_name} {last_name}",
     )
     db.add(qr)

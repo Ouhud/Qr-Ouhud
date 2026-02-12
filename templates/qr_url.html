@@ -87,7 +87,7 @@
 
 <script>
 function printQR() {
-  window.print();
+  return printQrFromSelector(".qr-preview img, img[src*='/static/generated_qr/']");
 }
 </script>
 {% endblock %}

@@ -34,7 +34,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-result">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-result qr-result-unified">
   <h1>{{ t_h1 }}</h1>
   <p class="subtitle">{{ t_sub }}</p>
 
@@ -51,7 +52,11 @@
     </div>
 
     <div class="qr-actions">
+      {% if qr and qr.slug %}
+      <a href="/qr/export/{{ qr.slug }}?format=png" download="email_qr.png" class="btn primary">{{ t_download }}</a>
+      {% else %}
       <a href="data:image/png;base64,{{ qr_image }}" download="email_qr.png" class="btn primary">{{ t_download }}</a>
+      {% endif %}
       <button onclick="printQR()" class="btn secondary">{{ t_print }}</button>
     </div>
 
@@ -104,10 +109,7 @@ h1 { color: #0D2A78; font-size: 2rem; margin-bottom: 1rem; }
 <script>
 const EMAIL_LINK_COPIED_TEXT = {{ t_copied | tojson }};
 function printQR() {
-  const w = window.open();
-  w.document.write('<img src="data:image/png;base64,{{ qr_image }}" style="width:300px">');
-  w.print();
-  w.close();
+  return printQrFromSelector(".qr-image");
 }
 function copyLink() {
   const linkInput = document.getElementById('qrLink');

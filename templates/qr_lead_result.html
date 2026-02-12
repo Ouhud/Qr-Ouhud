@@ -3,18 +3,39 @@
 {% if lang == 'en' %}
   {% set p_title = 'Lead QR created' %}
   {% set p_h1 = '✅ Lead QR created' %}
+  {% set p_open = '🔗 Open' %}
+  {% set p_download = '⬇️ Download' %}
+  {% set p_print = '🖨️ Print' %}
+  {% set p_edit = '✏️ Edit' %}
 {% elif lang == 'ar' %}
   {% set p_title = 'تم إنشاء Lead QR' %}
   {% set p_h1 = '✅ تم إنشاء Lead QR' %}
+  {% set p_open = '🔗 فتح' %}
+  {% set p_download = '⬇️ تنزيل' %}
+  {% set p_print = '🖨️ طباعة' %}
+  {% set p_edit = '✏️ تعديل' %}
 {% else %}
   {% set p_title = 'Lead QR erstellt' %}
   {% set p_h1 = '✅ Lead-QR erstellt' %}
+  {% set p_open = '🔗 Öffnen' %}
+  {% set p_download = '⬇️ Download' %}
+  {% set p_print = '🖨️ Drucken' %}
+  {% set p_edit = '✏️ Bearbeiten' %}
 {% endif %}
 {% block title %}{{ p_title }}{% endblock %}
 {% block content %}
-<section class="qr-generator" style="text-align:center;">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-generator qr-result-unified" style="text-align:center;">
   <h1>{{ p_h1 }}</h1>
   {% if qr_image %}<img src="data:image/png;base64,{{ qr_image }}" style="max-width:300px;border-radius:12px;">{% endif %}
-  <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
+  <p class="dyn-link"><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
+  <div class="result-actions">
+    <a href="{{ dynamic_url }}" target="_blank" rel="noopener" class="btn-link">{{ p_open }}</a>
+    {% if qr and qr.slug %}
+      <a href="/qr/export/{{ qr.slug }}?format=png" class="btn-link">{{ p_download }}</a>
+      <button type="button" class="btn-link btn-btn" onclick="return printQrFromSelector('section.qr-result-unified img')">{{ p_print }}</button>
+      <a href="/qr/edit/{{ qr.slug }}" class="btn-link">{{ p_edit }}</a>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

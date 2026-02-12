@@ -10,6 +10,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>{% block title %}📊 Dashboard – Ouhud QR{% endblock %}</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
 
   <!-- 🌐 Zentrales Stylesheet -->
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -240,6 +241,128 @@
       border: none;
       color: var(--white);
       margin-left: 1rem;
+    }
+
+    /* === UNIFIED QR RESULT PAGES === */
+    .qr-result-unified {
+      max-width: 920px !important;
+      margin: 2rem auto !important;
+      padding: 2rem !important;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+      text-align: center !important;
+      font-family: "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+    }
+    .qr-result-unified h1 {
+      margin: 0 0 0.6rem !important;
+      color: #0d2a78 !important;
+      font-size: clamp(1.4rem, 2.2vw, 2rem) !important;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+    .qr-result-unified .subtitle,
+    .qr-result-unified > p {
+      color: #475569 !important;
+      font-size: 1rem;
+      line-height: 1.55;
+      margin: 0.4rem auto;
+      max-width: 760px;
+      word-break: break-word;
+    }
+    .qr-result-unified img {
+      width: min(320px, 100%) !important;
+      max-width: 100% !important;
+      height: auto !important;
+      border-radius: 14px !important;
+      margin: 1rem auto !important;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.14);
+      border: 1px solid #e2e8f0;
+      display: block;
+      background: #fff;
+      padding: 8px;
+    }
+    .qr-result-unified .dyn-link,
+    .qr-result-unified .result-info {
+      margin-top: 0.65rem;
+      color: #334155;
+      font-size: 0.97rem;
+      word-break: break-word;
+    }
+    .qr-result-unified .dyn-link a,
+    .qr-result-unified .result-info a,
+    .qr-result-unified > p a {
+      color: #1d4ed8;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .qr-result-unified .dyn-link a:hover,
+    .qr-result-unified .result-info a:hover,
+    .qr-result-unified > p a:hover {
+      text-decoration: underline;
+    }
+    .qr-result-unified .result-actions,
+    .qr-result-unified .qr-actions {
+      display: flex !important;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-top: 1.1rem;
+    }
+    .qr-result-unified .result-actions a,
+    .qr-result-unified .result-actions button,
+    .qr-result-unified .qr-actions a,
+    .qr-result-unified .qr-actions button,
+    .qr-result-unified a.btn-link,
+    .qr-result-unified button.btn-link,
+    .qr-result-unified a.btn,
+    .qr-result-unified button.btn {
+      min-height: 44px;
+      padding: 0.62rem 1rem !important;
+      border-radius: 11px !important;
+      border: 1px solid #1d4ed8 !important;
+      background: #2563eb !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      text-decoration: none !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+    .qr-result-unified .result-actions a:hover,
+    .qr-result-unified .result-actions button:hover,
+    .qr-result-unified .qr-actions a:hover,
+    .qr-result-unified .qr-actions button:hover,
+    .qr-result-unified a.btn-link:hover,
+    .qr-result-unified button.btn-link:hover,
+    .qr-result-unified a.btn:hover,
+    .qr-result-unified button.btn:hover {
+      background: #1d4ed8 !important;
+    }
+    .qr-result-unified .result-actions .btn-secondary,
+    .qr-result-unified .qr-actions .btn-secondary {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border-color: #cbd5e1 !important;
+    }
+    @media (max-width: 700px) {
+      .qr-result-unified {
+        margin: 1rem auto !important;
+        padding: 1.25rem !important;
+        border-radius: 14px;
+      }
+      .qr-result-unified .result-actions,
+      .qr-result-unified .qr-actions {
+        flex-direction: column;
+      }
+      .qr-result-unified .result-actions a,
+      .qr-result-unified .result-actions button,
+      .qr-result-unified .qr-actions a,
+      .qr-result-unified .qr-actions button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -483,10 +606,88 @@
       } else {
         document.documentElement.style.overflow = "";
       }
+
+      const resultSections = document.querySelectorAll("section.qr-result-unified");
+      resultSections.forEach((section) => {
+        const existing = section.querySelector(".result-actions, .qr-actions");
+        const actionsHost = existing || document.createElement("div");
+        if (!existing) {
+          actionsHost.className = "result-actions";
+        } else {
+          actionsHost.classList.add("result-actions");
+        }
+
+        const candidates = Array.from(
+          section.querySelectorAll(
+            "a.btn, a.btn-link, button.btn, button.btn-link, button.btn-btn, a[download], a[href*='/qr/export/'], a[href*='/qr/edit/'], button[onclick*='printQrFromSelector']"
+          )
+        ).filter((el) => !el.closest(".dyn-link"));
+
+        candidates.forEach((el) => {
+          if (el.closest(".result-actions, .qr-actions")) return;
+          actionsHost.appendChild(el);
+        });
+
+        if (!existing && actionsHost.children.length > 0) {
+          section.appendChild(actionsHost);
+        }
+      });
     });
 
     window.addEventListener("load", () => document.body.classList.add("loaded"));
     document.addEventListener("beforeunload", () => document.body.classList.add("fade"));
+
+    function printQrImage(src) {
+      if (!src) return false;
+      const absoluteSrc = src.startsWith("http") ? src : new URL(src, window.location.origin).toString();
+      const win = window.open("", "_blank", "width=900,height=900");
+      if (!win) return false;
+      win.document.write(`
+        <!doctype html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>QR Print</title>
+          <style>
+            @page { margin: 8mm; }
+            html, body { margin: 0; padding: 0; background: #fff; }
+            body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+            img { max-width: 92vw; max-height: 92vh; width: auto; height: auto; image-rendering: pixelated; }
+          </style>
+        </head>
+        <body>
+          <img id="qrPrintImage" src="${absoluteSrc}" alt="QR">
+          <script>
+            const img = document.getElementById("qrPrintImage");
+            img.addEventListener("load", () => { window.print(); setTimeout(() => window.close(), 120); });
+            img.addEventListener("error", () => { window.print(); setTimeout(() => window.close(), 120); });
+          <\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+      return false;
+    }
+
+    function printQrFromSelector(selector) {
+      const fallbackSelectors = [
+        selector || "",
+        "img.qr-print-target",
+        ".qr-result img",
+        ".qr-card img",
+        "img[src*='/static/generated_qr/']",
+        "img[src^='data:image/png']",
+      ].filter(Boolean);
+      for (const sel of fallbackSelectors) {
+        const el = document.querySelector(sel);
+        if (el && el.src) {
+          return printQrImage(el.src);
+        }
+      }
+      return false;
+    }
+
+    window.printQrFromSelector = printQrFromSelector;
   </script>
 </body>
 </html>

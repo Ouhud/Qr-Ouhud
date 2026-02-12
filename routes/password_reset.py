@@ -15,6 +15,7 @@ from utils.email_service import send_reset_mail
 from database import get_db
 from models.user import User
 from auth_utils import make_reset_token, verify_reset_token, password_hash
+from utils.app_url import resolve_app_base_url
 
 # 🌍 Umgebung laden
 load_dotenv()
@@ -22,8 +23,6 @@ load_dotenv()
 # ⚙️ Setup
 router = APIRouter(prefix="/password", tags=["Password"])
 templates = Jinja2Templates(directory="templates")
-APP_DOMAIN: str = os.getenv("APP_DOMAIN", "http://127.0.0.1:8000")
-
 # --------------------------------------------------------------------------- #
 # 🧭 1️⃣ Formular: Passwort vergessen
 # --------------------------------------------------------------------------- #
@@ -52,14 +51,15 @@ async def forgot_submit(
 
     # 🔐 Reset-Link erzeugen
     token = make_reset_token(str(user.id))
-    reset_link = f"{APP_DOMAIN}/password/reset?token={token}"
+    app_base = resolve_app_base_url(request)
+    reset_link = f"{app_base}/password/reset?token={token}"
 
     # 📧 E-Mail asynchron im Hintergrund senden
     logging.info(f"🧩 Passwort-Reset-Link wird an {email} gesendet ...")
 
     background_tasks.add_task(
         send_reset_mail,
-        name=user.name or "Benutzer",
+        name=user.username or "Benutzer",
         email=email,
         reset_link=reset_link
     )

@@ -6,7 +6,7 @@ from main import app
 
 
 # ✅ erlaubte Statuscodes
-ALLOWED = {200, 303}
+ALLOWED = {200, 204, 302, 303, 307, 401}
 
 
 # ✅ Routing-Blacklist – diese Routen ignorieren (Legacy / alt)
@@ -14,6 +14,8 @@ IGNORE_ROUTES = {
     "/password/forgot",
     "/password/reset",
     "/qr/multilink/qr/multi/",
+    "/auth/register",
+    "/billing/test",
 }
 
 

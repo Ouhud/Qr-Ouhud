@@ -22,7 +22,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-result">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-result qr-result-unified">
   <h1>{{ t_h1 }}</h1>
   <p class="subtitle">{{ t_sub }}</p>
 
@@ -30,7 +31,11 @@
     <img src="data:image/png;base64,{{ qr_image }}" alt="QR preview" class="qr-preview">
     <p><strong>{{ name }}</strong></p>
     <a href="{{ dynamic_url }}" target="_blank" class="btn-link">{{ t_preview }}</a>
+    {% if qr and qr.slug %}
+    <a href="/qr/export/{{ qr.slug }}?format=png" download="social_qr.png" class="btn-link">{{ t_download }}</a>
+    {% else %}
     <a href="data:image/png;base64,{{ qr_image }}" download="social_qr.png" class="btn-link">{{ t_download }}</a>
+    {% endif %}
   </div>
 </section>
 

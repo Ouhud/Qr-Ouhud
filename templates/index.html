@@ -48,8 +48,8 @@
   {% set i_types_badge = 'Features' %}
   {% set i_types_title = 'Versatile QR code types' %}
   {% set i_types_sub = 'More than 20 types for marketing, sales, operations and support.' %}
-  {% set i_styles_title = 'Your design, your brand' %}
-  {% set i_styles_sub = 'All styles at a glance. Choose presets, colors, shapes and brand kits.' %}
+  {% set i_styles_title = 'Design System' %}
+  {% set i_styles_sub = 'All modern presets at a glance. Use brand-kits with clear scan-safe looks.' %}
   {% set i_analytics_badge = 'Analytics' %}
   {% set i_analytics_title = 'Decisions based on data' %}
   {% set i_analytics_sub = 'Real-time tracking for campaigns, regions and teams. Export reports or integrate directly into your BI tools.' %}
@@ -105,10 +105,10 @@
   {% set i_cta_demo = 'Request demo' %}
   {% set i_cta_contact_href = '/contact' %}
   {% set i_style_tag_brand = 'Brand Kit' %}
-  {% set i_style_tag_standard = 'Standard' %}
-  {% set i_style_tag_shapes = 'Shapes' %}
-  {% set i_style_tag_colors = 'Colors' %}
-  {% set i_style_tag_themes = 'Themes' %}
+  {% set i_style_tag_standard = 'Classic' %}
+  {% set i_style_tag_shapes = 'Classic' %}
+  {% set i_style_tag_colors = 'Modern' %}
+  {% set i_style_tag_themes = 'Modern' %}
   {% set i_style_tag_premium = 'Premium' %}
   {% set i_style_tag_pro = 'Pro' %}
   {% set i_footer_rights = 'All rights reserved.' %}
@@ -151,8 +151,8 @@
   {% set i_types_badge = 'المزايا' %}
   {% set i_types_title = 'أنواع QR متعددة الاستخدام' %}
   {% set i_types_sub = 'أكثر من 20 نوعًا للتسويق والمبيعات والعمليات والدعم.' %}
-  {% set i_styles_title = 'تصميمك وهوية علامتك' %}
-  {% set i_styles_sub = 'كل الأنماط في مكان واحد. اختر قوالب وألوان وأشكال وحزم العلامة.' %}
+  {% set i_styles_title = 'نظام التصميم' %}
+  {% set i_styles_sub = 'جميع القوالب الحديثة في مكان واحد مع حزم علامة واضحة وآمنة للمسح.' %}
   {% set i_analytics_badge = 'التحليلات' %}
   {% set i_analytics_title = 'قرارات مبنية على البيانات' %}
   {% set i_analytics_sub = 'تتبع لحظي للحملات والمناطق والفرق. صدّر التقارير أو اربطها مباشرة بأدوات BI.' %}
@@ -208,10 +208,10 @@
   {% set i_cta_demo = 'اطلب عرضًا تجريبيًا' %}
   {% set i_cta_contact_href = '/contact' %}
   {% set i_style_tag_brand = 'هوية العلامة' %}
-  {% set i_style_tag_standard = 'قياسي' %}
-  {% set i_style_tag_shapes = 'الأشكال' %}
-  {% set i_style_tag_colors = 'الألوان' %}
-  {% set i_style_tag_themes = 'الثيمات' %}
+  {% set i_style_tag_standard = 'كلاسيكي' %}
+  {% set i_style_tag_shapes = 'كلاسيكي' %}
+  {% set i_style_tag_colors = 'حديث' %}
+  {% set i_style_tag_themes = 'حديث' %}
   {% set i_style_tag_premium = 'بريميوم' %}
   {% set i_style_tag_pro = 'احترافي' %}
   {% set i_footer_rights = 'جميع الحقوق محفوظة.' %}
@@ -254,8 +254,8 @@
   {% set i_types_badge = 'Features' %}
   {% set i_types_title = 'Vielseitige QR-Code Typen' %}
   {% set i_types_sub = 'Mehr als 20 Typen für Marketing, Sales, Operations und Support.' %}
-  {% set i_styles_title = 'Dein Design, dein Brand' %}
-  {% set i_styles_sub = 'Alle Styles auf einen Blick. Wähle Presets, Farben, Formen und Brand-Kits.' %}
+  {% set i_styles_title = 'Design System' %}
+  {% set i_styles_sub = 'Alle modernen Presets auf einen Blick. Nutze Brand-Kits mit scan-sicherem Look.' %}
   {% set i_analytics_badge = 'Analytics' %}
   {% set i_analytics_title = 'Entscheidungen auf Datenbasis' %}
   {% set i_analytics_sub = 'Echtzeit-Tracking für Kampagnen, Standorte und Teams. Exportiere Reports oder integriere Daten direkt in deine BI-Tools.' %}
@@ -311,10 +311,10 @@
   {% set i_cta_demo = 'Demo anfragen' %}
   {% set i_cta_contact_href = '/kontakt' %}
   {% set i_style_tag_brand = 'Brand-Kit' %}
-  {% set i_style_tag_standard = 'Standard' %}
-  {% set i_style_tag_shapes = 'Formen' %}
-  {% set i_style_tag_colors = 'Farben' %}
-  {% set i_style_tag_themes = 'Themes' %}
+  {% set i_style_tag_standard = 'Classic' %}
+  {% set i_style_tag_shapes = 'Classic' %}
+  {% set i_style_tag_colors = 'Modern' %}
+  {% set i_style_tag_themes = 'Modern' %}
   {% set i_style_tag_premium = 'Premium' %}
   {% set i_style_tag_pro = 'Pro' %}
   {% set i_footer_rights = 'Alle Rechte vorbehalten.' %}
@@ -535,24 +535,18 @@
 
     <div class="style-gallery">
       {% set styles = [
-        {"file":"ouhud.png","label":"Ouhud","tag":i_style_tag_brand},
-        {"file":"classic.png","label":"Classic","tag":i_style_tag_standard},
-        {"file":"rounded.png","label":"Rounded","tag":i_style_tag_shapes},
-        {"file":"dots.png","label":"Dots","tag":i_style_tag_shapes},
-        {"file":"gradient.png","label":"Gradient","tag":i_style_tag_colors},
-        {"file":"dark.png","label":"Dark","tag":i_style_tag_themes},
-        {"file":"soft.png","label":"Soft","tag":i_style_tag_themes},
-        {"file":"neon.png","label":"Neon","tag":i_style_tag_themes},
-        {"file":"glass.png","label":"Glass","tag":i_style_tag_premium},
-        {"file":"metallic.png","label":"Metallic","tag":i_style_tag_premium},
-        {"file":"holo.png","label":"Holo","tag":i_style_tag_premium},
-        {"file":"3d_pro.png","label":"3D Pro","tag":i_style_tag_premium},
-        {"file":"forest.png","label":"Forest","tag":i_style_tag_colors},
-        {"file":"ocean.png","label":"Ocean","tag":i_style_tag_colors},
-        {"file":"sunset.png","label":"Sunset","tag":i_style_tag_colors},
-        {"file":"rose.png","label":"Rose","tag":i_style_tag_colors},
-        {"file":"futuristic.png","label":"Futuristic","tag":i_style_tag_pro},
-        {"file":"premium.png","label":"Premium","tag":i_style_tag_pro}
+        {"file":"classic.png","label":"Classic","tag":i_style_tag_standard,"desc":"High contrast, universal"},
+        {"file":"rounded.png","label":"Rounded","tag":i_style_tag_standard,"desc":"Soft corners"},
+        {"file":"dots.png","label":"Dots","tag":i_style_tag_standard,"desc":"Playful pattern"},
+        {"file":"soft.png","label":"Mono Clean","tag":i_style_tag_standard,"desc":"Pure black/white minimal"},
+        {"file":"soft.png","label":"Soft Modern","tag":i_style_tag_themes,"desc":"Clean and elegant"},
+        {"file":"gradient.png","label":"Minimal Pro","tag":i_style_tag_themes,"desc":"B2B minimal look"},
+        {"file":"glass.png","label":"Glass Modern","tag":i_style_tag_themes,"desc":"Frosted glass style"},
+        {"file":"futuristic.png","label":"Neon Tech","tag":i_style_tag_themes,"desc":"Tech glow accents"},
+        {"file":"premium.png","label":"Premium","tag":i_style_tag_premium,"desc":"Gold luxury"},
+        {"file":"dark.png","label":"Dark Luxury","tag":i_style_tag_premium,"desc":"Dark + metallic contrast"},
+        {"file":"metallic.png","label":"Metallic","tag":i_style_tag_premium,"desc":"Steel finish"},
+        {"file":"ouhud.png","label":"Ouhud Brand","tag":i_style_tag_brand,"desc":"Brand blue glow"}
       ] %}
       {% for s in styles %}
       <div class="style-card">
@@ -560,7 +554,8 @@
         <div class="img-wrapper">
           <img src="/static/style_previews/{{ s.file }}" alt="{{ s.label }}">
         </div>
-        <span>{{ s.label }}</span>
+        <h3>{{ s.label }}</h3>
+        <p>{{ s.desc }}</p>
       </div>
       {% endfor %}
     </div>
@@ -1142,8 +1137,20 @@ h1, h2, h3 {
 
 .style-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .style-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 850px) {
+  .style-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .style-gallery { grid-template-columns: 1fr; }
 }
 
 .style-card {
@@ -1170,7 +1177,18 @@ h1, h2, h3 {
 
 .img-wrapper img { width: 100%; border-radius: 0.6rem; }
 
-.style-card span { display: block; margin-top: 0.8rem; font-weight: 600; font-size: 0.9rem; }
+.style-card h3 {
+  margin: 0.85rem 0 0.35rem;
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.style-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  min-height: 2.2em;
+}
 
 /* === INSIGHTS === */
 .insights {

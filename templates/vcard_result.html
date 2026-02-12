@@ -31,7 +31,7 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-generator vcard-generator" style="max-width:850px;margin:2rem auto;text-align:center;">
+<section class="qr-generator vcard-generator qr-result-unified" style="max-width:850px;margin:2rem auto;text-align:center;">
     <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">{{ t_h1 }}</h1>
 
     {% if qr and qr.image_path %}
@@ -68,7 +68,7 @@
         <a href="{{ vcard.google_wallet_url }}" class="btn secondary" target="_blank" rel="noopener" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">🤖 Google Wallet</a>
         {% endif %}
 
-        <button type="button" class="btn secondary" onclick="window.print()" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
+        <button type="button" class="btn secondary" onclick="return printQrFromSelector('section img')" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
 
         <a href="/qr/vcard/new" class="btn" style="background:#e2e8f0;padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;color:#1e293b;">{{ t_new }}</a>
     </div>

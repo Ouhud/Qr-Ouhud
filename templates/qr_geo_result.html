@@ -4,18 +4,31 @@
   {% set t_title = 'Geo QR created' %}
   {% set t_h1 = '✅ Geo QR created' %}
   {% set t_target = 'Target:' %}
+  {% set t_open = '🔗 Open' %}
+  {% set t_download = '⬇️ Download' %}
+  {% set t_print = '🖨️ Print' %}
+  {% set t_edit = '✏️ Edit' %}
 {% elif lang == 'ar' %}
   {% set t_title = 'تم إنشاء Geo QR' %}
   {% set t_h1 = '✅ تم إنشاء Geo QR' %}
   {% set t_target = 'الوجهة:' %}
+  {% set t_open = '🔗 فتح' %}
+  {% set t_download = '⬇️ تنزيل' %}
+  {% set t_print = '🖨️ طباعة' %}
+  {% set t_edit = '✏️ تعديل' %}
 {% else %}
   {% set t_title = 'Geo QR erstellt' %}
   {% set t_h1 = '✅ Geo-QR erstellt' %}
   {% set t_target = 'Ziel:' %}
+  {% set t_open = '🔗 Öffnen' %}
+  {% set t_download = '⬇️ Download' %}
+  {% set t_print = '🖨️ Drucken' %}
+  {% set t_edit = '✏️ Bearbeiten' %}
 {% endif %}
 {% block title %}{{ t_title }}{% endblock %}
 {% block content %}
-<section class="qr-generator" style="text-align:center;">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-generator qr-result-unified" style="text-align:center;">
   <h1>{{ t_h1 }}</h1>
   {% if qr_image %}
     <img src="data:image/png;base64,{{ qr_image }}" alt="Geo QR" style="max-width:300px;border-radius:12px;">
@@ -26,5 +39,15 @@
   {% if dynamic_url %}
     <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
   {% endif %}
+  <div class="result-actions">
+    {% if dynamic_url %}
+      <a href="{{ dynamic_url }}" target="_blank" rel="noopener" class="btn-link">{{ t_open }}</a>
+    {% endif %}
+    {% if qr and qr.slug %}
+      <a href="/qr/export/{{ qr.slug }}?format=png" class="btn-link">{{ t_download }}</a>
+      <button type="button" class="btn-link btn-btn" onclick="return printQrFromSelector('section.qr-result-unified img')">{{ t_print }}</button>
+      <a href="/qr/edit/{{ qr.slug }}" class="btn-link">{{ t_edit }}</a>
+    {% endif %}
+  </div>
 </section>
 {% endblock %}

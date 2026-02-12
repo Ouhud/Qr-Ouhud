@@ -205,6 +205,52 @@ QR_THEMES: Dict[str, Dict[str, Any]] = {
         "eye_style": "rounded",
         "frame_text": "Holo",
     },
+    # Brand-kits (Design-System Phase 1)
+    "minimal_pro": {
+        "fg": "#0F172A",
+        "bg": "#FFFFFF",
+        "gradient": None,
+        "frame_color": "#0F172A",
+        "module_style": "rounded",
+        "eye_style": "square",
+        "frame_text": "Minimal Pro",
+    },
+    "glass_modern": {
+        "fg": "#1D4ED8",
+        "bg": "#F8FAFC",
+        "gradient": ("#93C5FD", "#E0F2FE"),
+        "frame_color": "#2563EB",
+        "module_style": "rounded",
+        "eye_style": "rounded",
+        "frame_text": "Glass Modern",
+    },
+    "dark_luxury": {
+        "fg": "#F8FAFC",
+        "bg": "#0B1020",
+        "gradient": ("#334155", "#0F172A"),
+        "frame_color": "#94A3B8",
+        "module_style": "square",
+        "eye_style": "ring",
+        "frame_text": "Dark Luxury",
+    },
+    "neon_tech": {
+        "fg": "#22D3EE",
+        "bg": "#020617",
+        "gradient": ("#22D3EE", "#6366F1"),
+        "frame_color": "#22D3EE",
+        "module_style": "dots",
+        "eye_style": "target",
+        "frame_text": "Neon Tech",
+    },
+    "mono_clean": {
+        "fg": "#000000",
+        "bg": "#FFFFFF",
+        "gradient": None,
+        "frame_color": "#000000",
+        "module_style": "square",
+        "eye_style": "square",
+        "frame_text": "Mono Clean",
+    },
 }
 
 # ─────────────────────────────────────────────

@@ -25,7 +25,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-result-section">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-result-section qr-result-unified">
   <h1>{{ t_h1 }}</h1>
   <p class="subtitle">{{ t_sub }}</p>
 
@@ -36,7 +37,11 @@
       <p><a href="{{ dynamic_url }}" target="_blank" class="btn-link">{{ t_view }}</a></p>
       <p class="link-hint">{{ t_dyn }} {{ dynamic_url }}</p>
     {% endif %}
-    <p><a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="btn-link">{{ t_download }}</a></p>
+    {% if qr and qr.slug %}
+      <p><a href="/qr/export/{{ qr.slug }}?format=png" download="qr_pdf.png" class="btn-link">{{ t_download }}</a></p>
+    {% else %}
+      <p><a href="data:image/png;base64,{{ qr_image }}" download="qr_pdf.png" class="btn-link">{{ t_download }}</a></p>
+    {% endif %}
   </div>
 </section>
 

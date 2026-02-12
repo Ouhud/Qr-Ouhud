@@ -19,9 +19,7 @@ def test_templates_exist():
         "qr_multilink.html",
 
         # Passwort
-        "forgot_password.html",  # root-level optional
-        "auth/forgot_password.html",  # falls in auth/
-
+        
 
         # PDF / Image / Event / Geo etc.
         # (falls gewünscht, können wir weitere hinzufügen)

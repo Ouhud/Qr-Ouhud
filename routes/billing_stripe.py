@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 from database import get_db
 from models.user import User   # ✅ optional, für spätere Webhook-Verknüpfung
+from utils.app_url import resolve_app_base_url
 
 # ✅ 1. .env laden (mit STRIPE_SECRET_KEY, STRIPE_PUBLIC_KEY)
 load_dotenv()
@@ -53,7 +54,7 @@ async def create_checkout_session(request: Request, plan_name: str):
         print(f"[❌ FEHLER] Unbekannter Plan: {plan_name}")
         return RedirectResponse("/settings/billing?error=invalid_plan", status_code=status.HTTP_303_SEE_OTHER)
 
-    domain_url = "http://127.0.0.1:8000"  # später: https://ouhud.com
+    domain_url = os.getenv("STRIPE_DOMAIN", "").strip().rstrip("/") or resolve_app_base_url(request)
 
     try:
         # 🔹 Stripe Session erzeugen

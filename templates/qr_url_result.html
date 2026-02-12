@@ -31,7 +31,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-generator url-generator" style="max-width:850px;margin:2rem auto;text-align:center;">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-generator url-generator qr-result-unified" style="max-width:850px;margin:2rem auto;text-align:center;">
     <h1 style="color:var(--primary);font-size:2rem;font-weight:700;margin-bottom:1rem;">{{ t_h1 }}</h1>
 
     {% if qr and qr.image_path %}
@@ -55,7 +56,7 @@
     {% endif %}
 
     <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;margin-top:2rem;">
-        <button onclick="window.print()" class="btn secondary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
+        <button onclick="return printQrFromSelector('section img')" class="btn secondary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_print }}</button>
         {% if qr and qr.image_path %}
         <a href="/{{ qr.image_path }}" download class="btn primary" style="padding:0.85rem 1.4rem;border-radius:12px;font-size:1rem;">{{ t_download }}</a>
         {% endif %}

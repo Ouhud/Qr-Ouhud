@@ -25,7 +25,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-style-section">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-style-section qr-result-unified">
   <div class="container text-center">
     <div class="custom-design">
       <h2>{{ t_h1 }}</h2>
@@ -40,7 +41,11 @@
       {% endif %}
 
       <div class="action-buttons">
+        {% if qr and qr.slug %}
+        <a href="/qr/export/{{ qr.slug }}?format=png" download="telefon_qr.png" class="btn primary">{{ t_download }}</a>
+        {% else %}
         <a href="data:image/png;base64,{{ qr_image }}" download="telefon_qr.png" class="btn primary">{{ t_download }}</a>
+        {% endif %}
         <a href="/qr/tel/" class="btn secondary">{{ t_new }}</a>
       </div>
     </div>

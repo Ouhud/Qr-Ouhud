@@ -12,20 +12,26 @@ import os
 import json
 import shutil
 import html
+import zipfile
+from io import BytesIO
+from pathlib import Path
 from typing import Optional, Dict, Any
 from models.user import User
 from fastapi import (
     APIRouter, Request, Depends, Form, UploadFile, File, HTTPException
 )
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from database import get_db
 from routes.auth import get_current_user
+from routes.qr.logo_utils import save_qr_logo
 from routes.utils import normalize_url
 from models.qrcode import QRCode
 from utils.access_control import can_edit_qr
+from utils.qr_design import resolve_design
+from utils.qr_generator import generate_qr_png
 
 router = APIRouter(prefix="/qr", tags=["QR Edit"])
 templates = Jinja2Templates(directory="templates")
@@ -120,6 +126,30 @@ async def update_qr(
     qr_type = str(qr.type).lower()
     form = await request.form()
     kwargs = dict(form)
+    existing_data = qr.get_data() or {}
+    existing_design = existing_data.get("design") if isinstance(existing_data.get("design"), dict) else {}
+
+    logo_upload = kwargs.get("logo")
+    if logo_upload is not None and hasattr(logo_upload, "filename") and getattr(logo_upload, "filename", ""):
+        logo_fs_path, logo_public_path = save_qr_logo(logo_upload, qr.slug, f"{qr_type}_logo")
+        if logo_public_path:
+            qr.logo_path = logo_public_path
+            existing_data["logo_path"] = logo_public_path
+
+    design = resolve_design(
+        style=str(kwargs.get("style") or qr.style or existing_design.get("style") or "classic"),
+        fg_color=kwargs.get("fg_color") or kwargs.get("color_fg") or qr.color_fg or existing_design.get("fg"),
+        bg_color=kwargs.get("bg_color") or kwargs.get("color_bg") or qr.color_bg or existing_design.get("bg"),
+        module_style=kwargs.get("module_style") or existing_design.get("module_style"),
+        eye_style=kwargs.get("eye_style") or existing_design.get("eye_style"),
+        qr_size=kwargs.get("qr_size") or qr.qr_size or existing_design.get("qr_size"),
+        output_preset=kwargs.get("output_preset") or existing_design.get("output_preset"),
+        export_format=kwargs.get("export_format") or existing_design.get("export_format"),
+        frame_style=kwargs.get("frame_style") or qr.frame_style or existing_design.get("frame_style"),
+        logo_scale=kwargs.get("logo_scale") or existing_design.get("logo_scale"),
+        logo_bg_mode=kwargs.get("logo_bg_mode") or existing_design.get("logo_bg_mode"),
+        safe_mode=kwargs.get("safe_mode") or existing_design.get("safe_mode"),
+    )
     
     # Update nach Typ - alle Daten werden verschlüsselt gespeichert
     if qr_type == "url":
@@ -436,10 +466,142 @@ async def update_qr(
         qr.title = kwargs.get("title")
     elif kwargs.get("name"):
         qr.title = kwargs.get("name")
+
+    # 🎨 Neues Design vollständig übernehmen
+    qr.style = design.style
+    qr.color_fg = design.fg
+    qr.color_bg = design.bg
+    qr.qr_size = design.qr_size
+    qr.frame_style = design.frame_style
+
+    merged_data = qr.get_data() or {}
+    merged_data["design"] = {
+        "style": design.style,
+        "fg": design.fg,
+        "bg": design.bg,
+        "module_style": design.module_style,
+        "eye_style": design.eye_style,
+        "frame_style": design.frame_style,
+        "output_preset": design.output_preset,
+        "export_format": design.export_format,
+        "logo_scale": design.logo_scale,
+        "logo_bg_mode": design.logo_bg_mode,
+        "qr_size": design.qr_size,
+        "quiet_zone": design.quiet_zone,
+        "dpi": design.dpi,
+        "contrast_ratio": design.contrast_ratio,
+        "warnings": list(design.warnings),
+        "safe_mode": design.safe_mode,
+        "safe_mode_applied": design.safe_mode_applied,
+    }
+    if qr.logo_path:
+        merged_data["logo_path"] = qr.logo_path
+    qr.set_data(merged_data)
+
+    # 🔁 QR-Bild + SVG/PDF neu rendern
+    if qr.image_path:
+        payload = qr.dynamic_url or f"/d/{qr.slug}"
+        logo_fs_path = None
+        if qr.logo_path:
+            candidate = qr.logo_path.lstrip("/")
+            if os.path.exists(candidate):
+                logo_fs_path = candidate
+
+        regen = generate_qr_png(
+            payload=payload,
+            size=design.qr_size,
+            fg=design.fg,
+            bg=design.bg,
+            logo_path=logo_fs_path,
+            module_style=design.module_style,
+            eye_style=design.eye_style,
+            frame_style=design.frame_style,
+            logo_scale=design.logo_scale,
+            logo_bg_mode=design.logo_bg_mode,
+            quiet_zone=design.quiet_zone,
+            dpi=design.dpi,
+        )
+        regen_bytes = regen["bytes"] if isinstance(regen, dict) else b""
+        if regen_bytes:
+            image_path = Path(str(qr.image_path))
+            image_path.parent.mkdir(parents=True, exist_ok=True)
+            image_path.write_bytes(regen_bytes)
+
+            svg_bytes = regen.get("svg_bytes", b"") if isinstance(regen, dict) else b""
+            if svg_bytes:
+                svg_path = image_path.with_suffix(".svg")
+                svg_path.write_bytes(svg_bytes)
+                qr.svg_path = str(svg_path)
+
+            pdf_bytes = regen.get("pdf_bytes", b"") if isinstance(regen, dict) else b""
+            if pdf_bytes:
+                pdf_path = image_path.with_suffix(".pdf")
+                pdf_path.write_bytes(pdf_bytes)
         
     db.commit()
     print(f"[UPDATE] QR '{qr.slug}' ({qr.type}) erfolgreich aktualisiert.")
     return RedirectResponse(f"/qr/edit/{slug}?msg=ok", status_code=303)
+
+
+# -------------------------------------------------------------------------
+# 📦 GET: QR-Export (PNG / SVG / PDF)
+# -------------------------------------------------------------------------
+@router.get("/export/{slug}", response_class=Response)
+def export_qr(
+    slug: str,
+    format: str = "png",
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user),
+):
+    qr: Optional[QRCode] = db.query(QRCode).filter(QRCode.slug == slug).first()
+    if qr is None:
+        raise HTTPException(status_code=404, detail="QR-Code nicht gefunden")
+    if not can_edit_qr(db, user.id, qr):
+        raise HTTPException(status_code=403, detail="Keine Berechtigung")
+
+    data = qr.get_data() or {}
+    design = data.get("design") if isinstance(data.get("design"), dict) else {}
+    payload = qr.dynamic_url or f"/d/{qr.slug}"
+    fmt = str(format or "png").strip().lower()
+    if fmt not in {"png", "svg", "pdf", "zip"}:
+        fmt = "png"
+
+    logo_fs_path = None
+    if qr.logo_path:
+        candidate = qr.logo_path.lstrip("/")
+        if os.path.exists(candidate):
+            logo_fs_path = candidate
+
+    regen = generate_qr_png(
+        payload=payload,
+        size=int(qr.qr_size or design.get("qr_size") or 600),
+        fg=str(qr.color_fg or design.get("fg") or "#0D2A78"),
+        bg=str(qr.color_bg or design.get("bg") or "#FFFFFF"),
+        logo_path=logo_fs_path,
+        module_style=str(design.get("module_style") or "square"),
+        eye_style=str(design.get("eye_style") or "square"),
+        frame_style=str(qr.frame_style or design.get("frame_style") or "none"),
+        logo_scale=int(design.get("logo_scale") or 20),
+        logo_bg_mode=str(design.get("logo_bg_mode") or "auto-white"),
+        quiet_zone=int(design.get("quiet_zone") or 4),
+        dpi=int(design.get("dpi") or 300),
+    )
+
+    if fmt == "zip":
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr(f"qr_{slug}.png", regen.get("bytes", b""))
+            zf.writestr(f"qr_{slug}.svg", regen.get("svg_bytes", b""))
+            zf.writestr(f"qr_{slug}.pdf", regen.get("pdf_bytes", b""))
+        headers = {"Content-Disposition": f'attachment; filename=\"qr_{slug}.zip\"'}
+        return Response(content=zip_buffer.getvalue(), media_type="application/zip", headers=headers)
+
+    headers = {"Content-Disposition": f'attachment; filename=\"qr_{slug}.{fmt}\"'}
+    if fmt == "svg":
+        return Response(content=regen.get("svg_bytes", b""), media_type="image/svg+xml", headers=headers)
+    if fmt == "pdf":
+        return Response(content=regen.get("pdf_bytes", b""), media_type="application/pdf", headers=headers)
+    return Response(content=regen.get("bytes", b""), media_type="image/png", headers=headers)
 
 
 # -------------------------------------------------------------------------

@@ -22,7 +22,8 @@
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-result-section">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-result-section qr-result-unified">
   <h1>{{ t_h1 }}</h1>
   <p class="subtitle">{{ t_sub }}</p>
 

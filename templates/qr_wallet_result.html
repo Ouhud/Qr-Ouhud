@@ -24,7 +24,8 @@
 {% endif %}
 {% block title %}{{ t_title }}{% endblock %}
 {% block content %}
-<section class="qr-generator" style="text-align:center;">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-generator qr-result-unified" style="text-align:center;">
   <h1>{{ t_h1 }}</h1>
   {% if qr_image %}<img src="data:image/png;base64,{{ qr_image }}" style="max-width:300px;border-radius:12px;">{% endif %}
   <p>{{ t_sub }}</p>
@@ -34,7 +35,7 @@
     {% if qr %}
       <a href="/qr/edit/{{ qr.slug }}" class="btn secondary">{{ t_edit }}</a>
     {% endif %}
-    <button type="button" class="btn secondary" onclick="window.print()">{{ t_print }}</button>
+    <button type="button" class="btn secondary" onclick="return printQrFromSelector('section img')">{{ t_print }}</button>
   </div>
 </section>
 {% endblock %}

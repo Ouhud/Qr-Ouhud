@@ -3,7 +3,7 @@
 # 🚀 Zentrale QR-Base-Routen (Ouhud QR)
 # - 1 Formular (/qr/new)
 # - 1 Create-Route (/qr/create)
-# - 1 Update-Route (/qr/update/{id})
+# - 1 Update-Route (/qr/update-by-id/{id})
 # Speichert alles verschlüsselt in QRCode(encrypted_content) + dynamic_url + Bilddatei
 # 🔐 Alle Inhalte werden AES-256-GCM verschlüsselt für Privatschutz
 # =============================================================================
@@ -267,7 +267,7 @@ async def create_qr(
 # =============================================================================
 # ✅ UPDATE – universell
 # =============================================================================
-@router.post("/update/{qr_id}", response_class=HTMLResponse)
+@router.post("/update-by-id/{qr_id}", response_class=HTMLResponse)
 async def update_qr(
     request: Request,
     qr_id: int,

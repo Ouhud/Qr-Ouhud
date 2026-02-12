@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set lang = request.state.lang if request and request.state else 'de' %}
+{% if lang == 'en' %}
+  {% set t_title = 'Create New QR Code' %}
+  {% set t_h1 = 'Create New QR Code' %}
+  {% set t_sub = 'Choose a QR type to continue.' %}
+{% elif lang == 'ar' %}
+  {% set t_title = 'إنشاء رمز QR جديد' %}
+  {% set t_h1 = 'إنشاء رمز QR جديد' %}
+  {% set t_sub = 'اختر نوع رمز QR للمتابعة.' %}
+{% else %}
+  {% set t_title = 'Neuen QR-Code erstellen' %}
+  {% set t_h1 = 'Neuen QR-Code erstellen' %}
+  {% set t_sub = 'Wähle einen QR-Typ zum Fortfahren.' %}
+{% endif %}
+{% block title %}{{ t_title }}{% endblock %}
+{% block content %}
+<section class="qr-result-unified" style="max-width:760px;">
+  <h1>{{ t_h1 }}</h1>
+  <p class="subtitle">{{ t_sub }}</p>
+  <div class="result-actions" style="margin-top:1rem;">
+    <a href="/qr/url/" class="btn-link">URL</a>
+    <a href="/qr/vcard/new" class="btn-link">vCard</a>
+    <a href="/qr/pdf/" class="btn-link">PDF</a>
+    <a href="/qr/wifi/" class="btn-link">Wi-Fi</a>
+    <a href="/qr/email/" class="btn-link">Email</a>
+    <a href="/qr/sms/" class="btn-link">SMS</a>
+  </div>
+</section>
+{% endblock %}

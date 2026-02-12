@@ -7,6 +7,10 @@
   {% set t_rec = 'Recipient:' %}
   {% set t_msg = 'Message:' %}
   {% set t_open = '📱 Open SMS' %}
+  {% set t_dyn = 'Dynamic link:' %}
+  {% set t_download = '⬇️ Download QR' %}
+  {% set t_print = '🖨️ Print QR' %}
+  {% set t_edit = '✏️ Edit' %}
 {% elif lang == 'ar' %}
   {% set t_title = '✅ نتيجة QR للرسائل SMS' %}
   {% set t_h1 = '✅ تم إنشاء QR للرسائل SMS!' %}
@@ -14,6 +18,10 @@
   {% set t_rec = 'المستلم:' %}
   {% set t_msg = 'الرسالة:' %}
   {% set t_open = '📱 فتح SMS' %}
+  {% set t_dyn = 'الرابط الديناميكي:' %}
+  {% set t_download = '⬇️ تنزيل QR' %}
+  {% set t_print = '🖨️ طباعة QR' %}
+  {% set t_edit = '✏️ تعديل' %}
 {% else %}
   {% set t_title = '✅ SMS-QR-Code Ergebnis' %}
   {% set t_h1 = '✅ SMS-QR-Code erstellt!' %}
@@ -21,11 +29,16 @@
   {% set t_rec = 'Empfänger:' %}
   {% set t_msg = 'Nachricht:' %}
   {% set t_open = '📱 SMS öffnen' %}
+  {% set t_dyn = 'Dynamischer Link:' %}
+  {% set t_download = '⬇️ QR herunterladen' %}
+  {% set t_print = '🖨️ QR drucken' %}
+  {% set t_edit = '✏️ Bearbeiten' %}
 {% endif %}
 {% block title %}{{ t_title }}{% endblock %}
 
 {% block content %}
-<section class="qr-result">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-result qr-result-unified">
   <h1>{{ t_h1 }}</h1>
   <p class="subtitle">{{ t_sub }}</p>
 
@@ -35,7 +48,18 @@
     {% if message %}
     <p><strong>{{ t_msg }}</strong> {{ message }}</p>
     {% endif %}
-    <a href="sms:{{ phone }}?body={{ message|urlencode }}" class="btn-link">{{ t_open }}</a>
+    {% if dynamic_url %}
+    <p class="dyn-link"><strong>{{ t_dyn }}</strong> <a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
+    {% endif %}
+
+    <div class="qr-actions">
+      <a href="{{ sms }}" class="btn-link">{{ t_open }}</a>
+      {% if qr and qr.slug %}
+      <a href="/qr/export/{{ qr.slug }}?format=png" class="btn-link">{{ t_download }}</a>
+      <button type="button" class="btn-link btn-btn" onclick="return printQrFromSelector('.qr-preview')">{{ t_print }}</button>
+      <a href="/qr/edit/{{ qr.slug }}" class="btn-link">{{ t_edit }}</a>
+      {% endif %}
+    </div>
   </div>
 </section>
 
@@ -66,5 +90,8 @@
   font-weight:600;
 }
 .btn-link:hover {background:linear-gradient(135deg,#0B1742,#1E3A8A);}
+.qr-actions { display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin-top:.9rem; }
+.btn-btn { border:none; cursor:pointer; }
+.dyn-link { margin-top:.6rem; font-size:.95rem; word-break:break-all; }
 </style>
 {% endblock %}

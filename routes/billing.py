@@ -18,6 +18,7 @@ from models.plan import Plan
 from models.user import User
 from routes.auth import get_current_user
 from utils.billing_access import is_billing_exempt_user
+from utils.app_url import resolve_app_base_url
 
 # ---------------------------------------------------------------------------
 # 🔧 Router & Stripe-Konfiguration
@@ -25,7 +26,7 @@ from utils.billing_access import is_billing_exempt_user
 router = APIRouter(prefix="/billing", tags=["Billing"])
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-STRIPE_DOMAIN = os.getenv("STRIPE_DOMAIN", "http://127.0.0.1:8000").rstrip("/")
+STRIPE_DOMAIN = os.getenv("STRIPE_DOMAIN", "").rstrip("/")
 WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
 PRICE_IDS: dict[str, str] = {
@@ -53,6 +54,12 @@ def _plan_by_name(db: Session, plan_name: str) -> Optional[Plan]:
     if not normalized:
         return None
     return db.query(Plan).filter(func.lower(Plan.name) == normalized).first()
+
+
+def _stripe_domain(request: Request) -> str:
+    if STRIPE_DOMAIN:
+        return STRIPE_DOMAIN
+    return resolve_app_base_url(request)
 
 
 def _plan_from_price_id(db: Session, price_id: str) -> Optional[Plan]:
@@ -251,6 +258,7 @@ def billing_upgrade(
         subscription_data["trial_period_days"] = free_months * 30
 
     try:
+        domain = _stripe_domain(request)
         session = stripe.checkout.Session.create(
             mode="subscription",
             customer_email=str(user.email),
@@ -264,8 +272,8 @@ def billing_upgrade(
             line_items=[line_item],
             subscription_data=subscription_data or None,
             allow_promotion_codes=True,
-            success_url=f"{STRIPE_DOMAIN}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{STRIPE_DOMAIN}/billing/cancelled",
+            success_url=f"{domain}/billing/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{domain}/billing/cancelled",
         )
         checkout_url = getattr(session, "url", None)
         if not isinstance(checkout_url, str):

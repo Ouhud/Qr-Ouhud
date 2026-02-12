@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% include "partials/qr_result_warnings.html" %}
 {% set lang = request.state.lang if request and request.state else 'de' %}
 {% if lang == 'en' %}
   {% set w_title = '✅ Wi-Fi QR code created!' %}
@@ -36,7 +37,7 @@
   {% set w_open = '🔓 Offenes Netzwerk' %}
   {% set w_print = '🖨️ QR-Code drucken' %}
 {% endif %}
-<section class="qr-result">
+<section class="qr-result qr-result-unified">
   <h1>{{ w_title }}</h1>
   <p class="subtitle">{{ w_sub }}</p>
 
@@ -53,7 +54,7 @@
       {% endif %}
     </div>
 
-    <a href="#" class="btn-link no-print" onclick="window.print()">{{ w_print }}</a>
+    <a href="#" class="btn-link no-print" onclick="return printQrFromSelector('.qr-preview')">{{ w_print }}</a>
   </div>
 </section>
 

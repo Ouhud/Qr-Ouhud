@@ -1,0 +1,16 @@
+{% set qr_obj = qr if qr is defined else None %}
+{% if qr_obj %}
+  {% set qr_data = qr_obj.get_data() if qr_obj.get_data else {} %}
+  {% set design = qr_data.design if qr_data and qr_data.design else {} %}
+  {% set warnings = design.warnings if design and design.warnings else [] %}
+  {% if warnings %}
+    <div class="qr-warning-box" style="max-width:900px;margin:0 auto 1rem auto;padding:.85rem 1rem;border-radius:12px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;">
+      <strong>Scan-Warnungen:</strong>
+      <ul style="margin:.45rem 0 0 1rem;">
+        {% for w in warnings %}
+          <li>{{ w }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endif %}

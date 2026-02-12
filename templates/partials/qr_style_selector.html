@@ -1,617 +1,755 @@
-{# templates/partials/qr_style_panel.html #}
 {% set lang = request.state.lang if request and request.state else 'de' %}
-{% if lang == 'en' %}
-  {% set q_panel_title = '🎨 QR Design & Output' %}
-  {% set q_panel_sub = 'Choose a style, customize colors, add a logo, and define output size.' %}
-  {% set q_styles_title = 'Styles' %}
-  {% set q_custom_title = '⚙️ Custom QR Design' %}
-  {% set q_custom_sub = 'Design your QR code to match your brand with colors, logo, and size.' %}
-  {% set q_fg = 'QR color (foreground)' %}
-  {% set q_bg = 'Background color' %}
-  {% set q_size = 'Size (px)' %}
-  {% set q_logo = 'Upload logo (optional)' %}
-  {% set q_submit_default = '✅ Create QR code' %}
-  {% set q_print = '🖨️ Print' %}
-  {% set q_extra_title = '✨ Advanced options' %}
-  {% set q_extra_sub = 'Enable dynamic QR codes so you can update content later without reprinting.' %}
-  {% set q_extra_toggle = 'Enable dynamic QR code' %}
-  {% set q_btn_select = 'Select' %}
-  {% set q_btn_selected = '✅ Selected' %}
+  {% if lang == 'en' %}
+  {% set t_title = 'Design System' %}
+  {% set t_sub = 'Use modern brand kits, scan-safe colors and live preview.' %}
+  {% set t_cat_classic = 'Classic' %}
+  {% set t_cat_modern = 'Modern' %}
+  {% set t_cat_premium = 'Premium' %}
+  {% set t_pick = 'Select' %}
+  {% set t_picked = 'Selected' %}
+  {% set t_form_title = 'Custom Controls' %}
+  {% set t_fg = 'Foreground color' %}
+  {% set t_bg = 'Background color' %}
+  {% set t_size = 'Size (px)' %}
+  {% set t_module = 'Module shape' %}
+  {% set t_eye = 'Eye style' %}
+  {% set t_module_help = 'Module = body pattern of the QR code' %}
+  {% set t_eye_help = 'Eye = 3 corner markers for scanner detection' %}
+  {% set t_module_tip_label = 'Scan tip' %}
+  {% set t_eye_tip_label = 'Scan tip' %}
+  {% set t_module_badge = 'Module' %}
+  {% set t_eye_badge = 'Eye' %}
+  {% set m_square = 'Classic' %}
+  {% set m_rounded = 'Modern Soft' %}
+  {% set m_soft = 'Soft Clean' %}
+  {% set m_dots = 'Creative Dots' %}
+  {% set m_squircle = 'Squircle Pro' %}
+  {% set m_thin = 'Thin Lines' %}
+  {% set e_square = 'Classic Eye' %}
+  {% set e_rounded = 'Rounded Eye' %}
+  {% set e_dots = 'Dot Eye' %}
+  {% set e_target = 'Target Pro' %}
+  {% set e_ring = 'Ring Focus' %}
+  {% set mt_square = 'Max reliability, best for print and small sizes.' %}
+  {% set mt_rounded = 'Balanced look and strong scan stability.' %}
+  {% set mt_dots = 'Creative style; use medium to high contrast.' %}
+  {% set mt_squircle = 'Modern premium look with good readability.' %}
+  {% set mt_thin = 'Only for large sizes and high contrast.' %}
+  {% set et_square = 'Most universal scanner compatibility.' %}
+  {% set et_rounded = 'Modern look with stable detection.' %}
+  {% set et_dots = 'Use with high contrast for reliable corner lock.' %}
+  {% set et_target = 'Strong focus corners, good for digital screens.' %}
+  {% set et_ring = 'Premium look; test on older camera phones.' %}
+  {% set t_logo = 'Logo upload' %}
+  {% set t_logo_scale = 'Logo max size (%)' %}
+  {% set t_logo_bg = 'Logo safety background' %}
+  {% set t_frame = 'Frame / sticker style' %}
+  {% set t_out = 'Output preset' %}
+  {% set t_fmt = 'Export format' %}
+  {% set t_prev = 'Live Preview' %}
+  {% set t_prev_before = 'Before' %}
+  {% set t_prev_after = 'After' %}
+  {% set t_surface = 'Preview surface' %}
+  {% set t_surface_light = 'Light' %}
+  {% set t_surface_dark = 'Dark' %}
+  {% set t_safe = 'Safe mode' %}
+  {% set t_safe_toggle = 'Enforce safe scan settings on server' %}
+  {% set t_low_contrast = 'Low contrast. Scanning may fail.' %}
+  {% set t_ok_contrast = 'Contrast looks good.' %}
+  {% set t_create = 'Create QR code' %}
+  {% set t_print = 'Print' %}
+  {% set t_dynamic = 'Enable dynamic QR code' %}
 {% elif lang == 'ar' %}
-  {% set q_panel_title = '🎨 تصميم QR والإخراج' %}
-  {% set q_panel_sub = 'اختر نمطًا، خصّص الألوان، أضف شعارًا، وحدد حجم الإخراج.' %}
-  {% set q_styles_title = 'الأنماط' %}
-  {% set q_custom_title = '⚙️ تصميم QR مخصص' %}
-  {% set q_custom_sub = 'صمّم رمز QR بما يناسب علامتك بالألوان والشعار والحجم.' %}
-  {% set q_fg = 'لون QR (الأمامي)' %}
-  {% set q_bg = 'لون الخلفية' %}
-  {% set q_size = 'الحجم (px)' %}
-  {% set q_logo = 'رفع شعار (اختياري)' %}
-  {% set q_submit_default = '✅ إنشاء رمز QR' %}
-  {% set q_print = '🖨️ طباعة' %}
-  {% set q_extra_title = '✨ خيارات متقدمة' %}
-  {% set q_extra_sub = 'فعّل QR الديناميكي لتعديل المحتوى لاحقًا بدون إعادة الطباعة.' %}
-  {% set q_extra_toggle = 'تفعيل QR ديناميكي' %}
-  {% set q_btn_select = 'اختيار' %}
-  {% set q_btn_selected = '✅ تم الاختيار' %}
+  {% set t_title = 'نظام التصميم' %}
+  {% set t_sub = 'استخدم حِزم علامة حديثة وألوان آمنة للمسح مع معاينة مباشرة.' %}
+  {% set t_cat_classic = 'كلاسيكي' %}
+  {% set t_cat_modern = 'حديث' %}
+  {% set t_cat_premium = 'مميز' %}
+  {% set t_pick = 'اختيار' %}
+  {% set t_picked = 'تم الاختيار' %}
+  {% set t_form_title = 'إعدادات مخصصة' %}
+  {% set t_fg = 'لون المقدمة' %}
+  {% set t_bg = 'لون الخلفية' %}
+  {% set t_size = 'الحجم (px)' %}
+  {% set t_module = 'شكل الوحدات' %}
+  {% set t_eye = 'نمط الزوايا' %}
+  {% set t_module_help = 'الوحدات = نمط جسم رمز QR' %}
+  {% set t_eye_help = 'العين = العلامات الثلاث في الزوايا للمسح' %}
+  {% set t_module_tip_label = 'نصيحة المسح' %}
+  {% set t_eye_tip_label = 'نصيحة المسح' %}
+  {% set t_module_badge = 'الوحدات' %}
+  {% set t_eye_badge = 'العين' %}
+  {% set m_square = 'كلاسيكي' %}
+  {% set m_rounded = 'حديث ناعم' %}
+  {% set m_soft = 'ناعم نظيف' %}
+  {% set m_dots = 'نقاط إبداعية' %}
+  {% set m_squircle = 'سكويركل برو' %}
+  {% set m_thin = 'خطوط رفيعة' %}
+  {% set e_square = 'عين كلاسيكية' %}
+  {% set e_rounded = 'عين مستديرة' %}
+  {% set e_dots = 'عين نقطية' %}
+  {% set e_target = 'هدف برو' %}
+  {% set e_ring = 'حلقة تركيز' %}
+  {% set mt_square = 'أفضل موثوقية، مناسب للطباعة والأحجام الصغيرة.' %}
+  {% set mt_rounded = 'مظهر متوازن وثبات جيد في المسح.' %}
+  {% set mt_dots = 'مظهر إبداعي، استخدم تباينًا متوسطًا إلى عالي.' %}
+  {% set mt_squircle = 'مظهر حديث ممتاز مع قراءة جيدة.' %}
+  {% set mt_thin = 'يفضل للأحجام الكبيرة والتباين العالي فقط.' %}
+  {% set et_square = 'الأكثر توافقًا مع أغلب الماسحات.' %}
+  {% set et_rounded = 'مظهر حديث مع ثبات جيد في الالتقاط.' %}
+  {% set et_dots = 'يفضل مع تباين عالٍ لضمان قفل الزوايا.' %}
+  {% set et_target = 'زوايا تركيز قوية ومناسب للشاشات.' %}
+  {% set et_ring = 'مظهر فاخر، اختبره على الهواتف القديمة.' %}
+  {% set t_logo = 'رفع الشعار' %}
+  {% set t_logo_scale = 'الحد الأقصى لحجم الشعار (%)' %}
+  {% set t_logo_bg = 'خلفية أمان للشعار' %}
+  {% set t_frame = 'نمط الإطار/الملصق' %}
+  {% set t_out = 'إعداد الإخراج' %}
+  {% set t_fmt = 'صيغة التصدير' %}
+  {% set t_prev = 'معاينة مباشرة' %}
+  {% set t_prev_before = 'قبل' %}
+  {% set t_prev_after = 'بعد' %}
+  {% set t_surface = 'سطح المعاينة' %}
+  {% set t_surface_light = 'فاتح' %}
+  {% set t_surface_dark = 'داكن' %}
+  {% set t_safe = 'وضع آمن' %}
+  {% set t_safe_toggle = 'فرض إعدادات مسح آمنة على الخادم' %}
+  {% set t_low_contrast = 'التباين منخفض وقد يفشل المسح.' %}
+  {% set t_ok_contrast = 'التباين جيد.' %}
+  {% set t_create = 'إنشاء رمز QR' %}
+  {% set t_print = 'طباعة' %}
+  {% set t_dynamic = 'تفعيل QR الديناميكي' %}
 {% else %}
-  {% set q_panel_title = '🎨 QR-Design & Ausgabe' %}
-  {% set q_panel_sub = 'Wähle ein Design, passe Farben an, setze ein Logo und lege die Ausgabegröße fest.' %}
-  {% set q_styles_title = 'Stile' %}
-  {% set q_custom_title = '⚙️ Individuelles QR-Code-Design' %}
-  {% set q_custom_sub = 'Gestalte deinen QR-Code nach deinen Vorstellungen – Farben, Logo und Größe perfekt auf deine Marke abgestimmt.' %}
-  {% set q_fg = 'QR-Farbe (Vordergrund)' %}
-  {% set q_bg = 'Hintergrundfarbe' %}
-  {% set q_size = 'Größe px' %}
-  {% set q_logo = 'Logo hochladen (optional)' %}
-  {% set q_submit_default = '✅ QR-Code erstellen' %}
-  {% set q_print = '🖨️ Drucken' %}
-  {% set q_extra_title = '✨ Erweiterte Optionen' %}
-  {% set q_extra_sub = 'Aktiviere dynamische QR-Codes, die du später anpassen kannst – ohne neue Drucke.' %}
-  {% set q_extra_toggle = 'Dynamischer QR-Code aktivieren' %}
-  {% set q_btn_select = 'Auswählen' %}
-  {% set q_btn_selected = '✅ Ausgewählt' %}
+  {% set t_title = 'Design System' %}
+  {% set t_sub = 'Nutze moderne Brand-Kits, scan-sichere Farben und Live-Vorschau.' %}
+  {% set t_cat_classic = 'Classic' %}
+  {% set t_cat_modern = 'Modern' %}
+  {% set t_cat_premium = 'Premium' %}
+  {% set t_pick = 'Auswählen' %}
+  {% set t_picked = 'Ausgewählt' %}
+  {% set t_form_title = 'Individuelle Optionen' %}
+  {% set t_fg = 'Vordergrundfarbe' %}
+  {% set t_bg = 'Hintergrundfarbe' %}
+  {% set t_size = 'Größe (px)' %}
+  {% set t_module = 'Modulform' %}
+  {% set t_eye = 'Eye-Style' %}
+  {% set t_module_help = 'Modul = Muster im QR-Innenbereich' %}
+  {% set t_eye_help = 'Auge = 3 Scan-Ecken für Erkennung' %}
+  {% set t_module_tip_label = 'Scan-Tipp' %}
+  {% set t_eye_tip_label = 'Scan-Tipp' %}
+  {% set t_module_badge = 'Modul' %}
+  {% set t_eye_badge = 'Auge' %}
+  {% set m_square = 'Klassisch' %}
+  {% set m_rounded = 'Modern Soft' %}
+  {% set m_soft = 'Soft Clean' %}
+  {% set m_dots = 'Kreative Punkte' %}
+  {% set m_squircle = 'Squircle Pro' %}
+  {% set m_thin = 'Feine Linien' %}
+  {% set e_square = 'Klassisches Auge' %}
+  {% set e_rounded = 'Rundes Auge' %}
+  {% set e_dots = 'Punkt-Auge' %}
+  {% set e_target = 'Target Pro' %}
+  {% set e_ring = 'Ring Fokus' %}
+  {% set mt_square = 'Maximale Zuverlässigkeit, ideal für Druck und kleine Größen.' %}
+  {% set mt_rounded = 'Ausgewogener Look mit stabiler Scan-Erkennung.' %}
+  {% set mt_dots = 'Kreativer Stil; mittleren bis hohen Kontrast nutzen.' %}
+  {% set mt_squircle = 'Moderner Premium-Look mit guter Lesbarkeit.' %}
+  {% set mt_thin = 'Nur für große Größen und hohen Kontrast.' %}
+  {% set et_square = 'Universellste Scanner-Kompatibilität.' %}
+  {% set et_rounded = 'Moderner Look mit stabiler Erkennung.' %}
+  {% set et_dots = 'Für sichere Eck-Erkennung hohen Kontrast verwenden.' %}
+  {% set et_target = 'Starke Fokus-Ecken, gut für digitale Displays.' %}
+  {% set et_ring = 'Premium-Look; auf älteren Kameras testen.' %}
+  {% set t_logo = 'Logo hochladen' %}
+  {% set t_logo_scale = 'Max. Logo-Größe (%)' %}
+  {% set t_logo_bg = 'Logo-Sicherheits-Hintergrund' %}
+  {% set t_frame = 'Rahmen-/Sticker-Stil' %}
+  {% set t_out = 'Ausgabe-Preset' %}
+  {% set t_fmt = 'Export-Format' %}
+  {% set t_prev = 'Live-Vorschau' %}
+  {% set t_prev_before = 'Vorher' %}
+  {% set t_prev_after = 'Nachher' %}
+  {% set t_surface = 'Vorschau-Hintergrund' %}
+  {% set t_surface_light = 'Hell' %}
+  {% set t_surface_dark = 'Dunkel' %}
+  {% set t_safe = 'Safe Mode' %}
+  {% set t_safe_toggle = 'Sichere Scan-Einstellungen serverseitig erzwingen' %}
+  {% set t_low_contrast = 'Kontrast zu niedrig. Scan kann fehlschlagen.' %}
+  {% set t_ok_contrast = 'Kontrast ist gut.' %}
+  {% set t_create = 'QR-Code erstellen' %}
+  {% set t_print = 'Drucken' %}
+  {% set t_dynamic = 'Dynamischen QR-Code aktivieren' %}
 {% endif %}
 
-<section class="qr-style-panel" aria-labelledby="qr-style-panel-title">
-  <h2 id="qr-style-panel-title" class="qrsp-title">
-    {{ q_panel_title }}
-  </h2>
-  <p class="qrsp-subtitle">
-    {{ q_panel_sub }}
-  </p>
+{% set styles = [
+  {"name":"Classic","key":"classic","img":"classic.png","desc":"High contrast, universal","cat":"classic","badge":"","module":"square","eye":"square"},
+  {"name":"Rounded","key":"rounded","img":"rounded.png","desc":"Soft corners","cat":"classic","badge":"","module":"rounded","eye":"rounded"},
+  {"name":"Dots","key":"dots","img":"dots.png","desc":"Playful pattern","cat":"classic","badge":"","module":"dots","eye":"square"},
+  {"name":"Mono Clean","key":"mono_clean","img":"soft.png","desc":"Pure black/white minimal","cat":"classic","badge":"New","module":"square","eye":"square"},
+  {"name":"Soft Modern","key":"soft","img":"soft.png","desc":"Clean and elegant","cat":"modern","badge":"","module":"soft","eye":"rounded"},
+  {"name":"Minimal Pro","key":"minimal_pro","img":"gradient.png","desc":"B2B minimal look","cat":"modern","badge":"Popular","module":"rounded","eye":"square"},
+  {"name":"Glass Modern","key":"glass_modern","img":"glass.png","desc":"Frosted glass style","cat":"modern","badge":"New","module":"rounded","eye":"rounded"},
+  {"name":"Neon Tech","key":"neon_tech","img":"futuristic.png","desc":"Tech glow accents","cat":"modern","badge":"New","module":"dots","eye":"target"},
+  {"name":"Premium","key":"premium","img":"premium.png","desc":"Gold luxury","cat":"premium","badge":"","module":"soft","eye":"rounded"},
+  {"name":"Dark Luxury","key":"dark_luxury","img":"dark.png","desc":"Dark + metallic contrast","cat":"premium","badge":"Popular","module":"square","eye":"ring"},
+  {"name":"Metallic","key":"metallic","img":"metallic.png","desc":"Steel finish","cat":"premium","badge":"","module":"square","eye":"square"},
+  {"name":"Ouhud Brand","key":"ouhud","img":"ouhud.png","desc":"Brand blue glow","cat":"premium","badge":"","module":"rounded","eye":"dots"}
+] %}
 
-  <!-- Hidden: STYLE-Key für Backend -->
+<section class="design-system" aria-label="QR Design System">
+  <header class="ds-head">
+    <h2>{{ t_title }}</h2>
+    <p>{{ t_sub }}</p>
+  </header>
+
   <input type="hidden" id="selected_style" name="style" value="{{ default_style|default('classic') }}">
 
-  <div class="qrsp-grid">
-    <!-- ========== Stil-Raster ========== -->
-    <div class="qrsp-card">
-      <h3 class="qrsp-card-title">{{ q_styles_title }}</h3>
-
-{% if lang == 'en' %}
-{% set styles = [
-  {"name":"Classic","key":"classic","img":"classic.png","desc":"Standard - high contrast and universal readability"},
-  {"name":"Rounded","key":"rounded","img":"rounded.png","desc":"Modern soft corners"},
-  {"name":"Dots","key":"dots","img":"dots.png","desc":"Creative dot pattern"},
-  {"name":"Soft Modern","key":"soft","img":"soft.png","desc":"Minimal and elegant"},
-  {"name":"Gradient","key":"gradient","img":"gradient.png","desc":"Color gradient"},
-  {"name":"Premium","key":"premium","img":"premium.png","desc":"Luxury gold style"},
-  {"name":"Neon","key":"neon","img":"neon.png","desc":"Glowing effect"},
-  {"name":"Dark Mode","key":"dark","img":"dark.png","desc":"Great for dark backgrounds"},
-  {"name":"Sunset","key":"sunset","img":"sunset.png","desc":"Orange to red"},
-  {"name":"Ocean","key":"ocean","img":"ocean.png","desc":"Blue gradient"},
-  {"name":"Forest","key":"forest","img":"forest.png","desc":"Natural green"},
-  {"name":"Rose Gold","key":"rose","img":"rose.png","desc":"Pink and gold"},
-  {"name":"3D Blue","key":"3d_pro","img":"3d_pro.png","desc":"Deep 3D metallic shine"},
-  {"name":"Metallic","key":"metallic","img":"metallic.png","desc":"Steel look"},
-  {"name":"Glass Effect","key":"glass","img":"glass.png","desc":"Glass style"},
-  {"name":"Futuristic","key":"futuristic","img":"futuristic.png","desc":"Neon lines"},
-  {"name":"Hologram","key":"holo","img":"holo.png","desc":"Hologram pastel"},
-  {"name":"Ouhud Brand","key":"ouhud","img":"ouhud.png","desc":"Ouhud blue with glow"}
-] %}
-{% elif lang == 'ar' %}
-{% set styles = [
-  {"name":"كلاسيكي","key":"classic","img":"classic.png","desc":"قياسي - تباين قوي وقراءة ممتازة"},
-  {"name":"حواف دائرية","key":"rounded","img":"rounded.png","desc":"زوايا ناعمة وعصرية"},
-  {"name":"نقاط","key":"dots","img":"dots.png","desc":"نمط نقاط إبداعي"},
-  {"name":"عصري ناعم","key":"soft","img":"soft.png","desc":"بسيط وأنيق"},
-  {"name":"تدرّج","key":"gradient","img":"gradient.png","desc":"تدرّج لوني"},
-  {"name":"بريميوم","key":"premium","img":"premium.png","desc":"تصميم ذهبي فاخر"},
-  {"name":"نيون","key":"neon","img":"neon.png","desc":"تأثير مضيء"},
-  {"name":"الوضع الداكن","key":"dark","img":"dark.png","desc":"مثالي للخلفيات الداكنة"},
-  {"name":"غروب","key":"sunset","img":"sunset.png","desc":"برتقالي إلى أحمر"},
-  {"name":"محيط","key":"ocean","img":"ocean.png","desc":"تدرّج أزرق"},
-  {"name":"غابة","key":"forest","img":"forest.png","desc":"أخضر طبيعي"},
-  {"name":"روز غولد","key":"rose","img":"rose.png","desc":"وردي وذهبي"},
-  {"name":"أزرق 3D","key":"3d_pro","img":"3d_pro.png","desc":"لمعة معدنية ثلاثية الأبعاد"},
-  {"name":"معدني","key":"metallic","img":"metallic.png","desc":"مظهر فولاذي"},
-  {"name":"تأثير زجاجي","key":"glass","img":"glass.png","desc":"مظهر الزجاج"},
-  {"name":"مستقبلي","key":"futuristic","img":"futuristic.png","desc":"خطوط نيون"},
-  {"name":"هولوغرام","key":"holo","img":"holo.png","desc":"ألوان هولوغرام باستيل"},
-  {"name":"هوية Ouhud","key":"ouhud","img":"ouhud.png","desc":"أزرق Ouhud مع توهج"}
-] %}
-{% else %}
-{% set styles = [
-  {"name":"Klassisch","key":"classic","img":"classic.png","desc":"Standard – kontrastreich und universell lesbar"},
-  {"name":"Abgerundet","key":"rounded","img":"rounded.png","desc":"Moderne, weiche Kanten"},
-  {"name":"Punkte","key":"dots","img":"dots.png","desc":"Kreatives Punktmuster"},
-  {"name":"Soft Modern","key":"soft","img":"soft.png","desc":"Minimal & elegant"},
-  {"name":"Gradient","key":"gradient","img":"gradient.png","desc":"Farbverlauf"},
-  {"name":"Premium","key":"premium","img":"premium.png","desc":"Luxuriöses Gold-Design"},
-  {"name":"Neon","key":"neon","img":"neon.png","desc":"Leuchtender Effekt"},
-  {"name":"Dark Mode","key":"dark","img":"dark.png","desc":"Perfekt für dunkle Hintergründe"},
-  {"name":"Sunset","key":"sunset","img":"sunset.png","desc":"Orange → Rot"},
-  {"name":"Ocean","key":"ocean","img":"ocean.png","desc":"Blauer Verlauf"},
-  {"name":"Forest","key":"forest","img":"forest.png","desc":"Natürliches Grün"},
-  {"name":"Rose Gold","key":"rose","img":"rose.png","desc":"Rosa & Gold"},
-  {"name":"3D Blau","key":"3d_pro","img":"3d_pro.png","desc":"Tiefer 3D-Metallglanz"},
-  {"name":"Metallisch","key":"metallic","img":"metallic.png","desc":"Stahl-Look"},
-  {"name":"Glas Effekt","key":"glass","img":"glass.png","desc":"Glas-Optik"},
-  {"name":"Futuristisch","key":"futuristic","img":"futuristic.png","desc":"Neonlinien"},
-  {"name":"Hologramm","key":"holo","img":"holo.png","desc":"Hologramm-Pastell"},
-  {"name":"Ouhud Brand","key":"ouhud","img":"ouhud.png","desc":"Ouhud Blue mit Glow"}
-] %}
-{% endif %}
-
-    <!-- === Style Grid === -->
-    <div class="style-grid">
-      {% for style in styles %}
-      <div class="style-card">
-        <div class="preview">
-          <img src="/static/style_previews/{{ style.img }}" alt="{{ style.name }}">
-        </div>
-        <h3>{{ style.name }}</h3>
-        <p class="desc">{{ style.desc }}</p>
-        <button type="button" class="btn primary style-btn" data-style="{{ style.key }}"
-                onclick="selectStyle(event, '{{ style.key }}')">{{ q_btn_select }}</button>
-      </div>
-      {% endfor %}
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- ✅ Professionelles Custom-Design Panel -->
-<section class="custom-design">
-  <div class="design-container">
-
-    <h2 class="section-title">
-      <span class="icon-gear">⚙️</span> {{ q_custom_title|replace('⚙️ ', '') }}
-    </h2>
-
-    <p class="section-subtitle">
-      {{ q_custom_sub }}
-    </p>
-
-    <div id="designForm">
-
-      <!-- GRID 2-spaltig -->
-      <div class="design-grid">
-
-              <div class="form-group">
-                <label>{{ q_fg }}</label>
-                <input type="color" id="fg_color" name="fg_color" value="#0d2a78" class="text-input"> 
-              </div>
-
-              <div class="form-group">
-                <label>{{ q_bg }}</label>
-                <input type="color" id="bg_color" name="bg_color" value="#ffffff" class="text-input">
-              </div>
-
-              <div class="form-group">
-                <label>{{ q_size }}</label>
-                <input type="number" id="qr_size" name="qr_size" min="200" max="1000" value="300" class="input-field text-input">
-              </div>
-
-              {% if show_logo_upload|default(true) %}
-              <div class="form-group">
-                <label>{{ q_logo }}</label>
-                <input type="file" id="logo" name="logo" accept="image/*" class="input-file">
-              </div>
-              {% endif %}
-
+  <div class="style-categories">
+    <div class="cat-block">
+      <h3>{{ t_cat_classic }}</h3>
+      <div class="style-grid">
+        {% for s in styles if s.cat == 'classic' %}
+          <article class="style-card" data-style="{{ s.key }}">
+            <div class="preview-wrap">
+              <img src="/static/style_previews/{{ s.img }}" alt="{{ s.name }}">
+              {% if s.badge %}<span class="badge">{{ s.badge }}</span>{% endif %}
             </div>
-
-      <!-- BUTTONS -->
-      {% if include_submit|default(true) %}
-      <div class="action-buttons">
-        <button type="submit" class="btn primary">
-          {{ submit_label|default(q_submit_default) }}
-        </button>
-
-        {% if include_print|default(true) %}
-        <button type="button" class="btn gray" onclick="printQR()">
-          {{ q_print }}
-        </button>
-        {% endif %}
+            <h4>{{ s.name }}</h4>
+            <p>{{ s.desc }}</p>
+            <button type="button" class="style-btn" data-style="{{ s.key }}">{{ t_pick }}</button>
+          </article>
+        {% endfor %}
       </div>
-      {% endif %}
+    </div>
 
-      <!-- ERWEITERTE OPTIONEN -->
-      <div class="extra-actions">
-        <h3>{{ q_extra_title }}</h3>
-        <p class="desc">
-          {{ q_extra_sub }}
-        </p>
-
-        <input type="hidden" id="dynamicQR" name="dynamicQR" value="1">
-        <label class="toggle" for="dynamicQR_toggle">
-          <input type="checkbox" id="dynamicQR_toggle" checked>
-          <span class="toggle-slider"></span>
-          <span class="toggle-label">{{ q_extra_toggle }}</span>
-        </label>
+    <div class="cat-block">
+      <h3>{{ t_cat_modern }}</h3>
+      <div class="style-grid">
+        {% for s in styles if s.cat == 'modern' %}
+          <article class="style-card" data-style="{{ s.key }}">
+            <div class="preview-wrap">
+              <img src="/static/style_previews/{{ s.img }}" alt="{{ s.name }}">
+              {% if s.badge %}<span class="badge">{{ s.badge }}</span>{% endif %}
+            </div>
+            <h4>{{ s.name }}</h4>
+            <p>{{ s.desc }}</p>
+            <button type="button" class="style-btn" data-style="{{ s.key }}">{{ t_pick }}</button>
+          </article>
+        {% endfor %}
       </div>
+    </div>
 
+    <div class="cat-block">
+      <h3>{{ t_cat_premium }}</h3>
+      <div class="style-grid">
+        {% for s in styles if s.cat == 'premium' %}
+          <article class="style-card" data-style="{{ s.key }}">
+            <div class="preview-wrap">
+              <img src="/static/style_previews/{{ s.img }}" alt="{{ s.name }}">
+              {% if s.badge %}<span class="badge">{{ s.badge }}</span>{% endif %}
+            </div>
+            <h4>{{ s.name }}</h4>
+            <p>{{ s.desc }}</p>
+            <button type="button" class="style-btn" data-style="{{ s.key }}">{{ t_pick }}</button>
+          </article>
+        {% endfor %}
+      </div>
     </div>
   </div>
+
+  <section class="controls">
+    <h3>{{ t_form_title }}</h3>
+
+    <div class="preview-toolbar">
+      <div class="seg" id="seg-compare">
+        <button type="button" class="seg-btn active" data-compare="after">{{ t_prev_after }}</button>
+        <button type="button" class="seg-btn" data-compare="before">{{ t_prev_before }}</button>
+      </div>
+      <div class="seg" id="seg-surface">
+        <span>{{ t_surface }}</span>
+        <button type="button" class="seg-btn active" data-surface="light">{{ t_surface_light }}</button>
+        <button type="button" class="seg-btn" data-surface="dark">{{ t_surface_dark }}</button>
+      </div>
+    </div>
+
+    <div class="preview-stage light" id="preview-stage">
+      <p class="preview-title">{{ t_prev }}</p>
+      <div class="qr-preview" id="qr-preview">
+        <div class="eye tl"></div>
+        <div class="eye tr"></div>
+        <div class="eye bl"></div>
+        <div class="logo-dot" id="logo-dot"></div>
+      </div>
+      <div class="contrast-row">
+        <button type="button" class="safe-btn" id="safe-btn">{{ t_safe }}</button>
+        <small id="contrast-text">{{ t_ok_contrast }}</small>
+      </div>
+    </div>
+
+    <div class="control-grid">
+      <label>{{ t_fg }}
+        <input type="color" id="fg_color" name="fg_color" value="{{ default_fg|default('#0d2a78') }}">
+      </label>
+      <label>{{ t_bg }}
+        <input type="color" id="bg_color" name="bg_color" value="{{ default_bg|default('#ffffff') }}">
+      </label>
+      <label>{{ t_size }}
+        <input type="number" id="qr_size" name="qr_size" min="200" max="2000" value="{{ default_qr_size|default(600) }}">
+      </label>
+      <input type="hidden" id="module_style" name="module_style" value="{{ default_module_style|default('square') }}">
+      <input type="hidden" id="eye_style" name="eye_style" value="{{ default_eye_style|default('square') }}">
+      {% if show_logo_upload|default(true) %}
+      <label>{{ t_logo }}
+        <input type="file" id="logo" name="logo" accept="image/*">
+      </label>
+      {% endif %}
+      <label>{{ t_logo_scale }}
+        <input type="range" id="logo_scale" name="logo_scale" min="8" max="20" value="{{ default_logo_scale|default(20) }}">
+      </label>
+      <label>{{ t_logo_bg }}
+        <select id="logo_bg_mode" name="logo_bg_mode">
+          <option value="auto-white" {% if default_logo_bg_mode|default('auto-white') == 'auto-white' %}selected{% endif %}>auto-white</option>
+          <option value="blur" {% if default_logo_bg_mode == 'blur' %}selected{% endif %}>blur</option>
+          <option value="none" {% if default_logo_bg_mode == 'none' %}selected{% endif %}>none</option>
+        </select>
+      </label>
+      <label>{{ t_frame }}
+        <select id="frame_style" name="frame_style">
+          <option value="none" {% if default_frame_style|default('none') == 'none' %}selected{% endif %}>none</option>
+          <option value="pill" {% if default_frame_style == 'pill' %}selected{% endif %}>pill badge</option>
+          <option value="corner" {% if default_frame_style == 'corner' %}selected{% endif %}>corner label</option>
+          <option value="floating" {% if default_frame_style == 'floating' %}selected{% endif %}>floating cta</option>
+        </select>
+      </label>
+      <label>{{ t_out }}
+        <select id="output_preset" name="output_preset">
+          <option value="web" {% if default_output_preset|default('web') == 'web' %}selected{% endif %}>web</option>
+          <option value="print" {% if default_output_preset == 'print' %}selected{% endif %}>print</option>
+          <option value="sticker" {% if default_output_preset == 'sticker' %}selected{% endif %}>sticker</option>
+          <option value="poster" {% if default_output_preset == 'poster' %}selected{% endif %}>poster</option>
+        </select>
+      </label>
+      <label>{{ t_fmt }}
+        <select id="export_format" name="export_format">
+          <option value="png" {% if default_export_format|default('png') == 'png' %}selected{% endif %}>PNG</option>
+          <option value="svg" {% if default_export_format == 'svg' %}selected{% endif %}>SVG</option>
+          <option value="pdf" {% if default_export_format == 'pdf' %}selected{% endif %}>PDF</option>
+          <option value="zip" {% if default_export_format == 'zip' %}selected{% endif %}>ZIP (PNG+SVG+PDF)</option>
+        </select>
+      </label>
+    </div>
+
+    <input type="hidden" id="dynamicQR" name="dynamicQR" value="1">
+    <input type="hidden" id="safe_mode" name="safe_mode" value="{{ default_safe_mode|default('0') }}">
+    <div class="toggle-stack">
+      <label class="toggle-line" for="dynamicQR_toggle">
+        <span class="toggle-text">{{ t_dynamic }}</span>
+        <span class="switch">
+          <input type="checkbox" id="dynamicQR_toggle" checked>
+          <span class="slider"></span>
+        </span>
+      </label>
+      <label class="toggle-line" for="safe_mode_toggle">
+        <span class="toggle-text">{{ t_safe_toggle }}</span>
+        <span class="switch">
+          <input type="checkbox" id="safe_mode_toggle" {% if default_safe_mode|default('0') in ['1','true','True'] %}checked{% endif %}>
+          <span class="slider"></span>
+        </span>
+      </label>
+    </div>
+
+    {% if include_submit|default(true) %}
+    <div class="action-buttons">
+      <button type="submit" class="main-btn">{{ submit_label|default(t_create) }}</button>
+      {% if include_print|default(true) %}
+      <button type="button" class="ghost-btn" onclick="return printQrFromSelector(`img[src*='/static/generated_qr/'], img[src^='data:image/png;base64,']`)">{{ t_print }}</button>
+      {% endif %}
+    </div>
+    {% endif %}
+  </section>
 </section>
 
 <style>
-:root {
-  --primary: #0d2a78;
-  --primary-dark: #0b1f5e;
-  --light: #f8fafc;
-  --text: #1e293b;
-  --muted: #64748b;
-}
-
-/* === Layout & Farben === */
-.qr-style-section {
-  background: var(--light);
-  padding: 4rem 1.5rem;
-  text-align: center;
-}
-.qr-style-section h1 {
-  color: var(--primary);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: .5rem;
-}
-.qr-style-section .subtitle {
-  color: var(--muted);
-  margin-bottom: 2.5rem;
-  font-size: 1rem;
-}
-
-/* === Style Grid === */
-.qr-style-panel .style-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  max-width: 950px;
-  margin: 0 auto;
-}
-
-/* ✅ EINHEITLICHE KARTENGRÖSSE */
-.qr-style-panel .style-card {
-  background: #fff;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 10px rgba(13, 42, 120, 0.08);
-  text-align: center;
-  transition: all 0.25s ease;
-
-  /* Wichtig */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 340px; /* gleiche Höhe für alle Karten */
-}
-.qr-style-panel .style-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(13, 42, 120, 0.15);
-}
-
-/* ✅ Einheitliche Bildhöhe */
-.qr-style-panel .style-card .preview img {
-  width: 100%;
-  height: 140px;
-  object-fit: contain;
-  border-radius: .6rem;
-  margin-bottom: .8rem;
-}
-
-/* ✅ Einheitliche Text-Höhen (Titel & Beschreibung) */
-.qr-style-panel .style-card h3 {
-  color: var(--primary);
-  font-weight: 600;
-  min-height: 28px; /* gleiche Höhe */
-}
-.qr-style-panel .style-card .desc {
-  color: #475569;
-  font-size: .9rem;
-  margin-bottom: 1rem;
-  min-height: 38px; /* gleiche Höhe */
-}
-
-/* ✅ Button immer unten */
-.qr-style-panel .style-card .btn {
-  margin-top: auto;
-}
-
-/* === Formular & Buttons === */
-.custom-design {
-  background: #fff;
-  border-radius: 1.4rem;
-  padding: 2.2rem 2.2rem 1.2rem;
-  max-width: 940px;
-  margin: 2rem auto 0.75rem;
-  box-shadow: 0 10px 35px rgba(13, 42, 120, 0.08);
-  text-align: center;
-}
-.custom-design:last-of-type {
-  margin-bottom: 0;
-}
-.custom-design .design-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-  text-align: left;
-  margin-bottom: 2rem;
-  align-items: start;
-}
-.custom-design .design-grid .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  min-width: 0;
-}
-.custom-design .design-grid label {
-  display: block;
-  font-weight: 600;
-  color: var(--primary);
-  margin-bottom: 0;
-}
-.color-input,
-.text-input,
-.input-field,
-.input-file
-{
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  min-height: 56px;
-  height: 56px;               /* Einheitliche Höhe für alle Felder */
-  padding: 10px 12px;
-  border: 1.5px solid #c7d2fe;
-  border-radius: 10px;
-  background: #ffffff;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.color-input:focus,
-.input-file:focus,
-.text-input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(13, 42, 120, 0.15);
-  outline: none;
-}
-
-
-/* Spezielle Anpassung für das Datei-Feld (Logo hochladen) */
-.input-file {
-  padding: 7px 10px;
-  line-height: normal;
-}
-.input-file::file-selector-button {
-  border: 1px solid #93c5fd;
-  background: #eff6ff;
-  color: #1e3a8a;
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-right: 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.input-file::-webkit-file-upload-button {
-  border: 1px solid #93c5fd;
-  background: #eff6ff;
-  color: #1e3a8a;
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-right: 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
-input[type="color"].text-input {
-  -webkit-appearance: none;
-  appearance: none;
-  padding: 4px;
-  cursor: pointer;
-}
-
-/* Spezielle Anpassung für das Zahlenfeld (Größe) */
-.input-field {
-  padding: 0 12px;
-}
-
-
-/* === Buttons === */
-.custom-design .action-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-}
-.custom-design .btn,
-.qr-style-panel .btn {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 320px;
-  height: 52px;
-  border-radius: 0.9rem;
-  font-weight: 600;
-  border: 2px solid var(--primary);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-.custom-design .btn.primary,
-.qr-style-panel .btn.primary { 
-  background: var(--primary); 
-  color: #fff; 
-}
-.custom-design .btn.primary:hover,
-.qr-style-panel .btn.primary:hover { 
-  background: var(--primary-dark); 
-  transform: translateY(-2px); 
-}
-.qr-style-panel .style-btn.active {
-  background: var(--primary-dark);
-  color: #fff;
-}
-.custom-design .btn.edit,
-.custom-design .btn.secondary,
-.qr-style-panel .btn.edit,
-.qr-style-panel .btn.secondary { 
-  background: var(--primary); 
-  color: #fff; 
-}
-.custom-design .btn.edit:hover,
-.custom-design .btn.secondary:hover,
-.qr-style-panel .btn.edit:hover,
-.qr-style-panel .btn.secondary:hover { 
-  background: var(--primary-dark); 
-  color: #fff; 
-}
-
-.custom-design .extra-actions {
-  margin-top: 1.25rem;
-  margin-bottom: 0;
-  border: 1px solid #dbeafe;
-  border-radius: 14px;
-  background: #f8fbff;
-  padding: 0.9rem;
-  text-align: left;
-}
-.custom-design .extra-actions h3 {
-  margin: 0 0 0.35rem;
-  color: #0d2a78;
-}
-.custom-design .extra-actions .desc {
-  margin: 0 0 0.8rem;
-  color: #475569;
-}
-.custom-design .toggle {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.6rem;
-  position: relative;
-  cursor: pointer;
-}
-.custom-design .toggle input[type="checkbox"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-}
-.custom-design .toggle-slider {
-  width: 46px;
-  height: 26px;
-  border-radius: 999px;
-  background: #cbd5e1;
-  position: relative;
-  transition: background 0.2s ease;
-}
-.custom-design .toggle-slider::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #fff;
-  top: 3px;
-  left: 3px;
-  transition: transform 0.2s ease;
-  box-shadow: 0 1px 4px rgba(2, 6, 23, 0.25);
-}
-.custom-design .toggle input[type="checkbox"]:checked + .toggle-slider {
-  background: #2563eb;
-}
-.custom-design .toggle input[type="checkbox"]:checked + .toggle-slider::after {
-  transform: translateX(20px);
-}
-.custom-design .toggle-label {
-  font-weight: 600;
-  color: #1e293b;
-}
-
-
-/* Zahl-Pfeile entfernen (Chrome, Edge, Safari) */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Zahl-Pfeile in Firefox entfernen */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-/* Responsive */
-@media (max-width: 650px) {
-  .custom-design .design-grid { grid-template-columns: 1fr; }
-  .qr-style-panel .style-card { height: 350px; }
-  .custom-design .btn,
-  .qr-style-panel .btn { max-width: 100%; }
-  .custom-design {
-    padding: 1.4rem 1rem 0.9rem;
-    margin: 1.2rem auto 0.5rem;
-  }
+.design-system { margin: 1rem 0 0; }
+.ds-head h2 { margin: 0; color: #0d2a78; font-size: 1.4rem; }
+.ds-head p { margin: .4rem 0 1rem; color: #475569; }
+.style-categories { display: grid; gap: 1rem; }
+.cat-block { background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%); border: 1px solid #dbeafe; border-radius: 16px; padding: 1rem; }
+.cat-block h3 { margin: 0 0 .8rem; color: #0f172a; font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; }
+.style-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .9rem; }
+.style-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: .8rem; display: grid; gap: .45rem; box-shadow: 0 6px 18px rgba(15, 23, 42, .06); }
+.style-card.active { border-color: #1d4ed8; box-shadow: 0 8px 22px rgba(29, 78, 216, .25); }
+.preview-wrap { position: relative; border-radius: 10px; overflow: hidden; background: #f8fafc; }
+.preview-wrap img { width: 100%; height: 120px; object-fit: contain; display: block; }
+.badge { position: absolute; top: 8px; right: 8px; background: #0d2a78; color: #fff; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; }
+.style-card h4 { margin: 0; color: #0f172a; font-size: .95rem; }
+.style-card p { margin: 0; color: #64748b; min-height: 34px; font-size: .84rem; }
+.style-btn { width: 100%; border: 1px solid #2563eb; background: #fff; color: #1d4ed8; border-radius: 10px; padding: .45rem .7rem; font-weight: 700; cursor: pointer; }
+.style-btn.active { background: #2563eb; color: #fff; }
+.controls { margin-top: 1rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1rem; }
+.controls h3 { margin: 0 0 .8rem; color: #0d2a78; }
+.preview-toolbar { display: flex; gap: .8rem; flex-wrap: wrap; justify-content: space-between; margin-bottom: .8rem; }
+.seg { display: flex; align-items: center; gap: .35rem; }
+.seg span { font-size: .85rem; color: #334155; }
+.seg-btn { border: 1px solid #cbd5e1; background: #fff; color: #1e293b; border-radius: 999px; padding: .25rem .65rem; font-size: .8rem; cursor: pointer; }
+.seg-btn.active { background: #0d2a78; color: #fff; border-color: #0d2a78; }
+.preview-stage { border: 1px solid #dbeafe; border-radius: 14px; padding: .8rem; margin-bottom: .9rem; background: #f8fafc; }
+.preview-stage.dark { background: radial-gradient(circle at 30% 30%, #1e293b, #020617); }
+.preview-title { margin: 0 0 .55rem; font-size: .82rem; color: #475569; }
+.qr-preview { position: relative; width: 180px; height: 180px; margin: 0 auto; border-radius: 10px; background: #fff; border: 8px solid #fff; box-shadow: 0 10px 24px rgba(15, 23, 42, .2); background-image: repeating-radial-gradient(circle at 50% 50%, rgba(0,0,0,.9) 0 2px, transparent 2px 8px); }
+.eye { position: absolute; width: 34px; height: 34px; border: 6px solid #0d2a78; background: transparent; }
+.eye.tl { top: 12px; left: 12px; }
+.eye.tr { top: 12px; right: 12px; }
+.eye.bl { bottom: 12px; left: 12px; }
+.logo-dot { position: absolute; inset: 0; margin: auto; width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,.88); border: 1px solid rgba(0,0,0,.12); }
+.contrast-row { margin-top: .6rem; display: flex; justify-content: center; align-items: center; gap: .6rem; }
+.safe-btn { border: 1px solid #f59e0b; background: #fffbeb; color: #92400e; border-radius: 8px; padding: .3rem .55rem; font-weight: 700; cursor: pointer; }
+#contrast-text.warn { color: #b91c1c; font-weight: 700; }
+#contrast-text.ok { color: #15803d; font-weight: 700; }
+.control-grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.control-grid label { display: grid; gap: .3rem; color: #0f172a; font-weight: 600; font-size: .9rem; }
+.control-grid input,
+.control-grid select { height: 44px; border-radius: 10px; border: 1px solid #cbd5e1; padding: .4rem .6rem; background: #fff; }
+.control-grid .hint { font-size: .76rem; color: #64748b; font-weight: 500; }
+.control-grid .tip { font-size: .76rem; color: #0d2a78; font-weight: 700; }
+.toggle-stack { margin-top: .9rem; display:grid; gap:.55rem; }
+.toggle-line { display:flex; align-items:center; justify-content:space-between; gap:.8rem; font-weight:600; color:#0f172a; padding:.6rem .7rem; border:1px solid #dbeafe; border-radius:12px; background:#f8fbff; cursor:pointer; }
+.toggle-text { font-size:.92rem; line-height:1.25; }
+.switch { position:relative; width:54px; height:30px; flex:0 0 auto; }
+.switch input { opacity:0; width:0; height:0; position:absolute; }
+.slider { position:absolute; inset:0; border-radius:999px; background:#cbd5e1; transition:.2s ease; }
+.slider::before { content:""; position:absolute; width:24px; height:24px; left:3px; top:3px; background:#fff; border-radius:999px; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:.2s ease; }
+.switch input:checked + .slider { background:#2563eb; }
+.switch input:checked + .slider::before { transform:translateX(24px); }
+.action-buttons { margin-top: 1rem; display: flex; gap: .6rem; flex-wrap: wrap; }
+.main-btn,.ghost-btn { min-height: 44px; padding: .55rem .9rem; border-radius: 10px; cursor: pointer; font-weight: 700; }
+.main-btn { border: 1px solid #1d4ed8; background: #2563eb; color: #fff; }
+.ghost-btn { border: 1px solid #cbd5e1; background: #fff; color: #1e293b; }
+@media (max-width: 900px) {
+  .style-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .qr-preview { width: 160px; height: 160px; }
 }
 </style>
+
 <script>
-const STYLE_BTN_SELECT_TEXT = {{ q_btn_select | tojson }};
-const STYLE_BTN_SELECTED_TEXT = {{ q_btn_selected | tojson }};
+(() => {
+  const pickText = {{ t_pick | tojson }};
+  const pickedText = {{ t_picked | tojson }};
+  const lowContrastText = {{ t_low_contrast | tojson }};
+  const okContrastText = {{ t_ok_contrast | tojson }};
 
-if (!window.printQR) {
-  window.printQR = function () {
-    window.print();
+  const styleInput = document.getElementById('selected_style');
+  const styleCards = Array.from(document.querySelectorAll('.style-card'));
+  const styleBtns = Array.from(document.querySelectorAll('.style-btn'));
+  const fg = document.getElementById('fg_color');
+  const bg = document.getElementById('bg_color');
+  const moduleStyle = document.getElementById('module_style');
+  const eyeStyle = document.getElementById('eye_style');
+  const stage = document.getElementById('preview-stage');
+  const preview = document.getElementById('qr-preview');
+  const eyes = Array.from(document.querySelectorAll('.qr-preview .eye'));
+  const contrastText = document.getElementById('contrast-text');
+  const safeBtn = document.getElementById('safe-btn');
+  const compareButtons = Array.from(document.querySelectorAll('[data-compare]'));
+  const surfaceButtons = Array.from(document.querySelectorAll('[data-surface]'));
+  const dynamicHidden = document.getElementById('dynamicQR');
+  const dynamicToggle = document.getElementById('dynamicQR_toggle');
+  const safeHidden = document.getElementById('safe_mode');
+  const safeToggle = document.getElementById('safe_mode_toggle');
+  const frameStyle = document.getElementById('frame_style');
+  const moduleTip = document.getElementById('module-tip');
+  const eyeTip = document.getElementById('eye-tip');
+  const moduleChoiceBtns = Array.from(document.querySelectorAll('[data-module-choice]'));
+  const eyeChoiceBtns = Array.from(document.querySelectorAll('[data-eye-choice]'));
+  const moduleTipLabel = {{ t_module_tip_label | tojson }};
+  const eyeTipLabel = {{ t_eye_tip_label | tojson }};
+
+  const STYLE_PRESETS = {
+    classic: { fg: "#000000", bg: "#ffffff", module: "square", eye: "square" },
+    rounded: { fg: "#0d2a78", bg: "#f8fafc", module: "rounded", eye: "rounded" },
+    dots: { fg: "#2563eb", bg: "#e0e7ff", module: "dots", eye: "square" },
+    mono_clean: { fg: "#000000", bg: "#ffffff", module: "square", eye: "square" },
+    soft: { fg: "#4f46e5", bg: "#eef2ff", module: "soft", eye: "rounded" },
+    minimal_pro: { fg: "#0f172a", bg: "#ffffff", module: "rounded", eye: "square" },
+    glass_modern: { fg: "#1d4ed8", bg: "#f8fafc", module: "rounded", eye: "rounded" },
+    neon_tech: { fg: "#22d3ee", bg: "#020617", module: "dots", eye: "target" },
+    premium: { fg: "#d4af37", bg: "#fffbea", module: "soft", eye: "rounded" },
+    dark_luxury: { fg: "#f8fafc", bg: "#0b1020", module: "square", eye: "ring" },
+    metallic: { fg: "#5f5f5f", bg: "#f9f9f9", module: "square", eye: "square" },
+    ouhud: { fg: "#0d2a78", bg: "#ffffff", module: "rounded", eye: "dots" },
   };
-}
+  const STYLE_ALIASES = {
+    modern: "rounded",
+    neon: "neon_tech",
+    dark: "dark_luxury",
+    glass: "glass_modern",
+    gradient: "minimal_pro",
+    sunset: "premium",
+    ocean: "glass_modern",
+    forest: "minimal_pro",
+    rose: "premium",
+    futuristic: "neon_tech",
+    holo: "glass_modern",
+    "3d_pro": "metallic",
+  };
+  const MODULE_TIPS = {
+    square: {{ mt_square | tojson }},
+    rounded: {{ mt_rounded | tojson }},
+    soft: {{ mt_rounded | tojson }},
+    dots: {{ mt_dots | tojson }},
+    squircle: {{ mt_squircle | tojson }},
+    "thin-line": {{ mt_thin | tojson }},
+  };
+  const EYE_TIPS = {
+    square: {{ et_square | tojson }},
+    rounded: {{ et_rounded | tojson }},
+    dots: {{ et_dots | tojson }},
+    target: {{ et_target | tojson }},
+    ring: {{ et_ring | tojson }},
+  };
 
-if (!window.selectStyle) {
-  window.selectStyle = function (event, styleName) {
-    const hidden = document.getElementById("selected_style");
-    if (hidden) hidden.value = styleName;
-
-    const legacy = document.getElementById("selectedStyle");
-    if (legacy) legacy.value = styleName;
-
-    document.querySelectorAll(".style-btn").forEach((btn) => {
-      btn.classList.remove("active");
-      if (btn.dataset && btn.dataset.style) {
-        btn.textContent = STYLE_BTN_SELECT_TEXT;
-      }
-    });
-
-    const target =
-      (event && event.currentTarget) ||
-      document.querySelector(`.style-btn[data-style="${styleName}"]`);
-    if (target) {
-      target.classList.add("active");
-      target.textContent = STYLE_BTN_SELECTED_TEXT;
+  function updateTips() {
+    if (moduleTip && moduleStyle) {
+      moduleTip.textContent = `${moduleTipLabel}: ${MODULE_TIPS[moduleStyle.value] || '-'}`;
     }
-  };
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const hidden = document.getElementById("selected_style");
-  if (hidden && hidden.value) {
-    const btn = document.querySelector(
-      `.style-btn[data-style="${hidden.value}"]`
-    );
-    if (btn && !btn.classList.contains("active")) {
-      btn.classList.add("active");
-      btn.textContent = STYLE_BTN_SELECTED_TEXT;
+    if (eyeTip && eyeStyle) {
+      eyeTip.textContent = `${eyeTipLabel}: ${EYE_TIPS[eyeStyle.value] || '-'}`;
     }
   }
 
-  const dynamicHidden = document.getElementById("dynamicQR");
-  const dynamicToggle = document.getElementById("dynamicQR_toggle");
-  if (dynamicHidden && dynamicToggle) {
-    dynamicHidden.value = dynamicToggle.checked ? "1" : "0";
-    dynamicToggle.addEventListener("change", () => {
-      const mainScroller = document.querySelector("main.main-content");
-      const pageY = window.scrollY;
-      const mainY = mainScroller ? mainScroller.scrollTop : 0;
-      dynamicHidden.value = dynamicToggle.checked ? "1" : "0";
-      requestAnimationFrame(() => {
-        if (mainScroller) {
-          mainScroller.scrollTop = mainY;
+  function updateChoiceButtons() {
+    const mv = moduleStyle ? moduleStyle.value : '';
+    const ev = eyeStyle ? eyeStyle.value : '';
+    moduleChoiceBtns.forEach((b) => b.classList.toggle('active', b.dataset.moduleChoice === mv));
+    eyeChoiceBtns.forEach((b) => b.classList.toggle('active', b.dataset.eyeChoice === ev));
+  }
+
+  function hexToRgb(hex) {
+    const raw = (hex || '').replace('#', '');
+    if (raw.length !== 6) return { r: 0, g: 0, b: 0 };
+    return {
+      r: parseInt(raw.substring(0, 2), 16),
+      g: parseInt(raw.substring(2, 4), 16),
+      b: parseInt(raw.substring(4, 6), 16),
+    };
+  }
+
+  function relativeLuminance({ r, g, b }) {
+    const f = (v) => {
+      const x = v / 255;
+      return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  }
+
+  function contrastRatio(c1, c2) {
+    const l1 = relativeLuminance(c1);
+    const l2 = relativeLuminance(c2);
+    const light = Math.max(l1, l2);
+    const dark = Math.min(l1, l2);
+    return (light + 0.05) / (dark + 0.05);
+  }
+
+  function applyPreview() {
+    if (!fg || !bg || !preview) return;
+    const fgVal = fg.value || '#0d2a78';
+    const bgVal = bg.value || '#ffffff';
+
+    if (!preview.dataset.compare || preview.dataset.compare === 'after') {
+      preview.style.backgroundColor = bgVal;
+      preview.style.backgroundImage = `repeating-radial-gradient(circle at 50% 50%, ${fgVal} 0 2px, transparent 2px 8px)`;
+      eyes.forEach((e) => {
+        e.style.borderColor = fgVal;
+        e.style.background = 'transparent';
+        e.style.boxShadow = 'none';
+        const eyeVal = eyeStyle ? eyeStyle.value : 'square';
+        if (eyeVal === 'rounded') {
+          e.style.borderRadius = '12px';
+          e.style.borderWidth = '6px';
+        } else if (eyeVal === 'ring') {
+          e.style.borderRadius = '999px';
+          e.style.borderWidth = '4px';
+        } else if (eyeVal === 'target') {
+          e.style.borderRadius = '8px';
+          e.style.borderWidth = '4px';
+          e.style.boxShadow = `inset 0 0 0 6px ${bgVal}, inset 0 0 0 10px ${fgVal}`;
+        } else if (eyeVal === 'dots') {
+          e.style.borderRadius = '6px';
+          e.style.borderWidth = '4px';
+          e.style.background = `radial-gradient(circle, ${fgVal} 0 18%, transparent 19%)`;
+          e.style.boxShadow = `inset 0 0 0 6px ${bgVal}`;
         } else {
-          window.scrollTo(0, pageY);
+          e.style.borderRadius = '0';
+          e.style.borderWidth = '6px';
         }
       });
+    } else {
+      preview.style.backgroundColor = '#ffffff';
+      preview.style.backgroundImage = 'repeating-radial-gradient(circle at 50% 50%, #0d2a78 0 2px, transparent 2px 8px)';
+      eyes.forEach((e) => {
+        e.style.borderColor = '#0d2a78';
+        e.style.background = 'transparent';
+        e.style.boxShadow = 'none';
+        e.style.borderWidth = '6px';
+        e.style.borderRadius = '0';
+      });
+    }
+
+    if (moduleStyle) {
+      const map = {
+        'square': '0',
+        'rounded': '8px',
+        'dots': '999px',
+        'squircle': '16px',
+        'thin-line': '2px',
+      };
+      const radius = map[moduleStyle.value] || '0';
+      preview.style.borderRadius = radius;
+      if (moduleStyle.value === 'thin-line') {
+        preview.style.backgroundImage = `repeating-linear-gradient(0deg, transparent 0 7px, ${fgVal} 7px 8px), repeating-linear-gradient(90deg, transparent 0 7px, ${fgVal} 7px 8px)`;
+      }
+    }
+
+    const ratio = contrastRatio(hexToRgb(fgVal), hexToRgb(bgVal));
+    if (contrastText) {
+      if (ratio < 4.5) {
+        contrastText.textContent = `${lowContrastText} (${ratio.toFixed(2)}:1)`;
+        contrastText.classList.remove('ok');
+        contrastText.classList.add('warn');
+      } else {
+        contrastText.textContent = `${okContrastText} (${ratio.toFixed(2)}:1)`;
+        contrastText.classList.remove('warn');
+        contrastText.classList.add('ok');
+      }
+    }
+  }
+
+  function applyPreset(styleKey) {
+    const preset = STYLE_PRESETS[styleKey];
+    if (!preset) return;
+    if (fg) fg.value = preset.fg;
+    if (bg) bg.value = preset.bg;
+    if (moduleStyle) moduleStyle.value = preset.module;
+    if (eyeStyle) eyeStyle.value = preset.eye;
+    if (frameStyle && !frameStyle.value) frameStyle.value = "none";
+  }
+
+  function selectStyle(styleKey, apply = true) {
+    const mappedStyle = STYLE_PRESETS[styleKey] ? styleKey : (STYLE_ALIASES[styleKey] || styleKey);
+    if (styleInput) styleInput.value = mappedStyle;
+    if (apply) applyPreset(mappedStyle);
+    updateTips();
+    styleCards.forEach((c) => c.classList.toggle('active', c.dataset.style === mappedStyle));
+    styleBtns.forEach((b) => {
+      const active = b.dataset.style === mappedStyle;
+      b.classList.toggle('active', active);
+      b.textContent = active ? pickedText : pickText;
     });
   }
-});
+
+  styleCards.forEach((card) => {
+    card.addEventListener('click', (ev) => {
+      if (ev.target && ev.target.closest('button.style-btn')) return;
+      selectStyle(card.dataset.style || 'classic', true);
+      applyPreview();
+      updateChoiceButtons();
+    });
+  });
+  styleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectStyle(btn.dataset.style || 'classic', true);
+      applyPreview();
+      updateChoiceButtons();
+    });
+  });
+  moduleChoiceBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (moduleStyle) moduleStyle.value = btn.dataset.moduleChoice || 'square';
+      if (styleInput) styleInput.value = 'custom';
+      applyPreview();
+      updateTips();
+      updateChoiceButtons();
+    });
+  });
+  eyeChoiceBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (eyeStyle) eyeStyle.value = btn.dataset.eyeChoice || 'square';
+      if (styleInput) styleInput.value = 'custom';
+      applyPreview();
+      updateTips();
+      updateChoiceButtons();
+    });
+  });
+
+  compareButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      compareButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      preview.dataset.compare = btn.dataset.compare || 'after';
+      applyPreview();
+    });
+  });
+
+  surfaceButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      surfaceButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (stage) stage.classList.toggle('dark', (btn.dataset.surface === 'dark'));
+    });
+  });
+
+  if (safeBtn) {
+    safeBtn.addEventListener('click', () => {
+      if (fg && bg) {
+        fg.value = '#0d2a78';
+        bg.value = '#ffffff';
+        if (safeHidden) safeHidden.value = '1';
+        if (safeToggle) safeToggle.checked = true;
+        applyPreview();
+      }
+    });
+  }
+
+  [fg, bg, moduleStyle, eyeStyle].forEach((el) => {
+    if (el) el.addEventListener('input', applyPreview);
+    if (el) el.addEventListener('change', applyPreview);
+  });
+  [moduleStyle, eyeStyle, fg, bg].forEach((el) => {
+    if (!el) return;
+    const markCustom = () => {
+      if (!styleInput) return;
+      styleInput.value = 'custom';
+      styleCards.forEach((c) => c.classList.remove('active'));
+      styleBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.textContent = pickText;
+      });
+    };
+    el.addEventListener('change', markCustom);
+  });
+  [moduleStyle, eyeStyle].forEach((el) => {
+    if (el) el.addEventListener('input', updateTips);
+    if (el) el.addEventListener('change', updateTips);
+    if (el) el.addEventListener('change', updateChoiceButtons);
+  });
+
+  if (dynamicHidden && dynamicToggle) {
+    dynamicHidden.value = dynamicToggle.checked ? '1' : '0';
+    dynamicToggle.addEventListener('change', () => {
+      dynamicHidden.value = dynamicToggle.checked ? '1' : '0';
+    });
+  }
+  if (safeHidden && safeToggle) {
+    safeHidden.value = safeToggle.checked ? '1' : '0';
+    safeToggle.addEventListener('change', () => {
+      safeHidden.value = safeToggle.checked ? '1' : '0';
+    });
+  }
+
+  selectStyle((styleInput && styleInput.value) || 'classic', false);
+  if (preview) preview.dataset.compare = 'after';
+  applyPreview();
+  updateTips();
+  updateChoiceButtons();
+})();
 </script>

@@ -1,1 +1,27 @@
 Generic single-database configuration.
+
+
+Fehlende Sprachlogik finden:
+
+
+for f in $(rg --files -g '*.html' templates); do
+  if ! rg -q "request\.state\.lang|set lang|set ui_lang" "$f"; then
+    echo "$f"
+  fi
+done
+
+
+
+inja-Templates auf Fehler prüfen:
+python3 - <<'PY'
+from jinja2 import Environment, FileSystemLoader
+from pathlib import Path
+env = Environment(loader=FileSystemLoader('templates'))
+for p in Path('templates').rglob('*.html'):
+    env.get_template(p.as_posix().split('templates/',1)[1])
+print("OK: templates valid")
+PY
+
+
+
+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

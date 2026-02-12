@@ -3,22 +3,92 @@
 {% if lang == 'en' %}
   {% set p_title = 'Payment QR created' %}
   {% set p_h1 = '✅ Payment QR created' %}
+  {% set p_sub = 'Your payment QR is active and uses dynamic redirect.' %}
+  {% set p_dyn = 'Dynamic link:' %}
+  {% set p_open = '💳 Open payment target' %}
+  {% set p_download = '⬇️ Download QR' %}
+  {% set p_print = '🖨️ Print QR' %}
+  {% set p_edit = '✏️ Edit' %}
+  {% set p_rec = 'Recipient:' %}
+  {% set p_iban = 'IBAN:' %}
+  {% set p_amount = 'Amount:' %}
+  {% set p_purpose = 'Purpose:' %}
 {% elif lang == 'ar' %}
   {% set p_title = 'تم إنشاء Payment QR' %}
   {% set p_h1 = '✅ تم إنشاء Payment QR' %}
+  {% set p_sub = 'رمز الدفع QR نشط الآن ويستخدم رابطًا ديناميكيًا.' %}
+  {% set p_dyn = 'الرابط الديناميكي:' %}
+  {% set p_open = '💳 فتح هدف الدفع' %}
+  {% set p_download = '⬇️ تنزيل QR' %}
+  {% set p_print = '🖨️ طباعة QR' %}
+  {% set p_edit = '✏️ تعديل' %}
+  {% set p_rec = 'المستلم:' %}
+  {% set p_iban = 'IBAN:' %}
+  {% set p_amount = 'المبلغ:' %}
+  {% set p_purpose = 'الغرض:' %}
 {% else %}
   {% set p_title = 'Payment QR erstellt' %}
   {% set p_h1 = '✅ Payment-QR erstellt' %}
+  {% set p_sub = 'Dein Payment-QR ist aktiv und nutzt eine dynamische Weiterleitung.' %}
+  {% set p_dyn = 'Dynamischer Link:' %}
+  {% set p_open = '💳 Payment-Ziel öffnen' %}
+  {% set p_download = '⬇️ QR herunterladen' %}
+  {% set p_print = '🖨️ QR drucken' %}
+  {% set p_edit = '✏️ Bearbeiten' %}
+  {% set p_rec = 'Empfänger:' %}
+  {% set p_iban = 'IBAN:' %}
+  {% set p_amount = 'Betrag:' %}
+  {% set p_purpose = 'Verwendungszweck:' %}
 {% endif %}
 {% block title %}{{ p_title }}{% endblock %}
 {% block content %}
-<section class="qr-generator" style="text-align:center;">
+{% include "partials/qr_result_warnings.html" %}
+<section class="qr-generator qr-result-unified" style="text-align:center;max-width:920px;margin:2rem auto;">
   <h1>{{ p_h1 }}</h1>
-  {% if qr_image %}
-    <img src="data:image/png;base64,{{ qr_image }}" alt="Payment QR" style="max-width:300px;border-radius:12px;">
-  {% endif %}
-  {% if dynamic_url %}
-    <p><a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
-  {% endif %}
+  <p class="subtitle">{{ p_sub }}</p>
+
+  <div class="qr-card">
+    {% if qr_image %}
+      <img src="data:image/png;base64,{{ qr_image }}" alt="Payment QR" class="qr-preview">
+    {% endif %}
+    {% if dynamic_url %}
+      <p class="dyn-link"><strong>{{ p_dyn }}</strong> <a href="{{ dynamic_url }}" target="_blank" rel="noopener">{{ dynamic_url }}</a></p>
+    {% endif %}
+
+    <div class="pay-meta">
+      {% if recipient %}<p><strong>{{ p_rec }}</strong> {{ recipient }}</p>{% endif %}
+      {% if iban %}<p><strong>{{ p_iban }}</strong> {{ iban }}</p>{% endif %}
+      {% if amount %}<p><strong>{{ p_amount }}</strong> {{ amount }} {{ currency or 'EUR' }}</p>{% endif %}
+      {% if purpose %}<p><strong>{{ p_purpose }}</strong> {{ purpose }}</p>{% endif %}
+    </div>
+
+    <div class="qr-actions">
+      {% if payment_url %}
+      <a href="{{ payment_url }}" target="_blank" rel="noopener" class="btn-link">{{ p_open }}</a>
+      {% endif %}
+      {% if qr and qr.slug %}
+      <a href="/qr/export/{{ qr.slug }}?format=png" class="btn-link">{{ p_download }}</a>
+      <button type="button" class="btn-link btn-btn" onclick="return printQrFromSelector('.qr-preview')">{{ p_print }}</button>
+      <a href="/qr/edit/{{ qr.slug }}" class="btn-link">{{ p_edit }}</a>
+      {% endif %}
+    </div>
+  </div>
 </section>
+
+<style>
+.qr-card {
+  background:#fff;border-radius:16px;padding:1.2rem;
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
+}
+.qr-preview { max-width:300px;border-radius:12px; }
+.qr-actions { display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:.9rem; }
+.btn-link {
+  display:inline-block;padding:.75rem 1.1rem;border-radius:10px;
+  background:linear-gradient(135deg,#0D2A78,#1E40AF);color:#fff;text-decoration:none;font-weight:600;border:none;
+}
+.btn-btn { cursor:pointer; }
+.pay-meta { margin-top:.6rem; color:#0f172a; }
+.dyn-link { margin-top:.6rem; word-break:break-all; }
+</style>
 {% endblock %}
+
