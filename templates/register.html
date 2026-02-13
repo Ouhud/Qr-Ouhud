@@ -75,7 +75,7 @@
       
       <header class="auth-header">
         <a href="/" class="auth-logo">
-          <img src="/static/logo.png" alt="Ouhud QR Logo">
+          <img src="/static/qr-code.png" alt="Ouhud QR Logo">
         </a>
         <h1>{{ r_title }}</h1>
         <p>{{ r_sub }}</p>
@@ -218,7 +218,19 @@
 
 /* === HEADER === */
 .auth-header { text-align: center; margin-bottom: 32px; }
-.auth-logo img { height: 52px; margin-bottom: 20px; }
+.auth-logo img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 20px;
+  padding: 8px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(13, 42, 120, 0.14);
+  transition: transform 0.3s ease;
+}
+.auth-logo:hover img { transform: scale(1.05); }
 .auth-header h1 { font-size: 26px; font-weight: 800; color: var(--auth-primary); margin: 0 0 8px 0; }
 .auth-header p { color: var(--auth-text-muted); font-size: 15px; margin: 0; }
 

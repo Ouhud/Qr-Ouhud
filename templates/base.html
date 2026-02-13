@@ -10,8 +10,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>{% block title %}📊 Dashboard – Ouhud QR{% endblock %}</title>
-  <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-
+<link rel="icon" type="image/png" href="/static/qr-code.png">
   <!-- 🌐 Zentrales Stylesheet -->
   <link rel="stylesheet" href="/static/css/style.css" />
   {% block styles %}{% endblock %}
@@ -89,7 +88,16 @@
       font-size: 1.2rem;
     }
 
-    .logo img { height: 36px; border-radius: 8px; }
+    .logo img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display: block;
+      padding: 4px;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(13, 42, 120, 0.2);
+    }
 
     .header-actions {
       display: flex;
@@ -570,7 +578,7 @@
   <!-- === HEADER === -->
   <header class="header">
     <a href="{% if show_auth_chrome %}/dashboard/{% else %}/{% endif %}" class="logo" aria-label="{{ t_home }}">
-      <img src="/static/logo.png" alt="Ouhud QR Logo" />
+      <img src="/static/qr-code.png" alt="Ouhud QR Logo" />
       <span>Ouhud QR</span>
     </a>
 
